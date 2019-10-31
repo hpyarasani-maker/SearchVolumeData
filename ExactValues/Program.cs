@@ -1,0 +1,1162 @@
+﻿using System;
+using System.Linq;
+using System.Text;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Data.SqlClient;
+using System.Data;
+using System.Xml;
+using System.Net;
+using System.IO;
+using System.Threading;
+using System.Collections;
+using System.Windows.Forms;
+
+namespace ExactValues
+{
+    class Program
+    {
+        static string email = "";
+        static string password = "";  
+        static int id = 0;
+        static int x = 0;
+        static string exactpath;
+        static bool appTimeOut = false;
+
+        static int Main(string[] args)
+        {
+            GetEmailID();
+            exactpath = @"C:\inetpub\wwwroot\exactvalues\" + email.Split('@')[0];
+
+            string title = "Thread - " + id + " - " + email;
+            Console.Title = title + " - Without Timer";
+
+            //System.Threading.Timer t = new System.Threading.Timer(DisplayTimeEvent, null, (90 * 60000), 1000);
+            //Console.Title = title;
+
+            System.Drawing.Size size = new System.Drawing.Size(1280, 1024);
+
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.AddUserProfilePreference("download.default_directory", exactpath + @"\downloads");
+            chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+
+            IWebDriver driver = new ChromeDriver(@".\ChromeDriver", chromeOptions);
+
+            driver.Manage().Window.Size = size;
+
+            //Goes to login page
+            string url = "https://ads.google.com/aw/keywordplanner/home?ocid=193200943&__c=4281215607&authuser=0&__u=9516641019&enableAllBrowsers=1";
+            driver.Navigate().GoToUrl(url);
+            try
+            {
+                driver.FindElement(By.XPath("//*[@id='identifierId']")).SendKeys(email);
+            }
+            catch
+            {
+                driver.FindElement(By.XPath("//*[@id='Email']")).SendKeys(email);
+            }
+            try
+            {
+                driver.FindElement(By.XPath("//*[@id='identifierNext']")).Click();
+            }
+            catch
+            {
+                driver.FindElement(By.XPath("//*[@id='next']")).Click();
+            }
+            Console.WriteLine(driver.PageSource);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            try
+            {
+                driver.FindElement(By.XPath("//input[@name='password']")).SendKeys(password);
+            }
+            catch
+            {
+                driver.FindElement(By.XPath("//input[@name='Passwd']")).SendKeys(password);
+            }
+            try
+            {
+                driver.FindElement(By.XPath("//*[@id='passwordNext']")).Click();
+            }
+            catch
+            {
+                try
+                {
+                    driver.FindElement(By.CssSelector("#passwordNext")).Click();
+                }
+                catch
+                {
+                    driver.FindElement(By.CssSelector("#signIn")).Click();
+                }
+            }
+            Console.WriteLine(driver.PageSource);
+            try
+            {
+                //choose an account after login wait time 10 seconds
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                //driver.FindElement(By.CssSelector("div.HWIeKd")).Click();
+                driver.FindElement(By.CssSelector("div.d2laFc")).Click();
+            }
+            catch
+            {
+                try
+                {
+                    driver.FindElement(By.CssSelector("#choose-account-0")).Click();
+                }
+                catch { }
+            }
+            
+            while (true)
+            {
+                if (appTimeOut)
+                    break;               
+
+                ArrayList alKeywords = new ArrayList();
+                try
+                {
+                    //method downloads keywords from Pi API
+                    alKeywords = GetKeywordsFromAPI();
+                    if (alKeywords.Count <= 0)
+                    {
+                       //it will try again keywords are not downloaded and wait for 10 seconds to download again
+                        Thread.Sleep(10000);
+                        continue;
+                    }
+                }
+                catch
+                {
+                    //any error repeats again for 10 secs
+                    Thread.Sleep(10000);
+                    continue;
+                }
+
+                foreach (string kwItem in alKeywords)
+                {
+                    string[] item = kwItem.Split(':');
+                    string market = item[0];
+                    string country = item[1];
+                    string kws = "Keyword, " + item[2];
+
+                    try
+                    {
+                        //method deletes previous downloaded csv files
+                        DeleteFile(); 
+
+                        WriteToCsv(kws);
+                        try
+                        {
+                            driver.FindElement(By.CssSelector("div.WBW9sf")).Click();
+                        }
+                        catch { }
+                        try
+                        {
+                            //if any plans are stored in draft it will remove the list in first page
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            driver.FindElement(By.CssSelector(".particle-table-header > header-tools-cell:nth-child(1) > div:nth-child(1) > mat-checkbox:nth-child(1)")).Click();
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+                            IWebElement removeplan = driver.FindElement(By.CssSelector("div.element:nth-child(5) > element:nth-child(1) > toolbelt-material-menu:nth-child(2) > material-menu:nth-child(1)"));
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                            if (removeplan.Text.Contains("Remove plan"))
+                                removeplan.Click();
+                            driver.FindElement(By.CssSelector(".is-focused")).Click();
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                            try
+                            {
+                                driver.FindElement(By.CssSelector("div.WBW9sf")).Click();
+                            }
+                            catch { }
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                IWebElement removeplan = driver.FindElement(By.CssSelector("div.element:nth-child(5) > element:nth-child(1) > toolbelt-material-menu:nth-child(2) > material-menu:nth-child(1)"));
+                                if (removeplan.Text.Contains("Remove plan"))
+                                    removeplan.Click();
+                                driver.FindElement(By.CssSelector(".is-focused")).Click();
+                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            }
+                            catch {}
+                        }
+                        try
+                        {
+                            driver.FindElement(By.CssSelector("div.WBW9sf")).Click();
+                        }
+                        catch { }
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                        driver.FindElement(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")).Click();
+                        Console.WriteLine(driver.PageSource);
+                        
+                        //downloaded keywords file uploading.
+                        skip:
+                        {
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            driver.FindElement(By.CssSelector(".upload-button")).Click();
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+                            if (driver.FindElements(By.XPath("//*[@id='select-overlay-target']")).Count > 0)
+                            {
+                                IWebElement choosefilebutton = driver.FindElement(By.XPath("//*[@id='select-overlay-target']"));
+                                Thread.Sleep(2000);
+                                choosefilebutton.Click();
+                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                Thread.Sleep(3000);
+                                string filename = exactpath + @"\keywords\keywords.csv";
+                                SendKeys.SendWait(filename);
+                                SendKeys.SendWait(@"{Enter}");
+
+                            }
+                        }
+
+                        Console.WriteLine(driver.PageSource);
+
+                        driver.FindElement(By.CssSelector(".save-button")).Click();
+
+                        Console.WriteLine(driver.PageSource);
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                        if (driver.FindElements(By.CssSelector(".save-button.is-disabled")).Count > 0)
+                        {
+                            driver.FindElement(By.CssSelector(".cancel-button")).Click();
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+                            SendKeys.SendWait(@"{Esc}");
+                            //downloaded keywords file is missing then it will try for one more..
+                            goto skip;
+                        }
+                        try
+                        {
+                            driver.FindElement(By.CssSelector(".save-button")).Click();
+                        }
+                        catch
+                        { }
+
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
+
+                        driver.FindElement(By.XPath("//div/skinny-nav-item[5]/a")).Click();
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
+                        driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)")).Click();
+                        Console.WriteLine(driver.PageSource);
+
+                        // Location Selection. 
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                        driver.FindElement(By.CssSelector(".location-button")).Click();
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                        if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
+                        {
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            try
+                            {
+                                driver.FindElement(By.CssSelector("label.input-container")).Click();
+                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                driver.FindElement(By.CssSelector("label.input-container")).SendKeys(country);
+                            }
+                            catch
+                            {
+                                //Also checks locations which throws exceptions 
+                                try
+                                {
+                                    driver.FindElement(By.CssSelector("label.input-container:nth-child(1)")).Click();
+                                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                    driver.FindElement(By.CssSelector("label.input-container:nth-child(1)")).SendKeys(country);
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("=========Problem In Country Selection(Location Entry)==========");
+                                    throw new Exception();
+                                }
+                            }
+
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(40);
+                            try
+                            {
+                                Console.WriteLine(driver.PageSource);
+                                driver.FindElement(By.CssSelector("location-data-suggestion-entry:nth-child(1)")).Click();
+                            }
+                            catch
+                            {
+                                
+                                Console.WriteLine("=========Problem In Country Selection(Target Selection)==========");
+                                throw new Exception();
+                            }
+                            // 
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(40);
+                            
+                            try
+                            {
+                                driver.FindElement(By.CssSelector(".highlighted")).Click();
+                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(25);
+                                IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
+                                //If any country miss match then signout and exit app..
+                                if (driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)")).Text.Contains("All locations") || driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)")).Text != country)
+                                {
+                                    Console.WriteLine("=========Problem In Country Selection(Missmatched Location)==========");
+                                    Signout(driver);
+                                    driver.Close();
+                                    driver.Dispose();
+                                }
+
+                            }
+                            catch
+                            {
+                                //If any error occured in country selection then signout and exit..
+                                Console.WriteLine("=========Problem In Country Selection==========");
+                                Signout(driver);
+                                driver.Close();
+                                driver.Dispose();
+                            }
+
+
+                        }
+
+
+
+
+
+                        //Date Selection
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);                         
+                        
+                        try
+                        {
+                            try
+                            {
+                                driver.FindElement(By.CssSelector(".dropdown")).Click();
+                            }
+                            catch { }
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+                            IWebElement e = driver.FindElement(By.CssSelector("div.range-button:nth-child(5)"));
+                            if (e.Text.Contains("All available"))
+                            {
+                                e.Click();
+                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+                            }
+                            IWebElement month = driver.FindElement(By.CssSelector(".date-popup-button"));
+                            // if the date is selected other then 48 months then signout and exit
+                            if (month.Text.Contains("All available") != true)
+                            {
+                                Thread.Sleep(10000);
+                                Signout(driver);
+                                driver.Close();
+                                driver.Dispose();
+                                return 0;
+                            }
+                        }
+                        catch
+                        {
+                            //if any error occurs in date selection then signout and exit
+                            Console.WriteLine("Error In Date Selection");
+                            Thread.Sleep(10000);
+                            Signout(driver);
+                            driver.Close();
+                            driver.Dispose();
+                            return 0;
+                        }                       
+
+                        //Download CSV File
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                        historical:
+                        {
+                            try
+                            {
+                                try
+                                {
+                                    driver.FindElement(By.CssSelector(".download")).Click();
+                                }
+                                catch { }
+                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)"));
+                                if (ele.Text.Contains("Plan historical metrics (.csv)"))
+                                {
+                                    ele.Click();
+                                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                }
+                                else
+                                    goto historical;
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        //downloading csv file waiting time..
+                        Thread.Sleep(25000);
+                        try
+                        {
+                            // 48 months
+                            ProcessResultsKPOLD_48(market, kws, country);
+                        }
+                        catch (Exception ex)
+                        {
+                            //in case account returns ranges or APP timeout then signout and exit 
+                            if (ex.Message.StartsWith("Ranges started") || appTimeOut)
+                            {
+                                Thread.Sleep(10000);
+                                Signout(driver);
+                                driver.Close();
+                                driver.Dispose();
+                                return 0;
+                            }
+                        }
+                        //goes to first page for next batch keywords
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                        driver.FindElement(By.CssSelector("material-button.back-button")).Click();
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        try
+                        {
+                            //if any error occurs other then above exceptions in entire process this returns to login page
+                            Console.WriteLine(ex.Message);
+                            driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home?ocid=325109181&euid=331594490&__u=5223172010&uscid=325109181&__c=2039899669&authuser=0&enableAllBrowsers=1");
+                            try
+                            {
+                                driver.FindElement(By.CssSelector("div.WBW9sf")).Click();
+                            }
+                            catch { }
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+            }
+
+            Signout(driver);
+            driver.Close();
+            driver.Dispose();
+
+            Console.WriteLine();
+            Console.WriteLine(" DONE ");
+
+            return 0;
+        }
+
+  
+        static void Signout(IWebDriver driver)
+        {
+            try
+            {
+                driver.FindElement(By.CssSelector(".trigger")).Click();
+                Thread.Sleep(2000);
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                driver.FindElement(By.CssSelector(".sign-out")).Click();
+                Thread.Sleep(5000);
+            }
+            catch { }
+        }
+
+        private static void DeleteFile()
+        {
+            // delete from downloads folder
+            string fName = exactpath + @"\downloads";
+            DirectoryInfo dinfo2 = new DirectoryInfo(fName);
+            FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
+            if (Files2.Count() > 0)
+            {
+                fName = Files2[0].FullName;
+                File.Delete(fName);
+            }
+
+            // delete from keywords folder
+            fName = exactpath + @"\keywords";
+            dinfo2 = new DirectoryInfo(fName);
+            Files2 = dinfo2.GetFiles("*.csv");
+            if (Files2.Count() > 0)
+            {
+                fName = Files2[0].FullName;
+                File.Delete(fName);
+            }
+        }
+
+        private static void WriteToCsv(string kws)
+        {
+            string file = exactpath + @"\keywords\keywords.csv";
+            StreamWriter sw = new StreamWriter(file, false);
+            sw.Write(kws.Replace(",", Environment.NewLine));
+            sw.Close();
+        }
+
+        static void GetEmailID()
+        {
+            DataTable dt = new DataTable();
+            //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=10";
+            using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
+            {
+                da.Fill(dt);
+            }
+            if (dt.Rows.Count > 0)
+            {
+                id = Convert.ToInt32(dt.Rows[0][0]);
+                email = dt.Rows[0][1].ToString();
+                password = dt.Rows[0][2].ToString();
+            }
+            dt.Dispose();          
+        }
+
+        
+        static void ProcessResultsKPOLD_48(string market, string kw, string country)
+        {
+            string fName = exactpath + @"\downloads";
+            DirectoryInfo dinfo2 = new DirectoryInfo(fName);
+            FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
+            if (Files2.Count() > 0)
+                fName = Files2[0].FullName;
+            else
+                throw new Exception("File not downloaded.");
+
+            try
+            {
+                ArrayList lst = GetCsvValues_48(fName);
+                ArrayList monthsList = getValuesList(lst);
+                string[] hdr = monthsList[0] as string[];
+                string[] values = monthsList[1] as string[];
+
+                string[] kwds = kw.Split(',');
+
+                if (values[3] == ("N/A")) 
+                {
+                    Console.WriteLine("========================================================");
+                    Console.WriteLine("------------------ Ranges Started ----------------------");
+                    Console.WriteLine("========================================================");
+
+                    throw new Exception("Ranges started");
+                }
+
+                string path = @"C:\Inetpub\wwwroot\KPDataOld_48_" + email.Split('@')[0] + ".xml";
+
+                try
+                {
+                    string qry = "";
+                    long yearValue;
+                    int n = 0;
+                    bool isCloseVariant;
+
+                    if (!string.IsNullOrEmpty(values[0]))
+                    {
+                        foreach (string s in kwds)
+                        {
+                            if (s == "Keyword") continue;
+
+                            if (appTimeOut)
+                            {
+                                throw new Exception("TimeOut");
+                            }
+
+                            qry = "";
+                            yearValue = 0;
+                            isCloseVariant = false;
+                            string kwd = WebUtility.HtmlDecode(s.Trim());
+                            string[] values1 = GetMonthValues(kwd, monthsList);
+                            
+                            if (values1 == null && monthsList[0] != null)
+                            {
+                                isCloseVariant = true;
+
+                                Console.WriteLine("========================================================");
+                                Console.WriteLine("--- Unmatched keyword found / Having a close variant ---");
+                                Console.WriteLine("========================================================");
+
+                                try
+                                {
+                                    
+
+                                    //stores root keyword in closeVariant table
+                                    SendMissedKeywordResult(market, s.Trim(), country);
+                                }
+                                catch (SqlException e)
+                                {
+                                    Console.WriteLine("Database error updating cv data:");
+                                    Console.WriteLine("Error: " + e.Message);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine("Error updating cv data: " + ex.Message);
+                                }
+                                continue;
+                            }
+                            else if (values1 == null && monthsList[0] == null)
+                            {
+                                continue;
+                            }
+
+                            XmlTextWriter writer = new XmlTextWriter(path, Encoding.UTF8);
+
+                            writer.Formatting = Formatting.Indented;
+                            writer.Indentation = 2;
+
+                            writer.WriteStartDocument();
+
+                            writer.WriteStartElement("", "search-volume-data", "");
+                            //volume-data start
+                            writer.WriteStartElement("", "volume-data", "");
+
+                            writer.WriteStartElement("", "keyword", "");
+                            writer.WriteString(s.Trim());
+                            writer.WriteEndElement();
+
+                            writer.WriteStartElement("", "source", "");
+                            writer.WriteString("kp_old");
+                            writer.WriteEndElement();
+
+                            writer.WriteStartElement("", "country", "");
+                            writer.WriteString(market);
+                            writer.WriteEndElement();
+
+                            string smonth = Convert.ToDateTime(hdr[59]).ToString("yyyy-MM");
+
+                            //Sending Empty months
+                            if (values1[0].ToLower() == kwd.ToLower() && values1[12] == "")
+                            {
+                                //inserting empty months
+                                qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate]) values('";
+                                qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
+
+                                writer.WriteStartElement("", "currency", "");
+                                writer.WriteString(values1[1]);
+                                writer.WriteEndElement();
+
+                                writer.WriteStartElement("", "month", "");
+                                writer.WriteString(smonth);
+
+                                writer.WriteEndElement();
+
+                                writer.WriteStartElement("", "monthly-volume", "");
+
+                                for (int i = 48; i >= 1; i--)
+                                {
+                                    string month = Convert.ToDateTime(hdr[i + 11]).ToString("yyyy-MM");
+                                    writer.WriteStartElement("", "volume", "");
+                                    writer.WriteStartElement("", "month", "");
+                                    writer.WriteString(month);
+                                    writer.WriteEndElement();
+                                    writer.WriteEndElement();
+                                }
+                                writer.WriteEndElement();
+                            } 
+                             //storing exact values
+                            else if (values1[0].ToLower() == kwd.ToLower())
+                            {
+                                qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
+                                qry += ",[month47],[month47value],[month46],[month46value],[month45],[month45value],[month44],[month44value],[month43],[month43value],[month42],[month42value]";
+                                qry += ",[month41],[month41value],[month40],[month40value],[month39],[month39value],[month38],[month38value],[month37],[month37value],[month36]";
+                                qry += ",[month36value],[month35],[month35value],[month34],[month34value],[month33],[month33value],[month32],[month32value],[month31],[month31value]";
+                                qry += ",[month30],[month30value],[month29],[month29value],[month28],[month28value],[month27],[month27value],[month26],[month26value],[month25]";
+                                qry += ",[month25value],[month24],[month24value],[month23],[month23value],[month22],[month22value],[month21],[month21value],[month20],[month20value]";
+                                qry += ",[month19],[month19value],[month18],[month18value],[month17],[month17value],[month16],[month16value],[month15],[month15value],[month14]";
+                                qry += ",[month14value],[month13],[month13value],[month12],[month12value],[month11],[month11value],[month10],[month10value],[month9],[month9value]";
+                                qry += ",[month8],[month8value],[month7],[month7value],[month6],[month6value],[month5],[month5value],[month4],[month4value],[month3]";
+                                qry += ",[month3value],[month2],[month2value],[month1],[month1value],[annualvalue],[cpc],[cpclow],[cpchigh],[competition],[impressions] ) values('";
+                                qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'";
+                                qry += DateTime.Now.ToString("yyyy-MM-dd") + "',20), ";
+
+                                writer.WriteStartElement("", "currency", "");
+                                writer.WriteString(values1[1]);
+                                writer.WriteEndElement();
+
+                                writer.WriteStartElement("", "month", "");
+                                writer.WriteString(smonth);
+                                writer.WriteEndElement();
+
+                                writer.WriteStartElement("", "monthly-volume", "");
+                                n = 0;
+                                for (int i = 48; i >= 1; i--)
+                                {
+                                    string month = Convert.ToDateTime(hdr[i + 11]).ToString("yyyy-MM");
+                                    writer.WriteStartElement("", "volume", "");
+
+                                    writer.WriteStartElement("", "month", "");
+                                    writer.WriteString(month);
+                                    writer.WriteEndElement();
+
+                                    writer.WriteStartElement("", "value", "");
+                                    writer.WriteString(values1[i + 11]);
+                                    writer.WriteEndElement();
+
+                                    qry += "'" + month + "', " + values1[i + 11] + ", ";
+
+                                    writer.WriteEndElement();
+
+                                    if (n++ < 12)
+                                        try
+                                        {
+                                            yearValue += Convert.ToInt64(string.IsNullOrEmpty(values1[i + 11]) ? "0" : values1[i + 11]);
+                                        }
+                                        catch { }
+                                }
+
+                                writer.WriteEndElement();
+
+                                if (!string.IsNullOrEmpty(values1[6]))
+                                {
+                                    writer.WriteStartElement("", "cpc-low", "");
+                                    //writer.WriteString(string.IsNullOrEmpty(values1[6]) ? "0" : values1[6]);
+                                    writer.WriteString(values1[6]);
+                                    writer.WriteEndElement();
+                                }
+
+                                if (!string.IsNullOrEmpty(values1[7]))
+                                {
+                                    writer.WriteStartElement("", "cpc-high", "");
+                                    //writer.WriteString(string.IsNullOrEmpty(values1[7]) ? "0" : values1[7]);
+                                    writer.WriteString(values1[7]);
+                                    writer.WriteEndElement();
+                                }
+
+                                decimal comp = 0;
+                                if (!string.IsNullOrEmpty(values1[5]))
+                                {
+                                    //decimal comp = string.IsNullOrEmpty(values1[5].Trim()) ? 0 : (Convert.ToDecimal(values1[5]) / 100);
+                                    comp = Convert.ToDecimal(values1[5]) / 100;
+
+                                    writer.WriteStartElement("", "competition", "");
+                                    writer.WriteString(comp.ToString());
+                                    writer.WriteEndElement();
+                                }
+
+                                writer.WriteStartElement("", "impressions", "");
+                                writer.WriteString("0");
+                                writer.WriteEndElement();
+
+                                if (yearValue > 0) yearValue = yearValue / 12;
+
+                                writer.WriteStartElement("", "annual-volume-value", "");
+                                writer.WriteString(yearValue.ToString());
+                                writer.WriteEndElement();
+
+                                qry += yearValue + ", 0, " + (string.IsNullOrEmpty(values1[6]) ? "0" : values1[6]) + ", " + (string.IsNullOrEmpty(values1[7]) ? "0" : values1[7]) + ", " + comp + ", 0 );";
+
+                            }
+
+                            writer.WriteEndElement();
+
+                            writer.WriteEndElement();
+                            writer.WriteEndDocument();
+                            writer.Flush();
+                            writer.Close();
+                            //Results submitting to Pi APi
+                            try
+                            {
+                                Console.WriteLine(kwd);
+                                if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
+                                    PostXML(path, kwd);
+
+                                SendResultsToDB_48(qry);
+
+                            }
+                            catch (SqlException e)
+                            {
+                                Console.WriteLine("Database Error: " + e.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Sending Xml Error: " + ex.Message);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //if csv file contains total empty returns message
+                        Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                        Console.WriteLine("+++++++++++++++++++  NULL VALUES FOUND  +++++++++++++++++++++");
+                        Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+                lst = null;
+                monthsList = null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        static void PostXML(string fileName, string kn)
+        {
+            string submitURL = ReadAPI("submit");
+
+            string user = "pisoftware";
+            string pwd = "r00t123456";
+            try
+            {
+                HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(submitURL);
+                httpWReq.UseDefaultCredentials = true;
+                httpWReq.PreAuthenticate = true;
+                httpWReq.Credentials = CredentialCache.DefaultCredentials;
+
+                Encoding encoding = new UTF8Encoding();
+                string postData = GetTextFromXMLFile(fileName);
+                byte[] data = encoding.GetBytes(postData);
+
+                httpWReq.ProtocolVersion = HttpVersion.Version11;
+                httpWReq.Method = "POST";
+                httpWReq.ContentType = "application/x-www-form-urlencoded"; //charset=UTF-8";  
+
+
+                string auth = string.Format("{0}:{1}", user, pwd);
+                string enc = Convert.ToBase64String(Encoding.ASCII.GetBytes(auth));
+                string cred = string.Format("{0} {1}", "Basic", enc);
+
+
+                httpWReq.Headers[HttpRequestHeader.Authorization] = cred;
+                httpWReq.ContentLength = data.Length;
+
+
+                Stream stream = httpWReq.GetRequestStream();
+                stream.Write(data, 0, data.Length);
+                stream.Close();
+
+                HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                String xmlResponse = "";
+                String temp = null;
+                while ((temp = reader.ReadLine()) != null)
+                {
+                    xmlResponse += temp;
+                }
+                reader.Close();
+                response.Close();
+
+            }
+            catch (WebException ex)
+            {
+                string error = "";
+                string message = "";
+
+                using (WebResponse response = ex.Response)
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)response;
+                    error = string.Format("Error:{0}", httpResponse.StatusCode);
+
+                    using (Stream data = response.GetResponseStream())
+                    using (var reader = new StreamReader(data))
+                    {
+                        message = reader.ReadToEnd();
+                    }
+
+                }
+
+                throw new Exception(error + "\n" + message);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error: " + ex.Message);
+            }
+
+        }
+
+        static void SendResultsToDB_48(string qry)
+        {
+            if (qry == "") return;
+
+            using (SqlConnection con = new SqlConnection(ReadConnection()))
+            {
+                using (SqlCommand comm = new SqlCommand())
+                {
+                    comm.Connection = con;
+                    con.Open();
+                    comm.CommandTimeout = 0;
+                    comm.CommandType = CommandType.Text;
+                    comm.CommandText = qry;
+
+                    try
+                    {
+                        comm.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("========================== Database Error (Sql Ex) =======================");
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("========================== Database Error =======================");
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+        }
+
+        static void SendMissedKeywordResult(string market, string kw, string country)
+        {
+            Console.WriteLine("========================================================");
+            Console.WriteLine("----------- Sending to close variant app ---------------");
+            Console.WriteLine("========================================================");
+
+            using (SqlConnection con = new SqlConnection(ReadConnection()))
+            {
+                using (SqlCommand comm = new SqlCommand())
+                {
+                    comm.Connection = con;
+                    con.Open();
+
+                    comm.CommandType = System.Data.CommandType.StoredProcedure;
+                    comm.CommandText = "InsertCloseVariantKeywords";
+                    comm.CommandTimeout = 0;
+
+                    comm.Parameters.Add(new SqlParameter("@Market", System.Data.SqlDbType.NVarChar, 100)).Value = market;
+                    comm.Parameters.Add(new SqlParameter("@Keyword", System.Data.SqlDbType.NVarChar, 255)).Value = kw.Replace("'", "''");
+                    comm.Parameters.Add(new SqlParameter("@Country", System.Data.SqlDbType.NVarChar, 100)).Value = country;
+                    try
+                    {
+                        comm.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("========================== Close Variant Database Error (SQL Ex) =======================");
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("========================== Close Variant Database Error =======================");
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+        }
+
+        static string GetTextFromXMLFile(string file)
+        {
+            StreamReader reader = new StreamReader(file);
+            string ret = reader.ReadToEnd();
+            reader.Close();
+            return ret;
+        }
+
+        static ArrayList GetKeywordsFromAPI()
+        {
+            string kp_old_url = ReadAPI("batch");
+            string authInfo = "pisoftware" + ":" + "r00t123456";
+            ArrayList alKws = new ArrayList();
+            StringBuilder stringBuilder = new StringBuilder();
+            string value = string.Empty;
+            Uri uri = new Uri(kp_old_url);
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpWebRequest.Timeout = 1000000;
+            httpWebRequest.KeepAlive = true;
+            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
+            httpWebRequest.Headers["Authorization"] = "Basic " + authInfo;
+            XmlDocument doc = new XmlDocument();
+            XmlReaderSettings settings = new XmlReaderSettings { CheckCharacters = false };
+
+            using (HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse())
+            using (XmlReader reader = XmlReader.Create(response.GetResponseStream(), settings))
+            {
+                try
+                {
+                    reader.MoveToContent();
+                    doc.Load(reader);
+                    reader.Close();
+                    XmlNodeList msg = doc.GetElementsByTagName("message");
+                    if (msg.Count > 0)
+                    {
+                        throw new Exception(msg[0].InnerText);
+                    }
+                    XmlNodeList country = doc.GetElementsByTagName("country");
+                    XmlNodeList kwd = doc.GetElementsByTagName("keyword");
+                    XmlNodeList source = doc.GetElementsByTagName("source");
+                    XmlNodeList priority = doc.GetElementsByTagName("priority");
+
+                    string market = "";
+                    string kd = "";
+                    string src = "";
+                    string pr = "";
+                    string countryName = "";
+
+                    for (int i = 0; i < kwd.Count; i++)
+                    {
+                        //market = country[i].InnerText;
+                        kd += kwd[i].InnerText + ",";
+                        //src = source[i].InnerText;
+                        //pr = priority[i].InnerText;                    
+                    }
+                    kd = kd.Remove(kd.Trim().Length - 1);
+                    market = country[0].InnerText;
+                    src = source[0].InnerText;
+                    pr = priority[0].InnerText;
+                    countryName = GetCountryName(market);
+
+                    string keywordItem = market + ":" + countryName + ":" + kd;
+                    alKws.Add(keywordItem);
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            return alKws;
+        }
+
+        static string GetCountryName(string market)
+        {
+            string cName = "";
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ReadConnection()))
+                {
+                    con.Open();
+                    using (SqlCommand comm = new SqlCommand("select countryname from countrymarket where market='" + market + "'", con))
+                    {
+                        comm.CommandTimeout = 0;
+                        using (SqlDataReader dr = comm.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (dr.Read())
+                            {
+                                cName = dr.GetValue(0).ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Country name not returned from database.");
+            }
+
+            return cName;
+        }
+
+        static ArrayList GetCsvValues_48(string fName)
+        {
+            string[] values = { "" };
+            ArrayList arList = new ArrayList();
+            try
+            {
+                StreamReader sr = new StreamReader(fName);
+                int r = 0;
+                while (!sr.EndOfStream)
+                {
+                    r++;
+                    string ln = sr.ReadLine();
+                    //if (r == 1) date = ln.Split('\t')[0];
+                    if (r <= 5 && r != 3) continue;
+                    values = ln.Split('\t');
+                    arList.Add(values);
+                }
+                sr.Close();
+                return arList;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+
+                return null;
+            }
+        }
+
+        static ArrayList getValuesList(ArrayList arList)
+        {
+            ArrayList lst = new ArrayList();
+
+            try
+            {
+                int r = 0;
+                foreach (string[] val in arList)
+                {
+                    string[] values = new string[60];
+                    for (int i = 0; i < 60; i++)
+                    {
+                        values[i] = val[i].Contains("Searches:") ? (val[i].Split(':')[1].Trim()) :
+                            i > 2 ? (val[i].Replace("&#x13;", "-").Replace("  ", "-").Replace("K", "000").Replace("M", "000000")) :
+                            val[i];
+                    }
+                    lst.Add(values);
+                    r++;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return lst;
+        }
+
+        static string[] GetMonthValues(string kwd, ArrayList monthsList)
+        {
+            string[] s = null;
+            int i = 0;
+            foreach (string[] st in monthsList)
+            {
+                if (i++ == 0) continue;
+                if (st[0].ToLower() == kwd.ToLower())
+                {
+                    s = st;
+                    break;
+                }
+            }
+
+            return s;
+        }
+
+        static void GetLastValue()
+        {
+            x = 0;
+            try
+            {
+                if (File.Exists(Environment.CurrentDirectory + "\\index.txt"))
+                {
+                    StreamReader sw = new StreamReader(Environment.CurrentDirectory + "\\index.txt");
+                    string val = sw.ReadLine();
+                    sw.Close();
+                    if (!string.IsNullOrEmpty(val.Trim()))
+                        x = Convert.ToInt32(val) + 1;
+                }
+            }
+            catch { x = 0; }
+            finally { }
+        }
+
+        static void SetLastValue(int val)
+        {
+            try
+            {
+                StreamWriter sw = new StreamWriter(Environment.CurrentDirectory + "\\index.txt", false);
+                sw.WriteLine(val);
+                sw.Close();
+            }
+            finally { }
+        }
+
+        static string ReadAPI(string apiType)
+        {
+            XmlDocument xml = new XmlDocument();
+            string fileName = @"C:\Inetpub\wwwroot\KPServerIP.xml";
+            xml.Load(fileName);
+
+            XmlNode node = null;
+            if (apiType == "submit")
+                node = xml.SelectSingleNode("ConnectionString/submitapi");
+            else
+                node = xml.SelectSingleNode("ConnectionString/batchapi");
+
+            string name = node.InnerText;
+            return name;
+        }
+
+        static string ReadConnection()
+        {            
+            XmlDocument xml = new XmlDocument();
+            string fileName = @"C:\Inetpub\wwwroot\KPServerIP.xml";
+            xml.Load(fileName);
+
+            XmlNode node = xml.SelectSingleNode("ConnectionString/con");
+            string name = node.InnerText;
+
+            return name;
+        }
+
+        private static void DisplayTimeEvent(Object o)
+        {
+            //Time to quit app..
+            //appTimeOut = true;            
+        }
+    }
+}
