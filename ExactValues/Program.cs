@@ -274,7 +274,7 @@ namespace ExactValues
                             catch
                             {
                                 
-                                Console.WriteLine("=========Problem In Country Selection(Target Selection)==========");
+                                Console.WriteLine("==Problem In Country Selection(Target Selection)==");
                                 throw new Exception();
                             }
                             // 
@@ -282,26 +282,31 @@ namespace ExactValues
                             
                             try
                             {
+
                                 driver.FindElement(By.CssSelector(".highlighted")).Click();
                                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(25);
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
                                 //If any country miss match then signout and exit app..
-                                if (driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)")).Text.Contains("All locations") || driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)")).Text != country)
+                                if (element.Text.Contains("All locations") || element.Text.ToLower() != country.ToLower())
                                 {
-                                    Console.WriteLine("=========Problem In Country Selection(Missmatched Location)==========");
+                                    Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
                                     Signout(driver);
                                     driver.Close();
                                     driver.Dispose();
+                                    return 0;
                                 }
-
+                                else
+                                    Console.WriteLine("=====Country Selected Successfully=====");
+                             
                             }
                             catch
                             {
                                 //If any error occured in country selection then signout and exit..
-                                Console.WriteLine("=========Problem In Country Selection==========");
+                                Console.WriteLine("==Problem In Country Selection==" );
                                 Signout(driver);
                                 driver.Close();
                                 driver.Dispose();
+                                return 0;
                             }
 
 
@@ -481,7 +486,7 @@ namespace ExactValues
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=10";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=6";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -561,6 +566,9 @@ namespace ExactValues
                                 try
                                 {
                                     
+                                    qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
+                                    qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
+                                    SendResultsToDB_48(qry);
 
                                     //stores root keyword in closeVariant table
                                     SendMissedKeywordResult(market, s.Trim(), country);
