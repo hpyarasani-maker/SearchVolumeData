@@ -77,57 +77,6 @@ namespace DateChanger
             }
 
 
-            /*
-            // old browser login.
-
-            var pic = ((ITakesScreenshot)driver).GetScreenshot();
-            pic.SaveAsFile("pic0.png");
-
-            try
-            {
-                driver.FindElement(By.XPath("//*[@id='identifierId']")).SendKeys(email);
-            }
-            catch
-            {
-                driver.FindElement(By.XPath("//*[@id='Email']")).SendKeys(email);
-
-                //File.WriteAllText(@"C:\Users\indianuser6\Desktop\hello.html", driver.PageSource);
-            }
-            try
-            {
-                driver.FindElement(By.XPath("//*[@id='identifierNext']")).Click();
-            }
-            catch
-            {
-                driver.FindElement(By.XPath("//*[@id='next']")).Click();
-            }
-            pic = ((ITakesScreenshot)driver).GetScreenshot();
-            pic.SaveAsFile("pic.png");
-
-            Console.WriteLine(driver.PageSource);
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            try
-            {
-                driver.FindElement(By.XPath("//input[@name='password']")).SendKeys(password);
-            }
-            catch
-            {
-                driver.FindElement(By.XPath("//input[@name='Passwd']")).SendKeys(password);
-            }
-            try
-            {
-                driver.FindElement(By.XPath("//*[@id='passwordNext']")).Click();
-
-            }
-            catch
-            {
-                driver.FindElement(By.XPath("//input[@name='signIn']")).Click();
-                // File.WriteAllText(@"C:\Users\indianuser6\Desktop\hello.html", driver.PageSource);
-            }
-
-            pic = ((ITakesScreenshot)driver).GetScreenshot();
-            pic.SaveAsFile("pic1.png");
-            */
 
 
             Console.WriteLine(driver.PageSource);
@@ -172,61 +121,7 @@ namespace DateChanger
 
 
 
-                //// file upload.
-                //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                //    driver.FindElement(By.CssSelector(".upload-button")).Click();
-                //    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                //    if (driver.FindElements(By.XPath("//*[@id='select-overlay-target']")).Count > 0)
-                //    {
-                //        IWebElement choosefilebutton = driver.FindElement(By.XPath("//*[@id='select-overlay-target']"));
-                //        Thread.Sleep(2000);
-                //        choosefilebutton.Click();
-                //        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                //        Thread.Sleep(3000);
-                //        string filename = exactpath + @"\keywords\keywords.csv";
-                //        SendKeys.SendWait(filename);
-                //        SendKeys.SendWait(@"{Enter}");
-                //    }
-
-                //    Console.WriteLine(driver.PageSource);
-
-                //    driver.FindElement(By.CssSelector(".save-button")).Click();
-
-                //    Console.WriteLine(driver.PageSource);
-                //    try
-                //    {
-                //        driver.FindElement(By.CssSelector(".save-button")).Click();
-                //    }
-                //    catch (Exception e1)
-                //    { }
-
-                //    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
-
-                //    driver.FindElement(By.XPath("//div/skinny-nav-item[5]/a")).Click();
-                //    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
-                //    driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)")).Click();
-                //    Console.WriteLine(driver.PageSource);
-
-
-                    //// Location Selection.
-                    //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-                    //driver.FindElement(By.CssSelector(".location-button")).Click();
-                    //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                    //if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
-                    //{
-                    //    //driver.FindElement(By.CssSelector("th.remove > material-icon:nth-child(1)")).Click();
-                    //    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                    //    driver.FindElement(By.CssSelector("label.input-container")).Click();
-                    //    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                    //    driver.FindElement(By.CssSelector("label.input-container")).SendKeys(country);
-                    //    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                    //    driver.FindElement(By.CssSelector("location-data-suggestion-entry:nth-child(1)")).Click();
-                    //    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(25);
-                    //    //if (driver.FindElements(By.CssSelector(".highlighted.is-disabled")).Count > 0)
-                    //    //    driver.FindElement(By.CssSelector(".save-cancel > material-button:nth-child(2)")).Click();
-                    //    //else
-                    //    driver.FindElement(By.CssSelector(".highlighted")).Click();
-                    //}
+             
 
                     //Date Selection
                     driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
@@ -261,7 +156,7 @@ namespace DateChanger
 
                     try
                     {
-                        // 48 months
+                        
                         ProcessResultsKPOLD_48(market, kws, country);
                     }
                     catch (Exception ex)
@@ -318,15 +213,6 @@ namespace DateChanger
                 File.Delete(fName);
             }
 
-            //// delete from keywords folder
-            //fName = exactpath + @"\keywords";
-            //dinfo2 = new DirectoryInfo(fName);
-            //Files2 = dinfo2.GetFiles("*.csv");
-            //if (Files2.Count() > 0)
-            //{
-            //    fName = Files2[0].FullName;
-            //    File.Delete(fName);
-            //}
         }
 
         private static void WriteToCsv(string kws)
@@ -354,17 +240,7 @@ namespace DateChanger
             }
             dt.Dispose();
 
-            //// Get Transaction Month from Database.
-            //dt = new DataTable();
-            //qry = "Select date from EmptyValuesMonth";
-            //using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
-            //{
-            //    da.Fill(dt);
-            //}
-            //if (dt.Rows.Count > 0)
-            //{
-            //    tMonth = Convert.ToDateTime(dt.Rows[0][0]);
-            //}
+         
         }
         
         static void ProcessResultsKPOLD_48(string market, string kw, string country)
@@ -430,18 +306,7 @@ namespace DateChanger
 
         }
 
-        static DataTable GetKeywords()
-        {
-            DataTable dt = new DataTable();
-            string strQry = "GetKeywords_Old_4"; // + id;
-
-            using (SqlDataAdapter da = new SqlDataAdapter(strQry, ReadConnection()))
-            {
-                da.Fill(dt);
-            }
-            return dt;
-        }
-
+       
         static ArrayList GetCsvValues_48(string fName)
         {
             string[] values = { "" };
