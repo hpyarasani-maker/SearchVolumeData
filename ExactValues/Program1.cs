@@ -12,6 +12,7 @@ using System.Threading;
 using System.Collections;
 using System.Windows.Forms;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 
 namespace ExactValues
 {
