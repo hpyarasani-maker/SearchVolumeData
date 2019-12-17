@@ -258,7 +258,7 @@ namespace CloseVariants
         static void GetEmailID()
         {
             DataTable dt = new DataTable();
-            string qry = "Select id, mailid, password from closeVariantMailIds Where id=10";
+            string qry = "Select id, mailid, password from closeVariantMailIds Where id=9";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -578,7 +578,7 @@ namespace CloseVariants
 
         private static void DisplayTimeEvent(Object o)
         {
-            appTimeOut = true;
+            //appTimeOut = true;
         }
     }
 }

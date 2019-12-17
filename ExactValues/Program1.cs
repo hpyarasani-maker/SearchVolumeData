@@ -11,20 +11,24 @@ using System.IO;
 using System.Threading;
 using System.Collections;
 using System.Windows.Forms;
+using OpenQA.Selenium.Support.UI;
 
 namespace ExactValues
 {
-    class Program
+    class Program1
     {
+        
         static string email = "";
         static string password = "";  
         static int id = 0;
         static int x = 0;
         static string exactpath;
         static bool appTimeOut = false;
-
+       
         static int Main(string[] args)
         {
+            //Console.WriteLine("Enter Id");
+            //int id = int.Parse(Console.ReadLine());
             GetEmailID();
             exactpath = @"C:\inetpub\wwwroot\exactvalues\" + email.Split('@')[0];
 
@@ -41,7 +45,7 @@ namespace ExactValues
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
 
             IWebDriver driver = new ChromeDriver(@".\ChromeDriver", chromeOptions);
-
+            WebDriverWait Wait = new WebDriverWait(driver, new TimeSpan(0, 0, 50));
             driver.Manage().Window.Size = size;
 
             //Goes to login page
@@ -49,67 +53,86 @@ namespace ExactValues
             driver.Navigate().GoToUrl(url);
             try
             {
-                driver.FindElement(By.XPath("//*[@id='identifierId']")).SendKeys(email);
+                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='identifierId']")));
+                
+                element.SendKeys(email);
             }
             catch
             {
-                driver.FindElement(By.XPath("//*[@id='Email']")).SendKeys(email);
+                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='Email']")));
+              
+                element.SendKeys(email);
             }
             try
             {
-                driver.FindElement(By.XPath("//*[@id='identifierNext']")).Click();
+                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='identifierNext']")));
+               
+                element.Click();
             }
             catch
             {
-                driver.FindElement(By.XPath("//*[@id='next']")).Click();
+                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='next']")));
+                
+                element.Click();
             }
-            Console.WriteLine(driver.PageSource);
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            
             try
             {
-                driver.FindElement(By.XPath("//input[@name='password']")).SendKeys(password);
+                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@name='password']")));
+              
+                element.SendKeys(password);
             }
             catch
             {
-                driver.FindElement(By.XPath("//input[@name='Passwd']")).SendKeys(password);
+                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@name='Passwd']")));
+               
+                element.SendKeys(password);
             }
             try
             {
-                driver.FindElement(By.XPath("//*[@id='passwordNext']")).Click();
+                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='passwordNext']")));
+                
+                element.Click();
             }
             catch
             {
                 try
                 {
-                    driver.FindElement(By.CssSelector("#passwordNext")).Click();
+                    IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("#passwordNext")));
+                    
+                    element.Click();
                 }
                 catch
                 {
-                    driver.FindElement(By.CssSelector("#signIn")).Click();
+                    IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("#signIn")));
+                    
+                    element.Click();
                 }
             }
             Console.WriteLine(driver.PageSource);
             try
             {
                 //choose an account after login wait time 10 seconds
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                //driver.FindElement(By.CssSelector("div.HWIeKd")).Click();
-                driver.FindElement(By.CssSelector("div.d2laFc")).Click();
+                
+                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.d2laFc")));
+                element.Click();
+               
             }
             catch
             {
                 try
                 {
-                    driver.FindElement(By.CssSelector("#choose-account-0")).Click();
+                    IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("#choose-account-0")));
+                    element.Click();
+                    
                 }
                 catch { }
             }
-            
-            //Requests API for the keywords to download every 10 seconds. Checks until keywords are available in the API.
+
             while (true)
             {
                 if (appTimeOut)
-                    break;               
+                    break;
 
                 ArrayList alKeywords = new ArrayList();
                 try
@@ -118,7 +141,7 @@ namespace ExactValues
                     alKeywords = GetKeywordsFromAPI();
                     if (alKeywords.Count <= 0)
                     {
-                       //it will try again keywords are not downloaded and wait for 10 seconds to download again
+                        //it will try again keywords are not downloaded and wait for 10 seconds to download again
                         Thread.Sleep(10000);
                         continue;
                     }
@@ -140,29 +163,35 @@ namespace ExactValues
                     try
                     {
                         //method deletes previous downloaded csv files
-                        DeleteFile(); 
-
+                        DeleteFile();
+                        WebDriverWait tensecondswait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
                         WriteToCsv(kws);
                         try
                         {
-                            driver.FindElement(By.CssSelector("div.WBW9sf")).Click();
+
+                            IWebElement element = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.WBW9sf")));
+                            element.Click();
+                            
                         }
                         catch { }
                         try
                         {
+
+                            IWebElement element = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".particle-table-header > header-tools-cell:nth-child(1) > div:nth-child(1) > mat-checkbox:nth-child(1)")));
+                            element.Click();
                             //if any plans are stored in draft it will remove the list in first page
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                            driver.FindElement(By.CssSelector(".particle-table-header > header-tools-cell:nth-child(1) > div:nth-child(1) > mat-checkbox:nth-child(1)")).Click();
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
-                            IWebElement removeplan = driver.FindElement(By.CssSelector("div.element:nth-child(5) > element:nth-child(1) > toolbelt-material-menu:nth-child(2) > material-menu:nth-child(1)"));
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                            
+                            IWebElement removeplan = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.element:nth-child(5) > element:nth-child(1) > toolbelt-material-menu:nth-child(2) > material-menu:nth-child(1)")));
+                            
                             if (removeplan.Text.Contains("Remove plan"))
                                 removeplan.Click();
-                            driver.FindElement(By.CssSelector(".is-focused")).Click();
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                            IWebElement focus = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".is-focused")));
+                            focus.Click();
+                            
                             try
                             {
-                                driver.FindElement(By.CssSelector("div.WBW9sf")).Click();
+                                IWebElement accountchooser = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.WBW9sf")));
+                                accountchooser.Click();
                             }
                             catch { }
                         }
@@ -170,33 +199,46 @@ namespace ExactValues
                         {
                             try
                             {
-                                IWebElement removeplan = driver.FindElement(By.CssSelector("div.element:nth-child(5) > element:nth-child(1) > toolbelt-material-menu:nth-child(2) > material-menu:nth-child(1)"));
+                                IWebElement removeplan = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.element:nth-child(5) > element:nth-child(1) > toolbelt-material-menu:nth-child(2) > material-menu:nth-child(1)")));
+                                
                                 if (removeplan.Text.Contains("Remove plan"))
                                     removeplan.Click();
-                                driver.FindElement(By.CssSelector(".is-focused")).Click();
-                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                IWebElement focus = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".is-focused")));
+                                focus.Click();
                             }
-                            catch {}
+                            catch { }
                         }
                         try
                         {
-                            driver.FindElement(By.CssSelector("div.WBW9sf")).Click();
+                            IWebElement accountchooser = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.WBW9sf")));
+                            accountchooser.Click();
                         }
                         catch { }
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                        driver.FindElement(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")).Click();
-                        Console.WriteLine(driver.PageSource);
-                        
-                        //downloaded keywords file uploading.
-                        skip:
-                        {
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                            driver.FindElement(By.CssSelector(".upload-button")).Click();
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
+                        IWebElement forecast = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")));
+                        forecast.Click();
+                        Console.WriteLine(driver.PageSource);
+
+                    //downloaded keywords file uploading.
+                    skip:
+                        {
+                            
+                            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
+                            try
+                            {
+                                WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
+                                Console.WriteLine(driver.PageSource);
+                                IWebElement upload = minwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".upload-button")));
+                                upload.Click();
+                                
+                            }
+                            catch
+                            {
+                                driver.FindElement(By.CssSelector(".upload-button")).Click();
+                            }
                             if (driver.FindElements(By.XPath("//*[@id='select-overlay-target']")).Count > 0)
                             {
-                                IWebElement choosefilebutton = driver.FindElement(By.XPath("//*[@id='select-overlay-target']"));
+                                IWebElement choosefilebutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='select-overlay-target']")));
                                 Thread.Sleep(2000);
                                 choosefilebutton.Click();
                                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -205,59 +247,62 @@ namespace ExactValues
                                 SendKeys.SendWait(filename);
                                 SendKeys.SendWait(@"{Enter}");
 
+
                             }
                         }
 
                         Console.WriteLine(driver.PageSource);
 
-                        driver.FindElement(By.CssSelector(".save-button")).Click();
+                        IWebElement save = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
+                        save.Click();
 
-                        Console.WriteLine(driver.PageSource);
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
                         if (driver.FindElements(By.CssSelector(".save-button.is-disabled")).Count > 0)
                         {
-                            driver.FindElement(By.CssSelector(".cancel-button")).Click();
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
+                            IWebElement cancel = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".cancel-button")));
+                            cancel.Click();
                             SendKeys.SendWait(@"{Esc}");
                             //downloaded keywords file is missing then it will try for one more..
                             goto skip;
                         }
                         try
                         {
-                            driver.FindElement(By.CssSelector(".save-button")).Click();
+                            WebDriverWait buttonwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
+                            IWebElement savebutton = buttonwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
+                            savebutton.Click();
                         }
                         catch
                         { }
-
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
-
-                        driver.FindElement(By.XPath("//div/skinny-nav-item[5]/a")).Click();
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
-                        driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)")).Click();
-                        Console.WriteLine(driver.PageSource);
+                        IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[5]/a")));
+                        itemelement.Click();
+                        
+                        IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
+                        tab.Click();
 
                         // Location Selection. 
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-                        driver.FindElement(By.CssSelector(".location-button")).Click();
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                        
+                        IWebElement location = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
+                        location.Click();
+                        
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
                         {
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            
                             try
                             {
-                                driver.FindElement(By.CssSelector("label.input-container")).Click();
-                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                                driver.FindElement(By.CssSelector("label.input-container")).SendKeys(country);
+                                WebDriverWait inputwait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
+                                IWebElement labelinput = inputwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("label.input-container:nth-child(1)")));
+                                labelinput.Click();
+                                
+                                labelinput.SendKeys(country);
                             }
                             catch
                             {
                                 //Also checks locations which throws exceptions 
                                 try
                                 {
-                                    driver.FindElement(By.CssSelector("label.input-container:nth-child(1)")).Click();
-                                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                                    driver.FindElement(By.CssSelector("label.input-container:nth-child(1)")).SendKeys(country);
+                                    IWebElement labelinput = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("label.input-container")));
+                                    
+                                    labelinput.SendKeys(country);
+
                                 }
                                 catch
                                 {
@@ -266,26 +311,27 @@ namespace ExactValues
                                 }
                             }
 
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(40);
-                            try
-                            {
-                                Console.WriteLine(driver.PageSource);
-                                driver.FindElement(By.CssSelector("location-data-suggestion-entry:nth-child(1)")).Click();
-                            }
-                            catch
-                            {
-                                
-                                Console.WriteLine("==Problem In Country Selection(Target Selection)==");
-                                throw new Exception();
-                            }
-                            // 
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(40);
                             
                             try
                             {
+                                //Console.WriteLine(driver.PageSource);
+                                IWebElement locationsuggestion = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("location-data-suggestion-entry:nth-child(1)")));
+                                locationsuggestion.Click();
+                            }
+                            catch
+                            {
 
-                                driver.FindElement(By.CssSelector(".highlighted")).Click();
-                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(25);
+                                Console.WriteLine("==Problem In Country Selection(Target Selection)==");
+                                throw new Exception();
+                            }
+                            
+
+                            try
+                            {
+
+                                IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
+                                highlight.Click();
+                                
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
                                 //If any country miss match then signout and exit app..
                                 if (element.Text.Contains("All locations") || element.Text.ToLower() != country.ToLower())
@@ -298,12 +344,12 @@ namespace ExactValues
                                 }
                                 else
                                     Console.WriteLine("=====Country Selected Successfully=====");
-                             
+
                             }
                             catch
                             {
                                 //If any error occured in country selection then signout and exit..
-                                Console.WriteLine("==Problem In Country Selection==" );
+                                Console.WriteLine("==Problem In Country Selection==");
                                 Signout(driver);
                                 driver.Close();
                                 driver.Dispose();
@@ -318,27 +364,28 @@ namespace ExactValues
 
 
                         //Date Selection
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);                         
                         
+
                         try
                         {
                             try
                             {
-                                driver.FindElement(By.CssSelector(".dropdown")).Click();
+                                IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown")));
+                                dropdown.Click();
                             }
                             catch { }
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
-                            IWebElement e = driver.FindElement(By.CssSelector("div.range-button:nth-child(5)"));
+                            
+                            IWebElement e = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.range-button:nth-child(5)")));
                             if (e.Text.Contains("All available"))
                             {
                                 e.Click();
-                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+                                
                             }
-                            IWebElement month = driver.FindElement(By.CssSelector(".date-popup-button"));
+                            IWebElement month = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".date-popup-button")));
                             // if the date is selected other then 48 months then signout and exit
                             if (month.Text.Contains("All available") != true)
                             {
-                                Thread.Sleep(10000);
+                                
                                 Signout(driver);
                                 driver.Close();
                                 driver.Dispose();
@@ -349,30 +396,31 @@ namespace ExactValues
                         {
                             //if any error occurs in date selection then signout and exit
                             Console.WriteLine("Error In Date Selection");
-                            Thread.Sleep(10000);
+                            
                             Signout(driver);
                             driver.Close();
                             driver.Dispose();
                             return 0;
-                        }                       
+                        }
 
-                        //Download CSV File
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                        historical:
+                    //Download CSV File
+                    
+                    historical:
                         {
                             try
                             {
                                 try
                                 {
-                                    driver.FindElement(By.CssSelector(".download")).Click();
+                                    IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
+                                    download.Click();
                                 }
                                 catch { }
-                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                                IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)"));
+                                
+                                IWebElement ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group > material-select-item:nth-child(3)")));
                                 if (ele.Text.Contains("Plan historical metrics (.csv)"))
                                 {
                                     ele.Click();
-                                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                    
                                 }
                                 else
                                     goto historical;
@@ -394,7 +442,7 @@ namespace ExactValues
                             //in case account returns ranges or APP timeout then signout and exit 
                             if (ex.Message.StartsWith("Ranges started") || appTimeOut)
                             {
-                                Thread.Sleep(10000);
+                                // Thread.Sleep(10000);
                                 Signout(driver);
                                 driver.Close();
                                 driver.Dispose();
@@ -402,8 +450,9 @@ namespace ExactValues
                             }
                         }
                         //goes to first page for next batch keywords
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-                        driver.FindElement(By.CssSelector("material-button.back-button")).Click();
+                        
+                        IWebElement backbutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
+                        backbutton.Click();
 
 
                     }
@@ -416,7 +465,8 @@ namespace ExactValues
                             driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home?ocid=325109181&euid=331594490&__u=5223172010&uscid=325109181&__c=2039899669&authuser=0&enableAllBrowsers=1");
                             try
                             {
-                                driver.FindElement(By.CssSelector("div.WBW9sf")).Click();
+                                IWebElement chooseaccount = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.WBW9sf")));
+                                chooseaccount.Click();
                             }
                             catch { }
                         }
@@ -438,16 +488,16 @@ namespace ExactValues
             return 0;
         }
 
-  
+
         static void Signout(IWebDriver driver)
         {
             try
             {
                 driver.FindElement(By.CssSelector(".trigger")).Click();
-                Thread.Sleep(2000);
+                // Thread.Sleep(2000);
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
                 driver.FindElement(By.CssSelector(".sign-out")).Click();
-                Thread.Sleep(5000);
+                //Thread.Sleep(5000);
             }
             catch { }
         }
@@ -487,7 +537,7 @@ namespace ExactValues
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=6";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=10";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -498,14 +548,16 @@ namespace ExactValues
                 email = dt.Rows[0][1].ToString();
                 password = dt.Rows[0][2].ToString();
             }
-            dt.Dispose();          
+            dt.Dispose();
         }
 
-        
+
         static void ProcessResultsKPOLD_48(string market, string kw, string country)
         {
             string fName = exactpath + @"\downloads";
+            
             DirectoryInfo dinfo2 = new DirectoryInfo(fName);
+            
             FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
             if (Files2.Count() > 0)
                 fName = Files2[0].FullName;
@@ -514,14 +566,23 @@ namespace ExactValues
 
             try
             {
+                try
+                {
+                    File.WriteAllText(fName, File.ReadAllText(fName), Encoding.UTF8);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error while keywords file writing");
+                    throw new Exception(e.Message);
+                }
                 ArrayList lst = GetCsvValues_48(fName);
                 ArrayList monthsList = getValuesList(lst);
-                string[] hdr = monthsList[0] as string[];
+                string[] hdr = monthsList[0] as string[];   
                 string[] values = monthsList[1] as string[];
 
                 string[] kwds = kw.Split(',');
 
-                if (values[3] == ("N/A")) 
+                if (values[3] == ("N/A"))
                 {
                     Console.WriteLine("========================================================");
                     Console.WriteLine("------------------ Ranges Started ----------------------");
@@ -555,7 +616,7 @@ namespace ExactValues
                             isCloseVariant = false;
                             string kwd = WebUtility.HtmlDecode(s.Trim());
                             string[] values1 = GetMonthValues(kwd, monthsList);
-                            
+
                             if (values1 == null && monthsList[0] != null)
                             {
                                 isCloseVariant = true;
@@ -566,7 +627,7 @@ namespace ExactValues
 
                                 try
                                 {
-                                    
+
                                     qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
                                     qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
                                     SendResultsToDB_48(qry);
@@ -643,8 +704,8 @@ namespace ExactValues
                                     writer.WriteEndElement();
                                 }
                                 writer.WriteEndElement();
-                            } 
-                             //storing exact values
+                            }
+                            //storing exact values
                             else if (values1[0].ToLower() == kwd.ToLower())
                             {
                                 qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
@@ -1151,7 +1212,7 @@ namespace ExactValues
         }
 
         static string ReadConnection()
-        {            
+        {
             XmlDocument xml = new XmlDocument();
             string fileName = @"C:\Inetpub\wwwroot\KPServerIP.xml";
             xml.Load(fileName);
@@ -1167,5 +1228,6 @@ namespace ExactValues
             //Time to quit app..
             //appTimeOut = true;            
         }
+           
     }
 }
