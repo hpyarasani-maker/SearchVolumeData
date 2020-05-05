@@ -420,8 +420,11 @@ namespace ExactValues
                                 IWebElement ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group > material-select-item:nth-child(3)")));
                                 if (ele.Text.Contains("Plan historical metrics (.csv)"))
                                 {
+                                    ele.Click();                                    
+                                }
+                                else if ((ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group:nth-child(2) > material-select-item:nth-child(2)")))).Text.Contains(".csv"))  //05-05-2020
+                                {
                                     ele.Click();
-                                    
                                 }
                                 else
                                     goto historical;
