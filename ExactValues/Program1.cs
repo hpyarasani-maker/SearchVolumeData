@@ -422,10 +422,11 @@ namespace ExactValues
                                 {
                                     ele.Click();                                    
                                 }
-                                else if ((ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group:nth-child(2) > material-select-item:nth-child(2)")))).Text.Contains(".csv"))  //05-05-2020
+                                //15-05-2020
+                                else if ((ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group:nth-child(2) > material-select-item:nth-child(2)")))).Text.Contains(".csv"))
                                 {
                                     ele.Click();
-                                }
+                                }   //end 15-05-2020
                                 else
                                     goto historical;
                             }
