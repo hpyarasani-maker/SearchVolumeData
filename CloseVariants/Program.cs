@@ -8,6 +8,7 @@ using System.Xml;
 using System.Net;
 using System.IO;
 using System.Threading;
+using System.Collections;
 
 namespace CloseVariants
 {
@@ -19,7 +20,7 @@ namespace CloseVariants
         static DateTime tMonth;
         static int id = 0;
         static bool appTimeOut = false;
-       
+
         static int Main(string[] args)
         {
             //string path = @"C:\inetpub\wwwroot\citibank_au.xml";
@@ -30,21 +31,24 @@ namespace CloseVariants
             GetEmailID();
 
             string title = "Thread - " + id + " - " + email;
-
-            Console.Title = title + " - With Timer 25 minutes";
-            Timer t = new Timer(DisplayTimeEvent, null, (25 * 60000), 1000);
-
+            string exactpath = @"C:\inetpub\wwwroot\closevariants\" + email.Split('@')[0];
+            //Console.Title = title + " - With Timer 25 minutes";
+            //Timer t = new Timer(DisplayTimeEvent, null, (25 * 60000), 1000);
+            Console.Title = title;
             System.Drawing.Size size = new System.Drawing.Size(1280, 1024);
-            ChromeOptions options = new ChromeOptions();
-            options.AddArgument("--disable-spelling-auto-correct");
-            options.AddArgument("--disable-cache");
-            IWebDriver driver = new ChromeDriver(@".\ChromeDriver", options);
+            // ChromeOptions chromeOptions = new ChromeOptions();
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.AddUserProfilePreference("download.default_directory", exactpath + @"\downloads");
+            chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+            chromeOptions.AddArgument("--disable-spelling-auto-correct");
+            chromeOptions.AddArgument("--disable-cache");
+            IWebDriver driver = new ChromeDriver(@".\ChromeDriver", chromeOptions);
             driver.Manage().Window.Size = size;
 
             //driver.Url = "https://ads.google.com/aw/keywordplanner/home?ocid=193200943&__c=4281215607&authuser=0&__u=9516641019&enableAllBrowsers=1";
             driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home?ocid=193200943&__c=4281215607&authuser=0&__u=9516641019&enableAllBrowsers=1");
-                   
-            ////////////////////
+
+
 
             try
             {
@@ -109,141 +113,217 @@ namespace CloseVariants
             {
                 if (appTimeOut)
                     break;
-
+                string[] arr = new string[] { "videos", "gifts" };
                 DataTable dt = GetKeywords();
                 if (dt == null || dt.Rows.Count <= 0)
-                    break;
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    vWord = "";
-                    string market = row[0].ToString();
-                    string kws = row[1].ToString();
-                    string country = row[2].ToString();
-                    try
+                    //break;
+                    //foreach()
+                    foreach (DataRow row in dt.Rows)
                     {
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-                        driver.FindElement(By.CssSelector("div.forecasts-content")).Click();
-                        Console.WriteLine(driver.PageSource);
-                        driver.FindElement(By.CssSelector("material-input.text-input-component")).SendKeys(WebUtility.HtmlDecode(kws));
-                        Console.WriteLine(driver.PageSource);
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                        driver.FindElement(By.CssSelector("material-button.get-results-button")).Click();
-                        Console.WriteLine(driver.PageSource);
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(45);
+                        vWord = "";
+                        string market = row[0].ToString();
+                        string kws = row[1].ToString();
+                        string country = row[2].ToString();
+                        try
+                        {
+                            DeleteFile(exactpath);
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+                            driver.FindElement(By.CssSelector("div.forecasts-content")).Click();
+                            Console.WriteLine(driver.PageSource);
+                            driver.FindElement(By.CssSelector("material-input.text-input-component")).SendKeys(WebUtility.HtmlDecode(kws));
+                            Console.WriteLine(driver.PageSource);
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            driver.FindElement(By.CssSelector("material-button.get-results-button")).Click();
+                            Console.WriteLine(driver.PageSource);
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(45);
 
-                        Console.WriteLine(driver.PageSource);
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-                        Console.WriteLine(driver.PageSource);
-                        
+                            Console.WriteLine(driver.PageSource);
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                            Console.WriteLine(driver.PageSource);
+
                         Historical:
-                        {
-                            try
                             {
-                                IWebElement tab = driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)"));
-                                if (tab.Text == "HISTORICAL METRICS")
+                                try
                                 {
-                                    tab.Click();
+                                    IWebElement tab = driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)"));
+                                    if (tab.Text == "HISTORICAL METRICS")
+                                    {
+                                        tab.Click();
 
+                                    }
+                                    else
+                                        goto Historical;
                                 }
-                                else
+                                catch (Exception e)
+                                {
                                     goto Historical;
-                            }
-                            catch (Exception e)
-                            {
-                                goto Historical;
 
-                            }
-
-                        }
-                        
-                        // Location Selection.
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-                        driver.FindElement(By.CssSelector(".location-button")).Click();
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                        if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
-                        {
-                            try
-                            {
-                                driver.FindElement(By.CssSelector("th.remove > material-icon:nth-child(1)")).Click();
-                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                                try//31-10-2019
-                                {
-                                    driver.FindElement(By.CssSelector("label.input-container")).Click();
-                                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                                    driver.FindElement(By.CssSelector("label.input-container")).SendKeys(country);
                                 }
-                                catch
+
+                            }
+
+                            // Location Selection.
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                            driver.FindElement(By.CssSelector(".location-button")).Click();
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
+                            {
+                                try
                                 {
+                                    driver.FindElement(By.CssSelector("th.remove > material-icon:nth-child(1)")).Click();
+                                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
                                     try
                                     {
-                                        driver.FindElement(By.CssSelector("label.input-container:nth-child(1)")).Click();
+                                        driver.FindElement(By.CssSelector("label.input-container")).Click();
                                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                                        driver.FindElement(By.CssSelector("label.input-container:nth-child(1)")).SendKeys(country);
+                                        driver.FindElement(By.CssSelector("label.input-container")).SendKeys(country);
                                     }
                                     catch
                                     {
-                                        Console.WriteLine("=========Problem In Country Selection(Location Entry)==========");
+                                        //Also checks locations which throws exceptions 
+                                        try
+                                        {
+                                            driver.FindElement(By.CssSelector("label.input-container:nth-child(1)")).Click();
+                                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                            driver.FindElement(By.CssSelector("label.input-container:nth-child(1)")).SendKeys(country);
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine("=========Problem In Country Selection(Location Entry)==========");
+                                            throw new Exception();
+                                        }
                                     }
                                 }
+                                catch { }
+
+                                try
+                                {
+                                    driver.FindElement(By.CssSelector("location-data-suggestion-entry:nth-child(1)")).Click();
+                                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(25);
+                                    try
+                                    {
+                                        driver.FindElement(By.CssSelector(".highlighted")).Click();
+                                        driver.FindElement(By.CssSelector(".save-cancel > material-button:nth-child(2)")).Click();
+                                    }
+                                    catch { }
+                                }
+                                catch { }
                             }
-                            catch { }
 
                             try
                             {
-                                driver.FindElement(By.CssSelector("location-data-suggestion-entry:nth-child(1)")).Click();
-                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(25);
+                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                                //vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
+                                //Console.WriteLine(vWord);
+                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            historical:
+                                {
+                                    try
+                                    {
+                                        try
+                                        {
+                                            driver.FindElement(By.CssSelector(".download")).Click();
+                                        }
+                                        catch { }
+                                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                        IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)"));
+                                        if (ele.Text.Contains("Plan historical metrics (.csv)"))
+                                        {
+                                            ele.Click();
+                                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                        }
+                                        else
+                                            goto historical;
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                                Thread.Sleep(10000);
+                                //UnComment below code for download csv file
+                                /*02-07-2020  downloading csv file
+                                string fName = exactpath + @"\downloads";
+                                DirectoryInfo dinfo2 = new DirectoryInfo(fName);
+                                FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
+                                if (Files2.Length > 0)
+                                    fName = Files2[0].FullName;
+                                else
+                                    throw new Exception("File not downloaded.");
                                 try
                                 {
-                                    driver.FindElement(By.CssSelector(".highlighted")).Click();
-                                    driver.FindElement(By.CssSelector(".save-cancel > material-button:nth-child(2)")).Click();
+                                    File.WriteAllText(fName, File.ReadAllText(fName), Encoding.UTF8);
                                 }
-                                catch {}
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine("Error while keywords file writing");
+                                    throw new Exception(e.Message);
+                                }
+                                //15-05-2020 End of Downloading csv file
+                                ArrayList lst = GetCsvValues_48(fName);//15-05-2020 
+                                ArrayList monthsList = getValuesList(lst);//15-05-2020 getting values from downloaded csv file
+                                string[] keys = new string[2];//15-05-2020 
+                                try    //15-05-2020 getting closevariant from arraylist object
+                                {
+                                    foreach (string[] k in monthsList)
+                                    {
+                                        keys[0] = k[0];
+                                        keys[1] = k[1];
+                                        break;
+                                    }
+                                }
+                                catch
+                                {
+                                    continue;
+                                }
+                                vWord = keys[1].ToString(); 
+
+                                if (vWord == null)
+                                    continue;
+                                else
+                                {
+                                    Console.WriteLine(vWord);
+                                    
+                                }02-07-2020 */
+                                ProcessResultsKPOLD_48(market, kws);
+                                // DeleteFile(exactpath);
+
+
+                            }
+                            catch
+                            {
+
+                                vWord = "NoData";
+                                ProcessResultsKPOLD_48(market, kws);
+                                if (appTimeOut)
+                                {
+                                    driver.Close();
+                                    driver.Dispose();
+                                    return 0;
+                                }
+                            }
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            try
+                            {
+                                driver.FindElement(By.CssSelector("material-button.back-button")).Click();
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        catch
+                        {
+                            driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home?ocid=193200943&__c=4281215607&authuser=0&__u=9516641019&enableAllBrowsers=1");
+                            try
+                            {
+                                driver.FindElement(By.CssSelector("div.WBW9sf")).Click();
                             }
                             catch { }
-                        }
 
-                        try
-                        {
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-                            vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
-                            Console.WriteLine(vWord);
-                            ProcessResultsKPOLD_48(market, kws);
-                        }
-                        catch
-                        {
-
-                            vWord = "NoData";
-                            ProcessResultsKPOLD_48(market, kws);
-                            if (appTimeOut)
-                            {
-                                driver.Close();
-                                driver.Dispose();
-                                return 0;
-                            }
-                        }
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                        try
-                        {
-                            driver.FindElement(By.CssSelector("material-button.back-button")).Click();
-                        }
-                        catch
-                        {
-
+                            driver.Navigate().Refresh();
                         }
                     }
-                    catch 
-                    {
-                        driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home?ocid=193200943&__c=4281215607&authuser=0&__u=9516641019&enableAllBrowsers=1");
-                        try
-                        {
-                            driver.FindElement(By.CssSelector("div.WBW9sf")).Click();
-                        }
-                        catch { }
-                        
-                        driver.Navigate().Refresh();
-                    }
-                }
             }
 
             driver.Close();
@@ -254,11 +334,96 @@ namespace CloseVariants
 
             return 0;
         }
+        static void DeleteFile(string exactpath)
+        {
 
+            // delete from downloads folder
+            string fName = exactpath + @"\downloads";
+            DirectoryInfo dinfo2 = new DirectoryInfo(fName);
+            FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
+            if (Files2.Length > 0)
+            {
+                foreach (var file in Files2)
+                {
+                    fName = file.FullName;
+                    File.Delete(fName);
+                }
+            }
+            //try
+            //{
+            //    // delete from keywords folder
+            //    fName = exactpath + @"\keywords";
+            //    dinfo2 = new DirectoryInfo(fName);
+            //    Files2 = dinfo2.GetFiles("*.csv");
+            //    if (Files2.Length > 0)
+            //    {
+            //        fName = Files2[0].FullName;
+            //        File.Delete(fName);
+            //    }
+            //}
+            //catch
+            //{
+
+            //}
+        }
+        static ArrayList getValuesList(ArrayList arList)
+        {
+            ArrayList lst = new ArrayList();
+            string[] values = new string[2];
+            int i = 0; int j = 0;
+            try
+            {
+                int r = 0;
+                foreach (string[] val in arList)
+                {
+
+                    for (i = 0; i == 0; i++)
+                    {
+                        values[j] = val[0].ToString();
+                    }
+                    j++;
+                    lst.Add(values);
+                    r++;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return lst;
+        }
+
+        static ArrayList GetCsvValues_48(string fName)
+        {
+            string[] values = { "" };
+            ArrayList arList = new ArrayList();
+            try
+            {
+                StreamReader sr = new StreamReader(fName);
+                int r = 0;
+                while (!sr.EndOfStream)
+                {
+                    r++;
+                    string ln = sr.ReadLine();
+                    //if (r == 1) date = ln.Split('\t')[0];
+                    if (r <= 5 && r != 3) continue;
+                    values = ln.Split('\t');
+                    arList.Add(values);
+                }
+                sr.Close();
+                return arList;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+
+                return null;
+            }
+        }
         static void GetEmailID()
         {
             DataTable dt = new DataTable();
-            string qry = "Select id, mailid, password from closeVariantMailIds Where id=9";
+            string qry = "Select id, mailid, password from closeVariantMailIds Where id=1";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -578,7 +743,7 @@ namespace CloseVariants
 
         private static void DisplayTimeEvent(Object o)
         {
-            //appTimeOut = true;
+            appTimeOut = true;
         }
     }
 }
