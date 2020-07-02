@@ -116,10 +116,9 @@ namespace CloseVariants
                 string[] arr = new string[] { "videos", "gifts" };
                 DataTable dt = GetKeywords();
                 if (dt == null || dt.Rows.Count <= 0)
-                    //break;
-                    //foreach()
-                    foreach (DataRow row in dt.Rows)
-                    {
+                  break;
+                foreach (DataRow row in dt.Rows)
+                {
                         vWord = "";
                         string market = row[0].ToString();
                         string kws = row[1].ToString();
@@ -216,31 +215,36 @@ namespace CloseVariants
                                 //vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
                                 //Console.WriteLine(vWord);
                                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                            historical:
+                        historical:
+                            {
+                                try
                                 {
                                     try
                                     {
-                                        try
-                                        {
-                                            driver.FindElement(By.CssSelector(".download")).Click();
-                                        }
-                                        catch { }
-                                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                                        IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)"));
-                                        if (ele.Text.Contains("Plan historical metrics (.csv)"))
-                                        {
-                                            ele.Click();
-                                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                                        }
-                                        else
-                                            goto historical;
+                                        IWebElement download = driver.FindElement(By.CssSelector(".download")));
+                                        download.Click();
                                     }
-                                    catch
-                                    {
+                                    catch { }
 
+                                    IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)")));
+                                    if (ele.Text.Contains("Plan historical metrics (.csv)"))
+                                    {
+                                        ele.Click();
                                     }
+                                    //15-05-2020
+                                    else if ((ele = driver.FindElement(By.CssSelector(".group:nth-child(2) > material-select-item:nth-child(2)"))).Text.Contains(".csv"))
+                                    {
+                                        ele.Click();
+                                    }   //end 15-05-2020
+                                    else
+                                        goto historical;
                                 }
-                                Thread.Sleep(10000);
+                                catch
+                                {
+
+                                }
+                            }
+                            Thread.Sleep(10000);
                                 //UnComment below code for download csv file
                                 /*02-07-2020  downloading csv file
                                 string fName = exactpath + @"\downloads";
