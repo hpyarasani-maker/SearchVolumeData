@@ -507,6 +507,7 @@ namespace ExactValuesSimilarKeywords
                 //string strQry = "[dbo].[GetSimilarKeywords_6]";
                 //string strQry = "[dbo].[GetSimilarKeywords_7]";
                 //string strQry = "[dbo].[GetSimilarKeywords_8]";
+                //string strQry = "[dbo].[GetSimilarKeywords_8]";
                 using (SqlDataAdapter da = new SqlDataAdapter(strQry, ReadConnection()))
                 {
                     da.Fill(dt);
