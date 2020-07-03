@@ -221,12 +221,12 @@ namespace CloseVariants
                                 {
                                     try
                                     {
-                                        IWebElement download = driver.FindElement(By.CssSelector(".download")));
+                                        IWebElement download = driver.FindElement(By.CssSelector(".download"));
                                         download.Click();
                                     }
                                     catch { }
 
-                                    IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)")));
+                                    IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)"));
                                     if (ele.Text.Contains("Plan historical metrics (.csv)"))
                                     {
                                         ele.Click();
