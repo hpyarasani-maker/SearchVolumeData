@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloseVariants", "CloseVaria
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DateChanger", "DateChanger\DateChanger.csproj", "{7320CF54-0EEA-4E60-8BB9-1D14B347128E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloseVariantsSimilarKeywords", "CloseVariantsSimilarKeywords\CloseVariantsSimilarKeywords.csproj", "{DF721730-9122-4138-8B9F-04B39751E035}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactValuesSimilarKeywords", "ExactValuesSimilarKeywords\ExactValuesSimilarKeywords.csproj", "{7A9A677E-9282-4914-B7AF-BBD0FCEAB6EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{7320CF54-0EEA-4E60-8BB9-1D14B347128E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7320CF54-0EEA-4E60-8BB9-1D14B347128E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7320CF54-0EEA-4E60-8BB9-1D14B347128E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF721730-9122-4138-8B9F-04B39751E035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF721730-9122-4138-8B9F-04B39751E035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF721730-9122-4138-8B9F-04B39751E035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF721730-9122-4138-8B9F-04B39751E035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A9A677E-9282-4914-B7AF-BBD0FCEAB6EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9A677E-9282-4914-B7AF-BBD0FCEAB6EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A9A677E-9282-4914-B7AF-BBD0FCEAB6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9A677E-9282-4914-B7AF-BBD0FCEAB6EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
