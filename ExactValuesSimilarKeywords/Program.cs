@@ -634,7 +634,7 @@ namespace ExactValuesSimilarKeywords
 
                 try
                 {
-                    string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + kw + "'";
+                    string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + kw.Replace("'", "''") + "'";
 
                     long yearValue;
                     int n = 0;
