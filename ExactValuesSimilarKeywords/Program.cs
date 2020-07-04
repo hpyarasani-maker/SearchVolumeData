@@ -498,7 +498,8 @@ namespace ExactValuesSimilarKeywords
             {
                 DataTable dt = new DataTable();
                 //string strQry = "select Market,countryname,Keyword from [48MonthsKeywordsData_Old_SimilarKeywords] where status_old=0";
-                string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
+                string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
+                //string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
                 //string strQry = "[dbo].[GetSimilarKeywords_1]";
                 //string strQry = "[dbo].[GetSimilarKeywords_2]";
                 //string strQry = "[dbo].[GetSimilarKeywords_3]";
@@ -575,7 +576,7 @@ namespace ExactValuesSimilarKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=1";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=2";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
