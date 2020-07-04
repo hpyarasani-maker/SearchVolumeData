@@ -1182,7 +1182,7 @@ namespace ExactValuesSimilarKeywords
                     r++;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
 
