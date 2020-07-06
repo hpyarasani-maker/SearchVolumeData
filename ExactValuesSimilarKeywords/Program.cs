@@ -139,6 +139,7 @@ namespace ExactValuesSimilarKeywords
                 {
                     //method downloads keywords from Pi API
                     alKeywords = GetKeywordsFromDB();
+                    //alKeywords = GetKeywordsManully();//06-07-2020
                     if (alKeywords.Count <= 0)
                     {
                         //it will try again keywords are not downloaded and wait for 10 seconds to download again
@@ -490,6 +491,15 @@ namespace ExactValuesSimilarKeywords
             Console.WriteLine(" DONE ");
 
             return 0;
+        }
+        static ArrayList GetKeywordsManully()
+        {
+            //string kwd = "0 finance laptops";
+            string kwd = "apple mac laptop air";
+            ArrayList alKws = new ArrayList();
+            string kwdList = "gb" + ":" + "United Kingdom" + ":" + kwd;
+            alKws.Add(kwdList);
+            return alKws;
         }
         static ArrayList GetKeywordsFromDB()
         {
@@ -850,7 +860,7 @@ namespace ExactValuesSimilarKeywords
                             {
                                 Console.WriteLine(kwd);
                                 if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
-                                    PostXML(path, kwd);
+                                    PostXML(path, kwd, market);//06-07-2020
 
                                 SendResultsToDB_48(qry);
 
@@ -887,7 +897,7 @@ namespace ExactValuesSimilarKeywords
 
         }
 
-        static void PostXML(string fileName, string kn)
+        static void PostXML(string fileName, string kn, string market)//06-07-2020
         {
             string submitURL = ReadAPI("submit");
 
@@ -949,7 +959,25 @@ namespace ExactValuesSimilarKeywords
                     {
                         message = reader.ReadToEnd();
                     }
-
+                    //06-07-2020
+                    XmlDocument xmlDoc = new XmlDocument();                    
+                    xmlDoc.LoadXml(message);
+                    XmlNodeList nodeList = xmlDoc.DocumentElement.SelectNodes("/search-volume-data");
+                    foreach (XmlNode node in nodeList)
+                    {
+                        XmlNode nd = node.SelectSingleNode(".//code");
+                        if (nd != null)
+                            error = nd.InnerText;
+                        XmlNode nd1 = node.SelectSingleNode(".//message");
+                        if (nd1 != null)
+                            message = nd1.InnerText;
+                        if (error!=null&&message!=null)//changes
+                        {
+                            string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1, errorcode="+error+ ",ErrorMessage='" + message + "' where Market='" + market + "' and Keyword='" + kn.Trim().Replace("'", "''") + "'";
+                            SendResultsToDB_48(qry);
+                        }
+                    }
+                  //06-07-2020
                 }
 
                 throw new Exception(error + "\n" + message);
