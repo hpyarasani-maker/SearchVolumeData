@@ -860,7 +860,7 @@ namespace ExactValuesSimilarKeywords
                             {
                                 Console.WriteLine(kwd);
                                 if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
-                                    PostXML(path, kwd, market);//06-07-2020
+                                    PostXML(path, kwd, market);//06-07-2020 //included market parameter
 
                                 SendResultsToDB_48(qry);
 
@@ -897,7 +897,7 @@ namespace ExactValuesSimilarKeywords
 
         }
 
-        static void PostXML(string fileName, string kn, string market)//06-07-2020
+        static void PostXML(string fileName, string kn, string market)//06-07-2020 included market parameter
         {
             string submitURL = ReadAPI("submit");
 
