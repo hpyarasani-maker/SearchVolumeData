@@ -474,9 +474,8 @@ namespace CloseVariantsSimilarKeywords
                 {
                     comm.Connection = con;
                     con.Open();
-                    comm.CommandType = System.Data.CommandType.StoredProcedure;
-                    //comm.CommandText = "insert into [48MonthsKeywordsData_Old_SimilarKeywords](Market,Keyword,countryname)values(@Market,@Keyword,@Country);";
-                    comm.CommandText = "InsertSimilarKeywords"; //2020-07-12 updated procedure instead of insert query
+                    //comm.CommandType = System.Data.CommandType.StoredProcedure;
+                    comm.CommandText = "insert into [48MonthsKeywordsData_Old_SimilarKeywords](Market,Keyword,countryname)values(@Market,@Keyword,@Country);";
                     comm.CommandTimeout = 0;
                     comm.Parameters.Add(new SqlParameter("@Market", System.Data.SqlDbType.NVarChar, 100)).Value = market;
                     comm.Parameters.Add(new SqlParameter("@Keyword", System.Data.SqlDbType.NVarChar, 255)).Value = kw.Replace("'", "''");
