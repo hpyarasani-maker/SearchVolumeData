@@ -644,8 +644,6 @@ namespace ExactValuesSimilarKeywords
 
                 try
                 {
-                    string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + kw.Replace("'", "''") + "'";
-
                     long yearValue;
                     int n = 0;
                     bool isCloseVariant;
@@ -661,7 +659,8 @@ namespace ExactValuesSimilarKeywords
                                 throw new Exception("TimeOut");
                             }
 
-                           // qry = "";
+                            string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + kw.Replace("'", "''") + "'; ";
+
                             yearValue = 0;
                             isCloseVariant = false;
                             string kwd = WebUtility.HtmlDecode(s.Trim());
@@ -677,7 +676,7 @@ namespace ExactValuesSimilarKeywords
 
                                 try
                                 {
-
+                                    qry = ""; // 13-07-2020  -- no need to update the status for similarkeywords table.
                                     qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
                                     qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
                                     SendResultsToDB_48(qry);
@@ -1036,12 +1035,15 @@ namespace ExactValuesSimilarKeywords
                     con.Open();
 
                     comm.CommandType = System.Data.CommandType.StoredProcedure;
-                    comm.CommandText = "InsertCloseVariantKeywords";
+                    //comm.CommandText = "InsertCloseVariantKeywords";
+                    // 13-07-2020 -- no need to insert the kwd again in this table.
+                    comm.CommandText = "Update closevariant_old set statu_old=0 where market='@Market' and keyword='@Keyword'";
+
                     comm.CommandTimeout = 0;
 
                     comm.Parameters.Add(new SqlParameter("@Market", System.Data.SqlDbType.NVarChar, 100)).Value = market;
                     comm.Parameters.Add(new SqlParameter("@Keyword", System.Data.SqlDbType.NVarChar, 255)).Value = kw.Replace("'", "''");
-                    comm.Parameters.Add(new SqlParameter("@Country", System.Data.SqlDbType.NVarChar, 100)).Value = country;
+                    //comm.Parameters.Add(new SqlParameter("@Country", System.Data.SqlDbType.NVarChar, 100)).Value = country;   // 13-07-2020
                     try
                     {
                         comm.ExecuteNonQuery();
