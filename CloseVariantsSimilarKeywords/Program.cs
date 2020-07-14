@@ -474,8 +474,9 @@ namespace CloseVariantsSimilarKeywords
                 {
                     comm.Connection = con;
                     con.Open();
-                    //comm.CommandType = System.Data.CommandType.StoredProcedure;
-                    comm.CommandText = "insert into [48MonthsKeywordsData_Old_SimilarKeywords](Market,Keyword,countryname)values(@Market,@Keyword,@Country);";
+                    comm.CommandType = System.Data.CommandType.StoredProcedure;
+                    //comm.CommandText = "insert into [48MonthsKeywordsData_Old_SimilarKeywords](Market,Keyword,countryname)values(@Market,@Keyword,@Country);";
+                    comm.CommandText = "InsertSimilarKeywords"; //12-07-2020
                     comm.CommandTimeout = 0;
                     comm.Parameters.Add(new SqlParameter("@Market", System.Data.SqlDbType.NVarChar, 100)).Value = market;
                     comm.Parameters.Add(new SqlParameter("@Keyword", System.Data.SqlDbType.NVarChar, 255)).Value = kw.Replace("'", "''");
@@ -756,8 +757,8 @@ namespace CloseVariantsSimilarKeywords
                         SendResultsToDB_48(qry);
                     }
                 }
-                //06-07-2020
-                //throw new Exception(error + "\n" + message);
+                //06 - 07 - 2020
+                throw new Exception(error + "\n" + message);
 
             }
             catch (Exception ex)
