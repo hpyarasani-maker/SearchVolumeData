@@ -32,8 +32,8 @@ namespace CloseVariantsSimilarKeywords
 
             string title = "Thread - " + id + " - " + email;
             string exactpath = @"C:\inetpub\wwwroot\closevariants\" + email.Split('@')[0];  //closevariants folder must in wwwroot
-            //Console.Title = title + " - With Timer 25 minutes";
-            //Timer t = new Timer(DisplayTimeEvent, null, (25 * 60000), 1000);
+            Console.Title = title + " - With Timer 28 minutes";
+            Timer t = new Timer(DisplayTimeEvent, null, (28 * 60000), 1000);
             Console.Title = title;
             System.Drawing.Size size = new System.Drawing.Size(1280, 1024);
             // ChromeOptions chromeOptions = new ChromeOptions();
@@ -431,7 +431,7 @@ namespace CloseVariantsSimilarKeywords
         static void GetEmailID()
         {
             DataTable dt = new DataTable();
-            string qry = "Select id, mailid, password from closeVariantMailIds Where id=1";
+            string qry = "Select id, mailid, password from closeVariantMailIds Where id=10";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -474,9 +474,8 @@ namespace CloseVariantsSimilarKeywords
                 {
                     comm.Connection = con;
                     con.Open();
-                    comm.CommandType = System.Data.CommandType.StoredProcedure;
-                    //comm.CommandText = "insert into [48MonthsKeywordsData_Old_SimilarKeywords](Market,Keyword,countryname)values(@Market,@Keyword,@Country);";
-                    comm.CommandText = "InsertSimilarKeywords"; //2020-07-12 updated procedure instead of insert query
+                    //comm.CommandType = System.Data.CommandType.StoredProcedure;
+                    comm.CommandText = "insert into [48MonthsKeywordsData_Old_SimilarKeywords](Market,Keyword,countryname)values(@Market,@Keyword,@Country);";
                     comm.CommandTimeout = 0;
                     comm.Parameters.Add(new SqlParameter("@Market", System.Data.SqlDbType.NVarChar, 100)).Value = market;
                     comm.Parameters.Add(new SqlParameter("@Keyword", System.Data.SqlDbType.NVarChar, 255)).Value = kw.Replace("'", "''");
@@ -617,7 +616,7 @@ namespace CloseVariantsSimilarKeywords
 
                 try
                 {
-                    PostXML(path);
+                    PostXML(path,market,kw);
 
                     Console.WriteLine("Xml Completed.");
 
@@ -673,7 +672,7 @@ namespace CloseVariantsSimilarKeywords
             }
         }
 
-        static void PostXML(string fileName)
+        static void PostXML(string fileName, string market,string kw)
         {
             string submitURL = ReadAPI();
 
@@ -737,8 +736,28 @@ namespace CloseVariantsSimilarKeywords
                         message = reader.ReadToEnd();
                     }
                 }
+                //06-07-2020
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(message);
+                XmlNodeList nodeList = xmlDoc.DocumentElement.SelectNodes("/search-volume-data");
+                foreach (XmlNode node in nodeList)
+                {
+                    XmlNode nd = node.SelectSingleNode(".//code");
+                    if (nd != null)
+                        error = nd.InnerText;
+                    XmlNode nd1 = node.SelectSingleNode(".//message");
+                    if (nd1 != null)
+                        message = nd1.InnerText;
+                    if (error != null && message != null)//changes
+                    {
+                        
+                        string qry = "update [closevariant_old] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
 
-                throw new Exception(error + "\n" + message);
+                        SendResultsToDB_48(qry);
+                    }
+                }
+                //06-07-2020
+                //throw new Exception(error + "\n" + message);
 
             }
             catch (Exception ex)
