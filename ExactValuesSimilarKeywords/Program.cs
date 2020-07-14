@@ -659,7 +659,7 @@ namespace ExactValuesSimilarKeywords
                                 throw new Exception("TimeOut");
                             }
 
-                            string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + kw.Replace("'", "''") + "'; ";
+                            string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + s.Replace("'", "''") + "'; ";
 
                             yearValue = 0;
                             isCloseVariant = false;
@@ -1037,7 +1037,7 @@ namespace ExactValuesSimilarKeywords
                     comm.CommandType = System.Data.CommandType.Text ;
                     //comm.CommandText = "InsertCloseVariantKeywords";
                     // 13-07-2020 -- no need to insert the kwd again in this table.
-                    comm.CommandText = "Update closevariant_old set statu_old=0 where market='@Market' and keyword='@Keyword'";
+                    comm.CommandText = "Update closevariant_old set status=0 where market='@Market' and keyword='@Keyword'";
 
                     comm.CommandTimeout = 0;
 
