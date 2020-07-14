@@ -1034,7 +1034,7 @@ namespace ExactValuesSimilarKeywords
                     comm.Connection = con;
                     con.Open();
 
-                    comm.CommandType = System.Data.CommandType.StoredProcedure;
+                    comm.CommandType = System.Data.CommandType.Text ;
                     //comm.CommandText = "InsertCloseVariantKeywords";
                     // 13-07-2020 -- no need to insert the kwd again in this table.
                     comm.CommandText = "Update closevariant_old set statu_old=0 where market='@Market' and keyword='@Keyword'";
