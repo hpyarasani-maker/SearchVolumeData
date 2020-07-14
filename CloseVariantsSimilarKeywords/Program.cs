@@ -758,7 +758,7 @@ namespace CloseVariantsSimilarKeywords
                     }
                 }
                 //06 - 07 - 2020
-                throw new Exception(error + "\n" + message);
+                throw new Exception(error + "\n" + message);//14-07-2020 uncommented exception error message for calling database method...
 
             }
             catch (Exception ex)
