@@ -292,6 +292,9 @@ namespace CloseVariantsSimilarKeywords
 
                             //}
                             //02 - 07 - 2020
+                            
+                            if (string.IsNullOrEmpty(vWord.Trim()))
+                                vWord = "NoData";
 
                             ProcessResultsKPOLD_48(market, kws,country);
                             // DeleteFile(exactpath);
