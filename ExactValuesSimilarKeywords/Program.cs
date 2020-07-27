@@ -281,6 +281,21 @@ namespace ExactValuesSimilarKeywords
                         tab.Click();
                         //End of batch of keyword
 
+                        ////////////////////
+                        // for single keyword.
+
+                       /* IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-input.text-input-component")));
+                        itemelement.SendKeys(WebUtility.HtmlDecode(keyword));
+
+                        WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
+
+                        IWebElement location = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.get-results-button")));
+                        location.Click();
+
+                        WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));*/
+
+                        // end for single keyword.
+                        ////////////////////
 
 
 
