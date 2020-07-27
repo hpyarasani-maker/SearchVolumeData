@@ -279,6 +279,12 @@ namespace ExactValuesSimilarKeywords
 
                         IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
                         tab.Click();
+                        //End of batch of keyword
+
+
+
+
+
 
                         // Location Selection. 
 
