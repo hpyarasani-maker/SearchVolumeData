@@ -219,8 +219,9 @@ namespace ExactValuesSimilarKeywords
                         IWebElement forecast = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")));
                         forecast.Click();
                         Console.WriteLine(driver.PageSource);
-
-                    //downloaded keywords file uploading.
+                   
+                    //Start - Collecting batch of keyword to upload into Keyword Planner tool
+                    //downloaded keywords file uploading. //batch of keyword 
                     skip:
                         {
 
