@@ -659,7 +659,8 @@ namespace ExactValuesSimilarKeywords
                                 throw new Exception("TimeOut");
                             }
 
-                            string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + s.Replace("'", "''") + "'; ";
+                            string qry = "";//27-07-2020
+                            qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + s.Replace("'", "''") + "'";//single keyword is updating //27-07-2020
 
                             yearValue = 0;
                             isCloseVariant = false;
