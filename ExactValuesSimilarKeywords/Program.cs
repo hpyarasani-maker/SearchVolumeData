@@ -222,7 +222,7 @@ namespace ExactValuesSimilarKeywords
                    
                     //Start - Collecting batch of keyword to upload into Keyword Planner tool
                     //downloaded keywords file uploading. //batch of keyword 
-                    skip:
+                    /*skip:
                         {
 
                             //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
@@ -278,21 +278,21 @@ namespace ExactValuesSimilarKeywords
                         itemelement.Click();
 
                         IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
-                        tab.Click();
+                        tab.Click();*/
                         //End of batch of keyword
 
                         ////////////////////
                         // for single keyword.
 
-                       /* IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-input.text-input-component")));
+                       IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-input.text-input-component")));
                         itemelement.SendKeys(WebUtility.HtmlDecode(keyword));
 
                         WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
 
-                        IWebElement location = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.get-results-button")));
-                        location.Click();
+                        IWebElement resbtn = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.get-results-button")));
+                        resbtn.Click();
 
-                        WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));*/
+                        WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
 
                         // end for single keyword.
                         ////////////////////
