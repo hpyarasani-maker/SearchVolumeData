@@ -390,7 +390,15 @@ namespace ExactValuesSimilarKeywords
 
                         }
 
+                        //////////////////// 28-07-2020
+                        // for single keyword. 
+                        IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
+                        tab.Click();
 
+                        WebDriverWait tabwait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
+
+                        // end for single keyword.
+                        ////////////////////
 
 
 
