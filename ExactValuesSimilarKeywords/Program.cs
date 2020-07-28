@@ -306,6 +306,14 @@ namespace ExactValuesSimilarKeywords
                         IWebElement location = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
                         location.Click();
 
+                        //28-07-2020
+                        try
+                        {
+                            IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon")));
+                            removecountry.Click();
+                        }
+                        catch { }
+
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
                         {
 
