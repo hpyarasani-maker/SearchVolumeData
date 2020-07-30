@@ -546,8 +546,8 @@ namespace ExactValuesSimilarKeywords
             {
                 DataTable dt = new DataTable();
                 //string strQry = "select Market,countryname,Keyword from [48MonthsKeywordsData_Old_SimilarKeywords] where status_old=0";
-                //string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
-                string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
+                string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
+                //string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
                 //string strQry = "[dbo].[GetSimilarKeywords_1]";
                 //string strQry = "[dbo].[GetSimilarKeywords_2]";
                 //string strQry = "[dbo].[GetSimilarKeywords_3]";
@@ -665,11 +665,11 @@ namespace ExactValuesSimilarKeywords
                 ArrayList lst = GetCsvValues_48(fName);
                 ArrayList monthsList = getValuesList(lst);
                 string[] hdr = monthsList[0] as string[];
-                string[] values = monthsList.Count > 1 ? monthsList[1] as string[] : null;
+                string[] values = monthsList[1] as string[];
 
                 string[] kwds = kw.Split(',');
 
-                if (values?[3] == ("N/A"))
+                if (values[3] == ("N/A"))
                 {
                     Console.WriteLine("========================================================");
                     Console.WriteLine("------------------ Ranges Started ----------------------");
@@ -686,20 +686,20 @@ namespace ExactValuesSimilarKeywords
                     int n = 0;
                     bool isCloseVariant;
 
-                    foreach (string s in kwds)
+                    if (!string.IsNullOrEmpty(values[0]))
                     {
-                        if (s == "Keyword") continue;
-
-                        if (appTimeOut)
+                        foreach (string s in kwds)
                         {
-                            throw new Exception("TimeOut");
-                        }
+                            if (s == "Keyword") continue;
 
-                        string qry = "";//27-07-2020
-                        qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + s.Replace("'", "''") + "';  "; //single keyword is updating //27-07-2020
+                            if (appTimeOut)
+                            {
+                                throw new Exception("TimeOut");
+                            }
 
-                        if (!string.IsNullOrEmpty(values?[0]))
-                        {
+                            string qry = "";//27-07-2020
+                            qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + s.Replace("'", "''") + "'";//single keyword is updating //27-07-2020
+
                             yearValue = 0;
                             isCloseVariant = false;
                             string kwd = WebUtility.HtmlDecode(s.Trim());
@@ -715,13 +715,31 @@ namespace ExactValuesSimilarKeywords
 
                                 try
                                 {
-                                    //qry = ""; // 29-07-2020  -- no need to update the status for similarkeywords table.
+                                    qry = ""; // 13-07-2020  -- no need to update the status for similarkeywords table.
                                     qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
-                                    qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );  ";
+                                    qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
+                                    //27-07-2020
+                                    qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
+                                    qry += ",[month47],[month47value],[month46],[month46value],[month45],[month45value],[month44],[month44value],[month43],[month43value],[month42],[month42value]";
+                                    qry += ",[month41],[month41value],[month40],[month40value],[month39],[month39value],[month38],[month38value],[month37],[month37value],[month36]";
+                                    qry += ",[month36value],[month35],[month35value],[month34],[month34value],[month33],[month33value],[month32],[month32value],[month31],[month31value]";
+                                    qry += ",[month30],[month30value],[month29],[month29value],[month28],[month28value],[month27],[month27value],[month26],[month26value],[month25]";
+                                    qry += ",[month25value],[month24],[month24value],[month23],[month23value],[month22],[month22value],[month21],[month21value],[month20],[month20value]";
+                                    qry += ",[month19],[month19value],[month18],[month18value],[month17],[month17value],[month16],[month16value],[month15],[month15value],[month14]";
+                                    qry += ",[month14value],[month13],[month13value],[month12],[month12value],[month11],[month11value],[month10],[month10value],[month9],[month9value]";
+                                    qry += ",[month8],[month8value],[month7],[month7value],[month6],[month6value],[month5],[month5value],[month4],[month4value],[month3]";
+                                    qry += ",[month3value],[month2],[month2value],[month1],[month1value],[annualvalue],[cpc],[cpclow],[cpchigh],[competition],[impressions],[closeVariant],[Errorcode],[ErrorMessage] ) values('";
+                                    qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "','" + "INR" + "', 'kp_old', 1, 0, Convert(varchar(10),'";
+                                    qry += DateTime.Now.ToString("yyyy-MM-dd") + "',20), ";
 
-                                    qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname]) ";
-                                    qry += "Values('" + market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "');";
+                                    for (int i = 48; i >= 1; i--)
+                                    {
+                                        string month = Convert.ToDateTime(hdr[i + 11]).ToString("yyyy-MM");
+                                        qry += "'" + month + "', " + "null" + ", ";
 
+                                    }
+                                    qry += yearValue + ", 0, " + "null" + ", " + "null" + ", " + 0 + ", 0 , " + "null" + ", " + "null" + ", " + "null" + ");";
+                                    //end of 27-07-2020
                                     SendResultsToDB_48(qry);
 
                                     //stores root keyword in closeVariant table
@@ -916,19 +934,13 @@ namespace ExactValuesSimilarKeywords
                                 Console.WriteLine("Sending Xml Error: " + ex.Message);
                             }
                         }
-                        else
-                        {
-                            //if csv file contains total empty returns message
-                            Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                            Console.WriteLine("+++++++++++++++++++  NULL VALUES FOUND  +++++++++++++++++++++");
-                            Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-                            qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname]) ";
-                            qry += "Values('" + market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "');";
-
-                            SendResultsToDB_48(qry);
-
-                        }
+                    }
+                    else
+                    {
+                        //if csv file contains total empty returns message
+                        Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                        Console.WriteLine("+++++++++++++++++++  NULL VALUES FOUND  +++++++++++++++++++++");
+                        Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                     }
                 }
                 catch (Exception ex)
