@@ -721,6 +721,7 @@ namespace ExactValuesSimilarKeywords
 
                                 try
                                 {
+                                    //qry = ""; // 29-07-2020  -- no need to update the status for similarkeywords table.
                                     qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
                                     qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
                                     //27-07-2020
