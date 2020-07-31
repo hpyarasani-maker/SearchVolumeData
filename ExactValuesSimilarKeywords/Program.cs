@@ -167,7 +167,7 @@ namespace ExactValuesSimilarKeywords
                         DeleteFile();
                         WebDriverWait tensecondswait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
 
-                        WriteToCsv(kws); // for batch keywords 
+                        //WriteToCsv(kws); // for batch keywords 
 
                         try
                         {
@@ -225,7 +225,7 @@ namespace ExactValuesSimilarKeywords
                          
                             //for batch keywords 
                             //downloaded keywords file uploading.
-                        skip:
+                       /* skip:
                             {
 
                                 //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
@@ -282,7 +282,7 @@ namespace ExactValuesSimilarKeywords
                             
                             IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
                             tab.Click();
-
+                            */
                             // end for batch keywords 
                             
 
@@ -290,7 +290,7 @@ namespace ExactValuesSimilarKeywords
                         ////////////////////
                         // for single keyword.
 
-                       /* IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-input.text-input-component")));
+                        IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-input.text-input-component")));
                         itemelement.SendKeys(WebUtility.HtmlDecode(keyword));
 
                         WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
@@ -298,7 +298,7 @@ namespace ExactValuesSimilarKeywords
                         IWebElement resbtn = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.get-results-button")));
                         resbtn.Click();
 
-                        WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));*/
+                        WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
 
                         // end for single keyword.
                         ////////////////////
@@ -397,10 +397,10 @@ namespace ExactValuesSimilarKeywords
 
                         ////////////////////
                         // for single keyword.
-                        /*IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
+                        IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
                         tab.Click();
 
-                        WebDriverWait tabwait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));*/
+                        WebDriverWait tabwait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
 
                         // end for single keyword.
                         ////////////////////
@@ -549,9 +549,9 @@ namespace ExactValuesSimilarKeywords
                 DataTable dt = new DataTable();
                 //string strQry = "[dbo].[GetSimilarKeywords_1]";
                 //string strQry = "select Market,countryname,Keyword from [48MonthsKeywordsData_Old_SimilarKeywords] where status_old=0";
-                string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
+                //string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
                 //string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
-                //string strQry = "[dbo].[GetSimilarKeywords_1]";
+                string strQry = "[dbo].[GetSimilarKeywords_1]";
                 //string strQry = "[dbo].[GetSimilarKeywords_2]";
                 //string strQry = "[dbo].[GetSimilarKeywords_3]";
                 //string strQry = "[dbo].[GetSimilarKeywords_4]";
@@ -606,14 +606,14 @@ namespace ExactValuesSimilarKeywords
 
             // for batch keywords 
            // delete from keywords folder
-           fName = exactpath + @"\keywords";
+           /*fName = exactpath + @"\keywords";
            dinfo2 = new DirectoryInfo(fName);
            Files2 = dinfo2.GetFiles("*.csv");
            if (Files2.Count() > 0)
            {
                fName = Files2[0].FullName;
                File.Delete(fName);
-           } 
+           } */
             // end for batch keywords 
            
         }
