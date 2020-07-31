@@ -550,9 +550,9 @@ namespace ExactValuesSimilarKeywords
                 //string strQry = "[dbo].[GetSimilarKeywords_1]";
                 //string strQry = "select Market,countryname,Keyword from [48MonthsKeywordsData_Old_SimilarKeywords] where status_old=0";
                 //string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
-                string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
+                //string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
                 //string strQry = "[dbo].[GetSimilarKeywords_1]";
-                //string strQry = "[dbo].[GetSimilarKeywords_2]";
+                string strQry = "[dbo].[GetSimilarKeywords_2]";
                 //string strQry = "[dbo].[GetSimilarKeywords_3]";
                 //string strQry = "[dbo].[GetSimilarKeywords_4]";
                 //string strQry = "[dbo].[GetSimilarKeywords_5]";
@@ -630,7 +630,7 @@ namespace ExactValuesSimilarKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=2";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=1";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -702,7 +702,7 @@ namespace ExactValuesSimilarKeywords
                         }
 
                         string qry = "";//27-07-2020
-                        qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + s.Replace("'", "''") + "';  "; //single keyword is updating //27-07-2020
+                        qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + s.Replace("'", "''") + "'"; //single keyword is updating //27-07-2020
 
                         if (!string.IsNullOrEmpty(values?[0]))
                         {
