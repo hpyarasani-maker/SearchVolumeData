@@ -167,7 +167,7 @@ namespace ExactValuesSimilarKeywords
                         DeleteFile();
                         WebDriverWait tensecondswait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
 
-                        //WriteToCsv(kws); // for batch keywords 
+                        WriteToCsv(kws); // for batch keywords 
 
                         try
                         {
