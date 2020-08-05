@@ -636,7 +636,7 @@ namespace ExactValuesSimilarKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=10";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=8";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
