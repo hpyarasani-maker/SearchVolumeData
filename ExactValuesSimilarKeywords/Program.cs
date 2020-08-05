@@ -222,10 +222,10 @@ namespace ExactValuesSimilarKeywords
                         forecast.Click();
                         Console.WriteLine(driver.PageSource);
 
-                         
+                        /* 
                             //for batch keywords 
                             //downloaded keywords file uploading.
-                       /* skip:
+                        skip:
                             {
 
                                 //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
@@ -282,9 +282,9 @@ namespace ExactValuesSimilarKeywords
                             
                             IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
                             tab.Click();
-                            */
+
                             // end for batch keywords 
-                            
+                            */
 
 
                         ////////////////////
@@ -372,10 +372,17 @@ namespace ExactValuesSimilarKeywords
                                 if (element.Text.Contains("All locations") || element.Text.ToLower() != country.ToLower())
                                 {
                                     Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
-                                    Signout(driver);
-                                    driver.Close();
-                                    driver.Dispose();
-                                    return 0;
+
+                                    //04-08-2020
+                                    //Signout(driver);
+                                    //driver.Close();
+                                    //driver.Dispose();
+                                    //return 0;
+
+                                    IWebElement backbtn = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
+                                    backbtn.Click();
+                                    continue;
+                                    //end 04-08-2020
                                 }
                                 else
                                     Console.WriteLine("=====Country Selected Successfully=====");
@@ -547,11 +554,10 @@ namespace ExactValuesSimilarKeywords
             try
             {
                 DataTable dt = new DataTable();
-                //string strQry = "[dbo].[GetSimilarKeywords_1]";
                 //string strQry = "select Market,countryname,Keyword from [48MonthsKeywordsData_Old_SimilarKeywords] where status_old=0";
                 //string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
-                //string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
-                string strQry = "[dbo].[GetSimilarKeywords_1]";
+                string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
+                //string strQry = "[dbo].[GetSimilarKeywords_1]";
                 //string strQry = "[dbo].[GetSimilarKeywords_2]";
                 //string strQry = "[dbo].[GetSimilarKeywords_3]";
                 //string strQry = "[dbo].[GetSimilarKeywords_4]";
@@ -604,18 +610,18 @@ namespace ExactValuesSimilarKeywords
                 File.Delete(fName);
             }
 
-            // for batch keywords 
+            /* for batch keywords 
            // delete from keywords folder
-           /*fName = exactpath + @"\keywords";
+           fName = exactpath + @"\keywords";
            dinfo2 = new DirectoryInfo(fName);
            Files2 = dinfo2.GetFiles("*.csv");
            if (Files2.Count() > 0)
            {
                fName = Files2[0].FullName;
                File.Delete(fName);
-           } */
+           } 
             // end for batch keywords 
-           
+           */
         }
 
         private static void WriteToCsv(string kws)
@@ -630,7 +636,7 @@ namespace ExactValuesSimilarKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=8";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=10";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -702,7 +708,7 @@ namespace ExactValuesSimilarKeywords
                         }
 
                         string qry = "";//27-07-2020
-                        qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + s.Replace("'", "''") + "'"; //single keyword is updating //27-07-2020
+                        qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + s.Replace("'", "''") + "';  "; //single keyword is updating //27-07-2020
 
                         if (!string.IsNullOrEmpty(values?[0]))
                         {
@@ -723,7 +729,8 @@ namespace ExactValuesSimilarKeywords
                                 {
                                     //qry = ""; // 29-07-2020  -- no need to update the status for similarkeywords table.
                                     qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
-                                    qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
+                                    qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );  ";
+
                                     //27-07-2020
                                     qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
                                     qry += ",[month47],[month47value],[month46],[month46value],[month45],[month45value],[month44],[month44value],[month43],[month43value],[month42],[month42value]";
@@ -746,6 +753,7 @@ namespace ExactValuesSimilarKeywords
                                     }
                                     qry += yearValue + ", 0, " + "null" + ", " + "null" + ", " + 0 + ", 0 , " + "null" + ", " + "null" + ", " + "null" + ");";
                                     //end of 27-07-2020
+
                                     SendResultsToDB_48(qry);
 
                                     //stores root keyword in closeVariant table
