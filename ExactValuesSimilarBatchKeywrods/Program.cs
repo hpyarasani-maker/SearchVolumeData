@@ -13,7 +13,7 @@ using System.Collections;
 using System.Windows.Forms;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-namespace ExactValuesSimilarKeywords
+namespace ExactValuesSimilarBatchKeywords
 {
     class Program
     {
@@ -569,9 +569,8 @@ namespace ExactValuesSimilarKeywords
                 //string strQry = "select Market,countryname,Keyword from [48MonthsKeywordsData_Old_SimilarKeywords] where status_old=0";
                 //string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
                 //string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
-                string strQry = "[dbo].[GetBulkSimilarKeywords]";// bulk keywords
                 //string strQry = "[dbo].[GetSimilarKeywords_1]";
-                //string strQry = "[dbo].[GetSimilarKeywords_2]";
+                string strQry = "[dbo].[GetSimilarKeywords_2]";
                 //string strQry = "[dbo].[GetSimilarKeywords_3]";
                 //string strQry = "[dbo].[GetSimilarKeywords_4]";
                 //string strQry = "[dbo].[GetSimilarKeywords_5]";
