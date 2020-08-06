@@ -295,19 +295,26 @@ namespace ExactValuesSimilarKeywords
 
                         WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
 
-                        IWebElement resbtn = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.get-results-button")));
+                        IWebElement resbtn = minwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.get-results-button")));
                         resbtn.Click();
-
-                        WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
 
                         // end for single keyword.
                         ////////////////////
 
+                        //06-08-2020
+                        Thread.Sleep(10000);
 
+                        IWebElement el = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
+                        if (el.Text.ToLower() == country.ToLower())
+                        {
+                            goto LOCATION;
+                        }
 
                         // Location Selection. 
-                        IWebElement location = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
+                        WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
+                        IWebElement location = hiswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
                         location.Click();
+                        //end 06-08-2020
 
                         //28-07-2020
                         try
@@ -404,11 +411,16 @@ namespace ExactValuesSimilarKeywords
 
                         ////////////////////
                         // for single keyword.
-                        IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
-                        tab.Click();
-
-                        WebDriverWait tabwait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
-
+                        //06-08-2020
+                        LOCATION:
+                        try
+                        {
+                            WebDriverWait tabwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
+                            IWebElement tab = tabwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
+                            tab.Click();
+                            //end 06-08-2020
+                        }
+                        catch { }
                         // end for single keyword.
                         ////////////////////
 
@@ -636,7 +648,7 @@ namespace ExactValuesSimilarKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=8";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=10";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
