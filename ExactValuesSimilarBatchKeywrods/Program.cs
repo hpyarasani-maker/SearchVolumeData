@@ -167,7 +167,7 @@ namespace ExactValuesSimilarBatchKeywords
                         DeleteFile();
                         WebDriverWait tensecondswait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
 
-                        //WriteToCsv(kws); // for batch keywords 
+                        WriteToCsv(kws); // for batch keywords 
 
                         try
                         {
@@ -222,71 +222,71 @@ namespace ExactValuesSimilarBatchKeywords
                         forecast.Click();
                         Console.WriteLine(driver.PageSource);
 
-                        /* 
-                            //for batch keywords 
-                            //downloaded keywords file uploading.
+                        // 07-08-2020
+                        //for batch keywords 
+                        //downloaded keywords file uploading.
                         skip:
-                            {
+                        {
 
-                                //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
-                                try
-                                {
-                                    WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
-                                    Console.WriteLine(driver.PageSource);
-                                    IWebElement upload = minwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".upload-button")));
-                                    upload.Click();
-
-                                }
-                                catch
-                                {
-                                    driver.FindElement(By.CssSelector(".upload-button")).Click();
-                                }
-                                if (driver.FindElements(By.XPath("//*[@id='select-overlay-target']")).Count > 0)
-                                {
-                                    IWebElement choosefilebutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='select-overlay-target']")));
-                                    Thread.Sleep(2000);
-                                    choosefilebutton.Click();
-                                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                                    Thread.Sleep(3000);
-                                    string filename = exactpath + @"\keywords\keywords.csv";
-                                    SendKeys.SendWait(filename);
-                                    SendKeys.SendWait(@"{Enter}");
-
-
-                                }
-                            }
-
-                            Console.WriteLine(driver.PageSource);
-
-                            IWebElement save = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
-                            save.Click();
-
-                            if (driver.FindElements(By.CssSelector(".save-button.is-disabled")).Count > 0)
-                            {
-                                IWebElement cancel = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".cancel-button")));
-                                cancel.Click();
-                                SendKeys.SendWait(@"{Esc}");
-                                //downloaded keywords file is missing then it will try for one more..
-                                goto skip;
-                            }
+                            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
                             try
                             {
-                                WebDriverWait buttonwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-                                IWebElement savebutton = buttonwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
-                                savebutton.Click();
+                                WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
+                                Console.WriteLine(driver.PageSource);
+                                IWebElement upload = minwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".upload-button")));
+                                upload.Click();
+
                             }
                             catch
-                            { }
-                            IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[5]/a")));
-                            itemelement.Click();   
-                            
-                            IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
-                            tab.Click();
+                            {
+                                driver.FindElement(By.CssSelector(".upload-button")).Click();
+                            }
+                            if (driver.FindElements(By.XPath("//*[@id='select-overlay-target']")).Count > 0)
+                            {
+                                IWebElement choosefilebutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='select-overlay-target']")));
+                                Thread.Sleep(2000);
+                                choosefilebutton.Click();
+                                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                                Thread.Sleep(3000);
+                                string filename = exactpath + @"\keywords\keywords.csv";
+                                SendKeys.SendWait(filename);
+                                SendKeys.SendWait(@"{Enter}");
 
-                            // end for batch keywords 
-                            */
 
+                            }
+                        }
 
+                        Console.WriteLine(driver.PageSource);
+
+                        IWebElement save = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
+                        save.Click();
+
+                        if (driver.FindElements(By.CssSelector(".save-button.is-disabled")).Count > 0)
+                        {
+                            IWebElement cancel = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".cancel-button")));
+                            cancel.Click();
+                            SendKeys.SendWait(@"{Esc}");
+                            //downloaded keywords file is missing then it will try for one more..
+                            goto skip;
+                        }
+                        try
+                        {
+                            WebDriverWait buttonwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
+                            IWebElement savebutton = buttonwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
+                            savebutton.Click();
+                        }
+                        catch
+                        { }
+                        IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[5]/a")));
+                        itemelement.Click();
+
+                        IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
+                        tab.Click();
+
+                        // end for batch keywords 
+                        // end 07-08-2020
+
+                        /* 07-08-2020
                         ////////////////////
                         // for single keyword.
 
@@ -300,6 +300,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                         // end for single keyword.
                         ////////////////////
+                        end 07-08-2020 */
 
                         //06-08-2020
                         Thread.Sleep(10000);
@@ -409,10 +410,11 @@ namespace ExactValuesSimilarBatchKeywords
                         }
 
 
+                        LOCATION:
+                        /* 07-08-2020
                         ////////////////////
                         // for single keyword.
                         //06-08-2020
-                        LOCATION:
                         try
                         {
                             WebDriverWait tabwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
@@ -423,7 +425,7 @@ namespace ExactValuesSimilarBatchKeywords
                         catch { }
                         // end for single keyword.
                         ////////////////////
-
+                        end 07-08-2020 */
 
                         //Date Selection
                         try
@@ -567,10 +569,10 @@ namespace ExactValuesSimilarBatchKeywords
             {
                 DataTable dt = new DataTable();
                 //string strQry = "select Market,countryname,Keyword from [48MonthsKeywordsData_Old_SimilarKeywords] where status_old=0";
-                //string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
+                string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
                 //string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
                 //string strQry = "[dbo].[GetSimilarKeywords_1]";
-                string strQry = "[dbo].[GetSimilarKeywords_2]";
+                //string strQry = "[dbo].[GetSimilarKeywords_2]";
                 //string strQry = "[dbo].[GetSimilarKeywords_3]";
                 //string strQry = "[dbo].[GetSimilarKeywords_4]";
                 //string strQry = "[dbo].[GetSimilarKeywords_5]";
@@ -622,18 +624,18 @@ namespace ExactValuesSimilarBatchKeywords
                 File.Delete(fName);
             }
 
-            /* for batch keywords 
-           // delete from keywords folder
-           fName = exactpath + @"\keywords";
-           dinfo2 = new DirectoryInfo(fName);
-           Files2 = dinfo2.GetFiles("*.csv");
-           if (Files2.Count() > 0)
-           {
-               fName = Files2[0].FullName;
-               File.Delete(fName);
-           } 
+            // for batch keywords 
+            // delete from keywords folder
+            fName = exactpath + @"\keywords";
+            dinfo2 = new DirectoryInfo(fName);
+            Files2 = dinfo2.GetFiles("*.csv");
+            if (Files2.Count() > 0)
+            {
+                fName = Files2[0].FullName;
+                File.Delete(fName);
+            }
             // end for batch keywords 
-           */
+
         }
 
         private static void WriteToCsv(string kws)
@@ -648,7 +650,7 @@ namespace ExactValuesSimilarBatchKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=10";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=6";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -734,9 +736,10 @@ namespace ExactValuesSimilarBatchKeywords
                                 isCloseVariant = true;
 
                                 Console.WriteLine("========================================================");
-                                Console.WriteLine("--- Unmatched keyword found / Having a close variant ---");
+                                Console.WriteLine("--- Unmatched keyword found ---");
                                 Console.WriteLine("========================================================");
 
+                                /* 07-08-2020
                                 try
                                 {
                                     //qry = ""; // 29-07-2020  -- no need to update the status for similarkeywords table.
@@ -780,6 +783,7 @@ namespace ExactValuesSimilarBatchKeywords
                                 {
                                     Console.WriteLine("Error updating cv data: " + ex.Message);
                                 }
+                                end 07-08-2020 */
                                 continue;
                             }
                             else if (values1 == null && monthsList[0] == null)
@@ -967,10 +971,12 @@ namespace ExactValuesSimilarBatchKeywords
                             Console.WriteLine("+++++++++++++++++++  NULL VALUES FOUND  +++++++++++++++++++++");
                             Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
+                            /* 07-08-2020
                             qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname]) ";
                             qry += "Values('" + market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "');";
 
                             SendResultsToDB_48(qry);
+                            end 07-08-2020 */
 
                         }
                     }
