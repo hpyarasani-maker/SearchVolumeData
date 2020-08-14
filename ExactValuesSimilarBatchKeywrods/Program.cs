@@ -722,7 +722,7 @@ namespace ExactValuesSimilarBatchKeywords
                         }
 
                         string qry = "";//27-07-2020
-                        qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword='" + s.Replace("'", "''") + "';  "; //single keyword is updating //27-07-2020
+                        qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword=N'" + s.Replace("'", "''") + "';  "; //single keyword is updating //27-07-2020
 
                         if (!string.IsNullOrEmpty(values?[0]))
                         {
@@ -1071,7 +1071,7 @@ namespace ExactValuesSimilarBatchKeywords
                             message = nd1.InnerText;
                         if (error != null && message != null)//changes
                         {
-                            string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1, errorcode=" + error + ",ErrorMessage='" + message + "' where Market='" + market + "' and Keyword='" + kn.Trim().Replace("'", "''") + "'";
+                            string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1, errorcode=" + error + ",ErrorMessage='" + message + "' where Market='" + market + "' and Keyword=N'" + kn.Trim().Replace("'", "''") + "'";
                             SendResultsToDB_48(qry);
                         }
                     }
