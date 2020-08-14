@@ -1136,7 +1136,7 @@ namespace ExactValuesSimilarBatchKeywords
                     comm.CommandType = System.Data.CommandType.Text;
                     //comm.CommandText = "InsertCloseVariantKeywords";
                     // 13-07-2020 -- no need to insert the kwd again in this table.
-                    comm.CommandText = "Update closevariant_old set status=0 where market='@Market' and keyword='@Keyword'";
+                    comm.CommandText = "Update closevariant_old set status=0 where market='@Market' and keyword=N'@Keyword'";
 
                     comm.CommandTimeout = 0;
 
