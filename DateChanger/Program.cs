@@ -12,6 +12,8 @@ using System.Threading;
 using System.Collections;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 
 namespace DateChanger
 {
@@ -32,7 +34,7 @@ namespace DateChanger
             exactpath = @"C:\inetpub\wwwroot\exactvalues\" + email.Split('@')[0];
 
             string title = "Thread - " + id + " - " + email;
-            Console.Title = title + " - Selenium KeywordPlanner Date Changer";             
+            Console.Title = title + " - Selenium KeywordPlanner Date Changer";
 
             System.Drawing.Size size = new System.Drawing.Size(1280, 1024);
 
@@ -85,7 +87,7 @@ namespace DateChanger
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                 driver.FindElement(By.CssSelector("div.HWIeKd")).Click();
             }
-            catch { }            
+            catch { }
 
             string keywordItem = "uk:United Kingdom:facebook,youtube";
             ArrayList alKeywords = new ArrayList();
@@ -100,9 +102,15 @@ namespace DateChanger
 
                 try
                 {
-
+                    WebDriverWait tensecondswait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
+                    OpenQA.Selenium.Support.UI.WebDriverWait Wait = new WebDriverWait(driver, new TimeSpan(0, 0, 50));
                     DeleteFile(); // delete downloaded files
-
+                    try
+                    {
+                        IWebElement accountchooser = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.WBW9sf")));
+                        accountchooser.Click();
+                    }
+                    catch { }
                     //WriteToCsv(kws); // write to keywords file
                     driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
                     driver.FindElement(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")).Click();
@@ -116,16 +124,42 @@ namespace DateChanger
                     driver.FindElement(By.CssSelector("material-button.get-results-button")).Click();
                     Console.WriteLine(driver.PageSource);
                     driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                    driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)")).Click();
+                    //driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)")).Click();
                     Console.WriteLine(driver.PageSource);
 
 
 
-             
+
 
                     //Date Selection
-                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
-                    driver.FindElement(By.CssSelector(".dropdown")).Click();
+                    DateSelection:
+                    try
+                    {
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+                        //driver.FindElement(By.CssSelector(".dropdown")).Click();
+                        Console.WriteLine(driver.PageSource);
+                        try
+                        {
+                            WebDriverWait tabwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
+                            IWebElement tab = tabwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
+                            tab.Click();
+                            //end 06-08-2020
+                        }
+                        catch { }
+                        try
+                        {
+                            IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown")));
+                            dropdown.Click();
+                        }
+                        catch
+                        {
+                            goto DateSelection;
+                        }
+                    }
+                    catch
+                    {
+
+                    }
                     driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
                     IWebElement e = driver.FindElement(By.CssSelector("div.range-button:nth-child(5)"));
                     if (e.Text.Contains("All available"))
@@ -138,34 +172,68 @@ namespace DateChanger
 
                     //Download CSV File
                     driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                    driver.FindElement(By.CssSelector(".download")).Click();
-                    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                    IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)"));
-                    if (ele.Text.Contains("Plan historical metrics (.csv)"))
+                    ////driver.FindElement(By.CssSelector(".download")).Click();
+                    //try
+                    //{
+                    //    IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
+                    //    download.Click();
+                    //}
+                    //catch { }
+                    //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                    //IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)"));
+                    //if (ele.Text.Contains("Plan historical metrics (.csv)"))
+                    //{
+                    //    ele.Click();
+                    //    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                    //}
+                    //else
+                    //{
+                    //    driver.Navigate().Refresh();
+                    //    continue;
+                    //}
+                    historical:
                     {
-                        ele.Click();
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                    }
-                    else
-                    {
-                        driver.Navigate().Refresh();
-                        continue;
-                    }
+                        try
+                        {
+                            try
+                            {
+                                IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
+                                download.Click();
+                            }
+                            catch { }
 
+                            IWebElement ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group > material-select-item:nth-child(3)")));
+                            if (ele.Text.Contains("Plan historical metrics (.csv)"))
+                            {
+                                ele.Click();
+                            }
+                            //15-05-2020
+                            else if ((ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group:nth-child(2) > material-select-item:nth-child(2)")))).Text.Contains(".csv"))
+                            {
+                                ele.Click();
+                            }   //end 15-05-2020
+                            else
+                                goto historical;
+                        }
+                        catch
+                        {
+
+                        }
+                    }
                     Thread.Sleep(15000);
 
                     try
                     {
-                        
+
                         ProcessResultsKPOLD_48(market, kws, country);
                     }
                     catch (Exception ex)
-                    {                        
+                    {
                         Thread.Sleep(10000);
                         Signout(driver);
                         driver.Close();
                         driver.Dispose();
-                        return 0;                        
+                        return 0;
                     }
 
                     driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
@@ -176,7 +244,7 @@ namespace DateChanger
                 {
                     driver.Navigate().Refresh();
                 }
-            } 
+            }
 
             Signout(driver);
             driver.Close();
@@ -240,9 +308,9 @@ namespace DateChanger
             }
             dt.Dispose();
 
-         
+
         }
-        
+
         static void ProcessResultsKPOLD_48(string market, string kw, string country)
         {
             string fName = exactpath + @"\downloads";
@@ -260,29 +328,29 @@ namespace DateChanger
                 string[] hdr = monthsList[0] as string[];
                 //string[] values = monthsList[1] as string[];
 
-                string[] kwds = kw.Split(',');                 
+                string[] kwds = kw.Split(',');
 
                 try
-                {                    
+                {
 
                     //if (!string.IsNullOrEmpty(values[0]))
-                    if(hdr.Count() == 62)
+                    if (hdr.Count() == 60) //18-08-2020  changed from 62 to 60 columns
                     {
                         foreach (string s in kwds)
                         {
-                            if (s == "Keyword") continue;                                                     
+                            if (s == "Keyword") continue;
 
-                            string smonth = Convert.ToDateTime(hdr[61]).ToString("yyyy-MM");
+                            string smonth = Convert.ToDateTime(hdr[59]).ToString("yyyy-MM");
 
                             try
-                            {                                
+                            {
                                 SetAPIMonth(smonth);
                                 break;
                             }
                             catch (Exception ex)
                             {
-                               Console.WriteLine("Update error: " + ex.Message); 
-                            }                             
+                                Console.WriteLine("Update error: " + ex.Message);
+                            }
                         }
                     }
                     else
@@ -306,7 +374,7 @@ namespace DateChanger
 
         }
 
-       
+
         static ArrayList GetCsvValues_48(string fName)
         {
             string[] values = { "" };
@@ -344,9 +412,13 @@ namespace DateChanger
                 int r = 0;
                 foreach (string[] val in arList)
                 {
-                    string[] values = new string[62];  
-                    for (int i = 0; i < 62; i++)
+                    string[] values = new string[60]; //18-08-2020 changed from 62 columns to 60
+                    for (int i = 0; i < 60; i++) 
                     {
+                        if (i == 60)
+                        {
+                            string s1 = "";
+                        }
                         values[i] = val[i].Contains("Searches:") ? (val[i].Split(':')[1].Trim()) :
                             i > 2 ? (val[i].Replace("&#x13;", "-").Replace("  ", "-").Replace("K", "000").Replace("M", "000000")) :
                             val[i];
@@ -439,7 +511,7 @@ namespace DateChanger
 
         }
 
-        static void SetAPIMonth(string month) 
+        static void SetAPIMonth(string month)
         {
             XmlDocument xml = new XmlDocument();
             string fileName = @"C:\Inetpub\wwwroot\KPServerIP.xml";
