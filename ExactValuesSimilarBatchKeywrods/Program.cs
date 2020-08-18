@@ -317,14 +317,15 @@ namespace ExactValuesSimilarBatchKeywords
                         location.Click();
                         //end 06-08-2020
 
-                        //28-07-2020
-                        try
-                        {
-                            IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon")));
-                            removecountry.Click();
-                        }
-                        catch { }
-
+                        //28-07-2020 
+                        //18-08-2020
+                        //try
+                        //{
+                        //    IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon")));
+                        //    removecountry.Click();
+                        //}
+                        //catch { }
+                        //end 18-08-2020
 
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
                         {
@@ -650,7 +651,7 @@ namespace ExactValuesSimilarBatchKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=6";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=8";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
