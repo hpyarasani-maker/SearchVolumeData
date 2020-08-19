@@ -211,6 +211,13 @@ namespace CloseVariantsSimilarKeywords
 
                         try
                         {
+                            //19-08-2020
+                            IWebElement element = driver.FindElement(By.CssSelector(".location-button"));
+                            if (element.Text.Split(':')[1].ToLower() != country.ToLower())
+                            {
+                                goto LOCATION;
+                            }
+                            //end 19-08-2020
                             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                             vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
                             Console.WriteLine(vWord);
