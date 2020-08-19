@@ -160,7 +160,7 @@ namespace CloseVariantsSimilarKeywords
                             }
 
                         }
-
+                        LOCATION: //19-08-2020
                         // Location Selection.
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                         driver.FindElement(By.CssSelector(".location-button")).Click();
