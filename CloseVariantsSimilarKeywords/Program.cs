@@ -228,7 +228,7 @@ namespace CloseVariantsSimilarKeywords
                                     driver.FindElement(By.CssSelector(".dropdown")).Click();
                                 }
                                 catch { }
-
+                                Thread.Sleep(1500);
                                 IWebElement e = driver.FindElement(By.CssSelector("div.range-button:nth-child(5)"));
                                 if (e.Text.Contains("All available"))
                                 {
@@ -246,90 +246,90 @@ namespace CloseVariantsSimilarKeywords
                             }
                             //end 20-08-2020
 
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-                            vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
-                            Console.WriteLine(vWord);
+                            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                            //vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
+                            //Console.WriteLine(vWord);
                             //02 - 07 - 2020 UnComment below code for download csv file
-                            //    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                            //historical:
-                            //    {
-                            //        try
-                            //        {
-                            //            try
-                            //            {
-                            //                IWebElement download = driver.FindElement(By.CssSelector(".download"));
-                            //                download.Click();
-                            //            }
-                            //            catch { }
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            historical:
+                            {
+                                try
+                                {
+                                    try
+                                    {
+                                        IWebElement download = driver.FindElement(By.CssSelector(".download"));
+                                        download.Click();
+                                    }
+                                    catch { }
 
-                            //            IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)"));
-                            //            if (ele.Text.Contains("Plan historical metrics (.csv)"))
-                            //            {
-                            //                ele.Click();
-                            //            }
-                            //            //15-05-2020
-                            //            else if ((ele = driver.FindElement(By.CssSelector(".group:nth-child(2) > material-select-item:nth-child(2)"))).Text.Contains(".csv"))
-                            //            {
-                            //                ele.Click();
-                            //            }   //end 15-05-2020
-                            //            else
-                            //                goto historical;
-                            //        }
-                            //        catch
-                            //        {
+                                    IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)"));
+                                    if (ele.Text.Contains("Plan historical metrics (.csv)"))
+                                    {
+                                        ele.Click();
+                                    }
+                                    //15-05-2020
+                                    else if ((ele = driver.FindElement(By.CssSelector(".group:nth-child(2) > material-select-item:nth-child(2)"))).Text.Contains(".csv"))
+                                    {
+                                        ele.Click();
+                                    }   //end 15-05-2020
+                                    else
+                                        goto historical;
+                                }
+                                catch
+                                {
 
-                            //        }
-                            //    }
-                            //    Thread.Sleep(10000);
+                                }
+                            }
+                            Thread.Sleep(10000);
 
 
 
-                            // string fName = exactpath + @"\downloads";
-                            //DirectoryInfo dinfo2 = new DirectoryInfo(fName);
-                            //FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
-                            //if (Files2.Length > 0)
-                            //    fName = Files2[0].FullName;
-                            //else
-                            //    throw new Exception("File not downloaded.");
-                            //try
-                            //{
-                            //    File.WriteAllText(fName, File.ReadAllText(fName), Encoding.UTF8);
-                            //}
-                            //catch (Exception e)
-                            //{
-                            //    Console.WriteLine("Error while keywords file writing");
-                            //    throw new Exception(e.Message);
-                            //}
-                            ////15 - 05 - 2020 End of Downloading csv file
-                            // ArrayList lst = GetCsvValues_48(fName);//15-05-2020 
-                            //ArrayList monthsList = getValuesList(lst);//15-05-2020 getting values from downloaded csv file
-                            //string[] keys = new string[2];//15-05-2020 
-                            //try    //15-05-2020 getting closevariant from arraylist object
-                            //{
-                            //    foreach (string[] k in monthsList)
-                            //    {
-                            //        keys[0] = k[0];
-                            //        keys[1] = k[1];
-                            //        break;
-                            //    }
-                            //}
-                            //catch
-                            //{
-                            //    continue;
-                            //}
-                            //vWord = keys[1].ToString();
+                            string fName = exactpath + @"\downloads";
+                            DirectoryInfo dinfo2 = new DirectoryInfo(fName);
+                            FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
+                            if (Files2.Length > 0)
+                                fName = Files2[0].FullName;
+                            else
+                                throw new Exception("File not downloaded.");
+                            try
+                            {
+                                File.WriteAllText(fName, File.ReadAllText(fName), Encoding.UTF8);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Error while keywords file writing");
+                                throw new Exception(e.Message);
+                            }
+                            //15 - 05 - 2020 End of Downloading csv file
+                            ArrayList lst = GetCsvValues_48(fName);//15-05-2020 
+                            ArrayList monthsList = getValuesList(lst);//15-05-2020 getting values from downloaded csv file
+                            string[] keys = new string[2];//15-05-2020 
+                            try    //15-05-2020 getting closevariant from arraylist object
+                            {
+                                foreach (string[] k in monthsList)
+                                {
+                                    keys[0] = k[0];
+                                    keys[1] = k[1];
+                                    break;
+                                }
+                            }
+                            catch
+                            {
+                                continue;
+                            }
+                            vWord = keys[1].ToString();
 
-                            //if (vWord == null)
-                            //    continue;
-                            //else
-                            //{
-                            //    Console.WriteLine(vWord);
+                            if (vWord == null)
+                                continue;
+                            else
+                            {
+                                Console.WriteLine(vWord);
 
-                            //}
+                            }
                             //02 - 07 - 2020
 
                             ProcessResultsKPOLD_48(market, kws, country);
-                            // DeleteFile(exactpath);
+                            DeleteFile(exactpath);
 
 
                         }
@@ -338,6 +338,7 @@ namespace CloseVariantsSimilarKeywords
 
                             vWord = "NoData";
                             ProcessResultsKPOLD_48(market, kws, country);
+                            DeleteFile(exactpath);
                             if (appTimeOut)
                             {
                                 driver.Close();
