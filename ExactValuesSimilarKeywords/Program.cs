@@ -159,7 +159,7 @@ namespace ExactValuesSimilarKeywords
                     string[] item = kwItem.Split(':');
                     string market = item[0];
                     string country = item[1];
-                    string kws = "Keyword, " + item[2];
+                    string kws = "Keyword," + item[2]; //20-08-2020 removed space in "Keyword, "
                     string keyword = item[2];
                     try
                     {

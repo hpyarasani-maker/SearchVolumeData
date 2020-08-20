@@ -159,7 +159,7 @@ namespace ExactValuesSimilarBatchKeywords
                     string[] item = kwItem.Split(':');
                     string market = item[0];
                     string country = item[1];
-                    string kws = "Keyword, " + item[2];
+                    string kws = "Keyword," + item[2]; //20-08-2020 removed space in "Keyword, "
                     string keyword = item[2];
                     try
                     {
@@ -642,7 +642,7 @@ namespace ExactValuesSimilarBatchKeywords
         {
             string file = exactpath + @"\keywords\keywords.csv";
             StreamWriter sw = new StreamWriter(file, false);
-            sw.Write(kws.Replace(",", Environment.NewLine));
+            sw.Write(kws.Replace(",",Environment.NewLine));
             sw.Close();
         }
 
@@ -650,7 +650,7 @@ namespace ExactValuesSimilarBatchKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=6";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=8";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
