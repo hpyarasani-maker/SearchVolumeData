@@ -9,7 +9,8 @@ using System.Net;
 using System.IO;
 using System.Threading;
 using System.Collections;
-
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 namespace CloseVariantsSimilarKeywords
 {
     class Program
@@ -43,6 +44,7 @@ namespace CloseVariantsSimilarKeywords
             chromeOptions.AddArgument("--disable-spelling-auto-correct");
             chromeOptions.AddArgument("--disable-cache");
             IWebDriver driver = new ChromeDriver(@".\ChromeDriver", chromeOptions);
+            OpenQA.Selenium.Support.UI.WebDriverWait Wait = new WebDriverWait(driver, new TimeSpan(0, 0, 50));
             driver.Manage().Window.Size = size;
 
             //driver.Url = "https://ads.google.com/aw/keywordplanner/home?ocid=193200943&__c=4281215607&authuser=0&__u=9516641019&enableAllBrowsers=1";
@@ -229,12 +231,12 @@ namespace CloseVariantsSimilarKeywords
                                 }
                                 catch { }
                                 Thread.Sleep(1500);
-                                IWebElement e = driver.FindElement(By.CssSelector("div.range-button:nth-child(5)"));
+                                IWebElement e = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.range-button:nth-child(5)")));
                                 if (e.Text.Contains("All available"))
                                 {
                                     e.Click();
                                 }
-                                IWebElement month = driver.FindElement(By.CssSelector(".date-popup-button"));
+                                IWebElement month = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".date-popup-button")));
                                 if (month.Text.Contains("All available") != true)
                                 {
                                     Console.WriteLine("Error In Date Selection");
@@ -257,18 +259,18 @@ namespace CloseVariantsSimilarKeywords
                                 {
                                     try
                                     {
-                                        IWebElement download = driver.FindElement(By.CssSelector(".download"));
+                                        IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
                                         download.Click();
                                     }
                                     catch { }
 
-                                    IWebElement ele = driver.FindElement(By.CssSelector(".group > material-select-item:nth-child(3)"));
+                                    IWebElement ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group > material-select-item:nth-child(3)")));
                                     if (ele.Text.Contains("Plan historical metrics (.csv)"))
                                     {
                                         ele.Click();
                                     }
                                     //15-05-2020
-                                    else if ((ele = driver.FindElement(By.CssSelector(".group:nth-child(2) > material-select-item:nth-child(2)"))).Text.Contains(".csv"))
+                                    else if ((ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group:nth-child(2) > material-select-item:nth-child(2)")))).Text.Contains(".csv"))
                                     {
                                         ele.Click();
                                     }   //end 15-05-2020
