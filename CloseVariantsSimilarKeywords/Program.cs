@@ -113,7 +113,7 @@ namespace CloseVariantsSimilarKeywords
             {
                 if (appTimeOut)
                     break;
-                string[] arr = new string[] { "videos", "gifts" };
+                //string[] arr = new string[] { "videos", "gifts" };
                 DataTable dt = GetKeywords();
                 if (dt == null || dt.Rows.Count <= 0)
                     break;
@@ -140,7 +140,7 @@ namespace CloseVariantsSimilarKeywords
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                         Console.WriteLine(driver.PageSource);
 
-                    Historical:
+                        Historical:
                         {
                             try
                             {
@@ -160,6 +160,7 @@ namespace CloseVariantsSimilarKeywords
                             }
 
                         }
+
                         LOCATION: //19-08-2020
                         // Location Selection.
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
@@ -218,6 +219,33 @@ namespace CloseVariantsSimilarKeywords
                                 goto LOCATION;
                             }
                             //end 19-08-2020
+
+                            //Date Selection //20-08-2020
+                            try
+                            {
+                                try
+                                {
+                                    driver.FindElement(By.CssSelector(".dropdown")).Click();
+                                }
+                                catch { }
+
+                                IWebElement e = driver.FindElement(By.CssSelector("div.range-button:nth-child(5)"));
+                                if (e.Text.Contains("All available"))
+                                {
+                                    e.Click();
+                                }
+                                IWebElement month = driver.FindElement(By.CssSelector(".date-popup-button"));
+                                if (month.Text.Contains("All available") != true)
+                                {
+                                    Console.WriteLine("Error In Date Selection");
+                                }
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Error In Date Selection");
+                            }
+                            //end 20-08-2020
+
                             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                             vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
                             Console.WriteLine(vWord);
@@ -300,7 +328,7 @@ namespace CloseVariantsSimilarKeywords
                             //}
                             //02 - 07 - 2020
 
-                            ProcessResultsKPOLD_48(market, kws,country);
+                            ProcessResultsKPOLD_48(market, kws, country);
                             // DeleteFile(exactpath);
 
 
@@ -309,7 +337,7 @@ namespace CloseVariantsSimilarKeywords
                         {
 
                             vWord = "NoData";
-                            ProcessResultsKPOLD_48(market, kws,country);
+                            ProcessResultsKPOLD_48(market, kws, country);
                             if (appTimeOut)
                             {
                                 driver.Close();
@@ -506,7 +534,7 @@ namespace CloseVariantsSimilarKeywords
             }
         }
 
-        static void ProcessResultsKPOLD_48(string market, string kw,string country)
+        static void ProcessResultsKPOLD_48(string market, string kw, string country)
         {
             try
             {
@@ -624,7 +652,7 @@ namespace CloseVariantsSimilarKeywords
 
                 try
                 {
-                    PostXML(path,market,kw);
+                    PostXML(path, market, kw);
 
                     Console.WriteLine("Xml Completed.");
 
@@ -680,7 +708,7 @@ namespace CloseVariantsSimilarKeywords
             }
         }
 
-        static void PostXML(string fileName, string market,string kw)
+        static void PostXML(string fileName, string market, string kw)
         {
             string submitURL = ReadAPI();
 
@@ -758,7 +786,7 @@ namespace CloseVariantsSimilarKeywords
                         message = nd1.InnerText;
                     if (error != null && message != null)//changes
                     {
-                        
+
                         string qry = "update [closevariant_old] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
 
                         SendResultsToDB_48(qry);
