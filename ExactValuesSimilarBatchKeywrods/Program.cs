@@ -1311,9 +1311,9 @@ namespace ExactValuesSimilarBatchKeywords
                     string[] values = new string[60];
                     for (int i = 0; i < 60; i++)
                     {
-                        values[i] = val[i].Contains("Searches:") ? (val[i].Split(':')[1]) :
-                            i > 2 ? (val[i].Replace("&#x13;", "-").Replace("  ", "-").Replace("K", "000").Replace("M", "000000")) :
-                            val[i];
+                        values[i] = val[i].Contains("Searches:") ? val[i].Split(':')[1].Trim() :
+                            i > 2 ? val[i].Replace("&#x13;", "-").Replace("  ", "-").Replace("K", "000").Replace("M", "000000").Trim() :
+                            val[i].Trim();
                     }
                     lst.Add(values);
                     r++;
