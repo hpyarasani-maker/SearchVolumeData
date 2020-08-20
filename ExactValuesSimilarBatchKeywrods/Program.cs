@@ -378,7 +378,7 @@ namespace ExactValuesSimilarBatchKeywords
                                 //IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)")); //20-08-2020 commented
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020
                                 //If any country miss match then continue to next keyword.
-                                if (element.Text.Contains("All locations") || element.Text.ToLower() != country.ToLower())
+                                if (element.Text.Contains("All locations") || element.Text.Split(':')[1].ToLower() != country.ToLower()) //20-08-2020
                                 {
                                     Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
 
