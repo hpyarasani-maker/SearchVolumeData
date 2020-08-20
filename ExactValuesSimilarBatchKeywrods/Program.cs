@@ -317,15 +317,14 @@ namespace ExactValuesSimilarBatchKeywords
                         location.Click();
                         //end 06-08-2020
 
-                        //28-07-2020 
-                        //18-08-2020
-                        //try
-                        //{
-                        //    IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon")));
-                        //    removecountry.Click();
-                        //}
-                        //catch { }
-                        //end 18-08-2020
+                        //28-07-2020
+                        try
+                        {
+                            IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon")));
+                            removecountry.Click();
+                        }
+                        catch { }
+
 
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
                         {
@@ -651,7 +650,7 @@ namespace ExactValuesSimilarBatchKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=8";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=6";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -723,14 +722,14 @@ namespace ExactValuesSimilarBatchKeywords
                         }
 
                         string qry = "";//27-07-2020
-                        qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword=N'" + s.Replace("'", "''") + "';  "; //single keyword is updating //27-07-2020
+                        qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword=N'" + s.Replace("'", "''") + "';  "; //14-08-2020 //single keyword is updating //27-07-2020
 
                         if (!string.IsNullOrEmpty(values?[0]))
                         {
                             yearValue = 0;
                             isCloseVariant = false;
-                            string kwd = WebUtility.HtmlDecode(s.Trim());
-                            string[] values1 = GetMonthValues(kwd, monthsList);
+                            //string kwd = WebUtility.HtmlDecode(s);
+                            string[] values1 = GetMonthValues(s, monthsList);
 
                             if (values1 == null && monthsList[0] != null)
                             {
@@ -745,7 +744,7 @@ namespace ExactValuesSimilarBatchKeywords
                                 {
                                     //qry = ""; // 29-07-2020  -- no need to update the status for similarkeywords table.
                                     qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
-                                    qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );  ";
+                                    qry += market + "', N'" + s.Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );  ";
 
                                     //27-07-2020
                                     qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
@@ -758,7 +757,7 @@ namespace ExactValuesSimilarBatchKeywords
                                     qry += ",[month14value],[month13],[month13value],[month12],[month12value],[month11],[month11value],[month10],[month10value],[month9],[month9value]";
                                     qry += ",[month8],[month8value],[month7],[month7value],[month6],[month6value],[month5],[month5value],[month4],[month4value],[month3]";
                                     qry += ",[month3value],[month2],[month2value],[month1],[month1value],[annualvalue],[cpc],[cpclow],[cpchigh],[competition],[impressions],[closeVariant],[Errorcode],[ErrorMessage] ) values('";
-                                    qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "','" + "INR" + "', 'kp_old', 1, 0, Convert(varchar(10),'";
+                                    qry += market + "', N'" + s.Replace("'", "''") + "', N'" + country + "','" + "INR" + "', 'kp_old', 1, 0, Convert(varchar(10),'";
                                     qry += DateTime.Now.ToString("yyyy-MM-dd") + "',20), ";
 
                                     for (int i = 48; i >= 1; i--)
@@ -773,7 +772,7 @@ namespace ExactValuesSimilarBatchKeywords
                                     SendResultsToDB_48(qry);
 
                                     //stores root keyword in closeVariant table
-                                    SendMissedKeywordResult(market, s.Trim(), country);
+                                    SendMissedKeywordResult(market, s, country);
                                 }
                                 catch (SqlException e)
                                 {
@@ -804,7 +803,7 @@ namespace ExactValuesSimilarBatchKeywords
                             writer.WriteStartElement("", "volume-data", "");
 
                             writer.WriteStartElement("", "keyword", "");
-                            writer.WriteString(s.Trim());
+                            writer.WriteString(s);
                             writer.WriteEndElement();
 
                             writer.WriteStartElement("", "source", "");
@@ -818,11 +817,11 @@ namespace ExactValuesSimilarBatchKeywords
                             string smonth = Convert.ToDateTime(hdr[59]).ToString("yyyy-MM");
 
                             //Sending Empty months
-                            if (values1[0].ToLower() == kwd.ToLower() && values1[12] == "")
+                            if (values1[0].ToLower() == s.ToLower() && values1[12] == "")
                             {
                                 //inserting empty months
                                 qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate]) values('";
-                                qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
+                                qry += market + "', N'" + s.Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
 
                                 writer.WriteStartElement("", "currency", "");
                                 writer.WriteString(values1[1]);
@@ -847,7 +846,7 @@ namespace ExactValuesSimilarBatchKeywords
                                 writer.WriteEndElement();
                             }
                             //storing exact values
-                            else if (values1[0].ToLower() == kwd.ToLower())
+                            else if (values1[0].ToLower() == s.ToLower())
                             {
                                 qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
                                 qry += ",[month47],[month47value],[month46],[month46value],[month45],[month45value],[month44],[month44value],[month43],[month43value],[month42],[month42value]";
@@ -859,7 +858,7 @@ namespace ExactValuesSimilarBatchKeywords
                                 qry += ",[month14value],[month13],[month13value],[month12],[month12value],[month11],[month11value],[month10],[month10value],[month9],[month9value]";
                                 qry += ",[month8],[month8value],[month7],[month7value],[month6],[month6value],[month5],[month5value],[month4],[month4value],[month3]";
                                 qry += ",[month3value],[month2],[month2value],[month1],[month1value],[annualvalue],[cpc],[cpclow],[cpchigh],[competition],[impressions] ) values('";
-                                qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'";
+                                qry += market + "', N'" + s.Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'";
                                 qry += DateTime.Now.ToString("yyyy-MM-dd") + "',20), ";
 
                                 writer.WriteStartElement("", "currency", "");
@@ -949,9 +948,9 @@ namespace ExactValuesSimilarBatchKeywords
                             //Results submitting to Pi APi
                             try
                             {
-                                Console.WriteLine(kwd);
+                                Console.WriteLine(s);
                                 if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
-                                    PostXML(path, kwd, market);//06-07-2020 //included market parameter
+                                    PostXML(path, s, market);//06-07-2020 //included market parameter
 
                                 SendResultsToDB_48(qry);
 
@@ -974,7 +973,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                             /* 07-08-2020
                             qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname]) ";
-                            qry += "Values('" + market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "');";
+                            qry += "Values('" + market + "', N'" + s.Replace("'", "''") + "', N'" + country + "');";
 
                             SendResultsToDB_48(qry);
                             end 07-08-2020 */
@@ -1072,7 +1071,7 @@ namespace ExactValuesSimilarBatchKeywords
                             message = nd1.InnerText;
                         if (error != null && message != null)//changes
                         {
-                            string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1, errorcode=" + error + ",ErrorMessage='" + message + "' where Market='" + market + "' and Keyword=N'" + kn.Trim().Replace("'", "''") + "'";
+                            string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1, errorcode=" + error + ",ErrorMessage='" + message + "' where Market='" + market + "' and Keyword=N'" + kn.Replace("'", "''") + "'";
                             SendResultsToDB_48(qry);
                         }
                     }
@@ -1217,7 +1216,7 @@ namespace ExactValuesSimilarBatchKeywords
                         //src = source[i].InnerText;
                         //pr = priority[i].InnerText;                    
                     }
-                    kd = kd.Remove(kd.Trim().Length - 1);
+                    kd = kd.Remove(kd.Length - 1);
                     market = country[0].InnerText;
                     src = source[0].InnerText;
                     pr = priority[0].InnerText;
@@ -1304,7 +1303,7 @@ namespace ExactValuesSimilarBatchKeywords
                     string[] values = new string[60];
                     for (int i = 0; i < 60; i++)
                     {
-                        values[i] = val[i].Contains("Searches:") ? (val[i].Split(':')[1].Trim()) :
+                        values[i] = val[i].Contains("Searches:") ? (val[i].Split(':')[1]) :
                             i > 2 ? (val[i].Replace("&#x13;", "-").Replace("  ", "-").Replace("K", "000").Replace("M", "000000")) :
                             val[i];
                     }
