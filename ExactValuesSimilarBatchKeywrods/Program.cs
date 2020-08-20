@@ -375,8 +375,9 @@ namespace ExactValuesSimilarBatchKeywords
                                 IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
                                 highlight.Click();
 
-                                IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
-                                //If any country miss match then signout and exit app..
+                                //IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)")); //20-08-2020 commented
+                                IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020
+                                //If any country miss match then continue to next keyword.
                                 if (element.Text.Contains("All locations") || element.Text.ToLower() != country.ToLower())
                                 {
                                     Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
