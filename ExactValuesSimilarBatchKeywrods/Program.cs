@@ -721,6 +721,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                     foreach (string s in kwds)
                     {
+                        string s = kwd.Trim();
                         if (s == "Keyword") continue;
 
                         if (appTimeOut)
