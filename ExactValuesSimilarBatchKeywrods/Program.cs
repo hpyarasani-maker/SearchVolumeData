@@ -159,7 +159,7 @@ namespace ExactValuesSimilarBatchKeywords
                     string[] item = kwItem.Split(':');
                     string market = item[0];
                     string country = item[1];
-                    string kws = "Keyword," + item[2]; //20-08-2020 removed space in "Keyword, "
+                    string kws = "Keyword, " + item[2]; //20-08-2020 
                     string keyword = item[2];
                     try
                     {
@@ -176,7 +176,7 @@ namespace ExactValuesSimilarBatchKeywords
                             element.Click();
 
                         }
-                        catch { }
+                        catch(Exception ex) { ex.Message.ToString(); }
                         try
                         {
 
@@ -650,7 +650,7 @@ namespace ExactValuesSimilarBatchKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=8";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=10";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
