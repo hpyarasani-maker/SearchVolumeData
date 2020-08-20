@@ -719,7 +719,7 @@ namespace ExactValuesSimilarBatchKeywords
                     int n = 0;
                     bool isCloseVariant;
 
-                    foreach (string kwd in kwds)
+                    foreach (string kwd in kwds) //20-08-2020
                     {
                         string s = kwd.Trim();
                         if (s == "Keyword") continue;
