@@ -324,12 +324,12 @@ namespace ExactValuesSimilarBatchKeywords
                         //end 06-08-2020
 
                         //28-07-2020
-                        try
+                       /* try
                         {
                             IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon")));
                             removecountry.Click();
                         }
-                        catch { }
+                        catch { }*/
 
 
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
