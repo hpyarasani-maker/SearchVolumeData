@@ -15,6 +15,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using System.Net.Http;
 
 namespace ExactValuesSimilarKeywords
 {
@@ -568,38 +569,69 @@ namespace ExactValuesSimilarKeywords
         {
             string url = "http://82.136.46.2:8080/api/GetAllSingleSimilarKeywordsProc1";
             //string url = "http://82.136.46.2:8080/api/GetAllSingleSimilarKeywordsProc2";
-            Uri queryUri = new Uri(url);
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(queryUri);
-            req.Headers.Clear();
-            req.Method = "Get";
-            req.ContentType = "application/json";
-            req.Headers.Clear();
-            ArrayList alKws = new ArrayList();
-            string response;
-            try
-            {
-                HttpWebResponse res = (HttpWebResponse)await req.GetResponseAsync();
-                using (StreamReader reader = new StreamReader(res.GetResponseStream(), Encoding.UTF8))
-                {
-                    response = reader.ReadToEnd();
-                }
-                res.Close();
-                if (response != "null")
-                {
-                    JArray jo = JArray.Parse(response);
-                    foreach (var item in jo)
-                    {
-                        string kwdList = item["market"] + ":" + item["countryname"] + ":" + item["keyword"];
-                        alKws.Add(kwdList);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
 
-            return alKws;
+            /* HttpWebRequest req = (HttpWebRequest)WebRequest.Create(queryUri);
+             req.Headers.Clear();
+             req.Method = "Get";
+             req.ContentType = "application/json";
+             req.Headers.Clear();
+
+             try
+             {
+                 HttpWebResponse res = (HttpWebResponse)await req.GetResponseAsync();
+                 using (StreamReader reader = new StreamReader(res.GetResponseStream(), Encoding.UTF8))
+                 {
+                     response = reader.ReadToEnd();
+                 }
+                 res.Close();
+                 if (response != "null")
+                 {
+                     JArray jo = JArray.Parse(response);
+                     foreach (var item in jo)
+                     {
+                         string kwdList = item["market"] + ":" + item["countryname"] + ":" + item["keyword"];
+                         alKws.Add(kwdList);
+                     }
+                 }
+             }
+             catch (Exception ex)
+             {
+                 throw ex;
+             }*/
+            ArrayList alKws = new ArrayList();
+            string response = string.Empty;
+            Uri ul = new Uri(url);
+            using (var client = new HttpClient())
+            {
+
+                try
+                {
+
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    response = client.GetStringAsync(ul).Result;
+                    if (response != "null")
+                    {
+                        JArray jo = JArray.Parse(response);
+                        foreach (var item in jo)
+                        {
+                            string kwdList = item["market"] + ":" + item["countryname"] + ":" + item["keyword"];
+                            alKws.Add(kwdList);
+                        }
+                    }
+
+                }
+
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+            return await Task.FromResult(alKws);
+
+
+
         }
         static ArrayList GetKeywordsFromDB()
         {

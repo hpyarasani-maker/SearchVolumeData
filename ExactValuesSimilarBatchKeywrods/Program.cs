@@ -15,6 +15,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using System.Net.Http;
 
 namespace ExactValuesSimilarBatchKeywords
 {
@@ -1184,7 +1185,7 @@ namespace ExactValuesSimilarBatchKeywords
         static async Task<ArrayList> GetBatchSimilarKeywordsApi()//14-09-2020
         {
             string url = "http://82.136.46.2:8080/api/GetBulkSimilarKeywords";
-            Uri queryUri = new Uri(url);
+            /*Uri queryUri = new Uri(url);
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(queryUri);
             req.Headers.Clear();
             req.Method = "Get";
@@ -1213,8 +1214,39 @@ namespace ExactValuesSimilarBatchKeywords
             catch (Exception ex)
             {
                 throw ex;
+            }*/
+            ArrayList alKws = new ArrayList();
+            string response = string.Empty;
+            Uri ul = new Uri(url);
+            using (var client = new HttpClient())
+            {
+
+                try
+                {
+
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    response = client.GetStringAsync(ul).Result;
+                    if (response != "null")
+                    {
+                        JArray jo = JArray.Parse(response);
+                        foreach (var item in jo)
+                        {
+                            string kwdList = item["market"] + ":" + item["countryname"] + ":" + item["keyword"];
+                            alKws.Add(kwdList);
+                        }
+                    }
+
+                }
+
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
             }
-            return alKws;
+            return await Task.FromResult(alKws);
+
         }
 
         static ArrayList GetKeywordsFromAPI()
