@@ -13,6 +13,9 @@ using System.Collections;
 using System.Windows.Forms;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+
 namespace ExactValuesSimilarKeywords
 {
     class Program
@@ -138,8 +141,9 @@ namespace ExactValuesSimilarKeywords
                 try
                 {
                     //method downloads keywords from Pi API
-                    alKeywords = GetKeywordsFromDB();
+                    //alKeywords = GetKeywordsFromDB();
                     //alKeywords = GetKeywordsManully();//06-07-2020
+                    alKeywords = GetSingleSimilarKeywordsApi().Result;
                     if (alKeywords.Count <= 0)
                     {
                         //it will try again keywords are not downloaded and wait for 10 seconds to download again
@@ -558,6 +562,43 @@ namespace ExactValuesSimilarKeywords
             ArrayList alKws = new ArrayList();
             string kwdList = "gb" + ":" + "United Kingdom" + ":" + kwd;
             alKws.Add(kwdList);
+            return alKws;
+        }
+        static async Task<ArrayList> GetSingleSimilarKeywordsApi()  //14-09-2020
+        {
+            string url = "http://82.136.46.2:8080/api/GetAllSingleSimilarKeywordsProc1";
+            //string url = "http://82.136.46.2:8080/api/GetAllSingleSimilarKeywordsProc2";
+            Uri queryUri = new Uri(url);
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(queryUri);
+            req.Headers.Clear();
+            req.Method = "Get";
+            req.ContentType = "application/json";
+            req.Headers.Clear();
+            ArrayList alKws = new ArrayList();
+            string response;
+            try
+            {
+                HttpWebResponse res = (HttpWebResponse)await req.GetResponseAsync();
+                using (StreamReader reader = new StreamReader(res.GetResponseStream(), Encoding.UTF8))
+                {
+                    response = reader.ReadToEnd();
+                }
+                res.Close();
+                if (response != "null")
+                {
+                    JArray jo = JArray.Parse(response);
+                    foreach (var item in jo)
+                    {
+                        string kwdList = item["market"] + ":" + item["countryname"] + ":" + item["keyword"];
+                        alKws.Add(kwdList);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
             return alKws;
         }
         static ArrayList GetKeywordsFromDB()
