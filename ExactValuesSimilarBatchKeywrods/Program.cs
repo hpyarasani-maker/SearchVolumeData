@@ -13,6 +13,9 @@ using System.Collections;
 using System.Windows.Forms;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+
 namespace ExactValuesSimilarBatchKeywords
 {
     class Program
@@ -138,8 +141,9 @@ namespace ExactValuesSimilarBatchKeywords
                 try
                 {
                     //method downloads keywords from Pi API
-                    alKeywords = GetKeywordsFromDB();
+                    //alKeywords = GetKeywordsFromDB();
                     //alKeywords = GetKeywordsManully();//06-07-2020
+                    alKeywords = GetBatchSimilarKeywordsApi().Result; //14-09-2020
                     if (alKeywords.Count <= 0)
                     {
                         //it will try again keywords are not downloaded and wait for 10 seconds to download again
@@ -1175,6 +1179,42 @@ namespace ExactValuesSimilarBatchKeywords
             string ret = reader.ReadToEnd();
             reader.Close();
             return ret;
+        }
+
+        static async Task<ArrayList> GetBatchSimilarKeywordsApi()//14-09-2020
+        {
+            string url = "http://82.136.46.2:8080/api/GetBulkSimilarKeywords";
+            Uri queryUri = new Uri(url);
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(queryUri);
+            req.Headers.Clear();
+            req.Method = "Get";
+            req.ContentType = "application/json";
+            req.Headers.Clear();
+            ArrayList alKws = new ArrayList();
+            string response;
+            try
+            {
+                HttpWebResponse res = (HttpWebResponse)await req.GetResponseAsync();
+                using (StreamReader reader = new StreamReader(res.GetResponseStream(), Encoding.UTF8))
+                {
+                    response = reader.ReadToEnd();
+                }
+                res.Close();
+                if (response != "null")
+                {
+                    JArray jo = JArray.Parse(response);
+                    foreach (var item in jo)
+                    {
+                        string kwdList = item["market"] + ":" + item["countryname"] + ":" + item["keyword"];
+                        alKws.Add(kwdList);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return alKws;
         }
 
         static ArrayList GetKeywordsFromAPI()
