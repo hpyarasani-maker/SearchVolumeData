@@ -567,37 +567,10 @@ namespace ExactValuesSimilarKeywords
         }
         static async Task<ArrayList> GetSingleSimilarKeywordsApi()  //14-09-2020
         {
-            string url = "http://82.136.46.2:8080/api/GetAllSingleSimilarKeywordsProc1";
+            //string url = "http://82.136.46.2:8080/api/GetAllSingleSimilarKeywordsProc1";
             //string url = "http://82.136.46.2:8080/api/GetAllSingleSimilarKeywordsProc2";
-
-            /* HttpWebRequest req = (HttpWebRequest)WebRequest.Create(queryUri);
-             req.Headers.Clear();
-             req.Method = "Get";
-             req.ContentType = "application/json";
-             req.Headers.Clear();
-
-             try
-             {
-                 HttpWebResponse res = (HttpWebResponse)await req.GetResponseAsync();
-                 using (StreamReader reader = new StreamReader(res.GetResponseStream(), Encoding.UTF8))
-                 {
-                     response = reader.ReadToEnd();
-                 }
-                 res.Close();
-                 if (response != "null")
-                 {
-                     JArray jo = JArray.Parse(response);
-                     foreach (var item in jo)
-                     {
-                         string kwdList = item["market"] + ":" + item["countryname"] + ":" + item["keyword"];
-                         alKws.Add(kwdList);
-                     }
-                 }
-             }
-             catch (Exception ex)
-             {
-                 throw ex;
-             }*/
+            //string url = "https://similarkeywordapis.azurewebsites.net/api/GetAllSingleSimilarKeywordsProc1";
+            string url = "https://similarkeywordapis.azurewebsites.net/api/GetAllSingleSimilarKeywordsProc2";
             ArrayList alKws = new ArrayList();
             string response = string.Empty;
             Uri ul = new Uri(url);
@@ -642,8 +615,8 @@ namespace ExactValuesSimilarKeywords
                 //string strQry = "select Market,countryname,Keyword from [48MonthsKeywordsData_Old_SimilarKeywords] where status_old=0";
                 //string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
                 //string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
-                string strQry = "[dbo].[GetBulkSimilarKeywords]";// bulk keywords
-                //string strQry = "[dbo].[GetSimilarKeywords_1]";
+                //string strQry = "[dbo].[GetBulkSimilarKeywords]";// bulk keywords
+                string strQry = "[dbo].[GetSimilarKeywords_1]";
                 //string strQry = "[dbo].[GetSimilarKeywords_2]";
                 //string strQry = "[dbo].[GetSimilarKeywords_3]";
                 //string strQry = "[dbo].[GetSimilarKeywords_4]";
@@ -722,7 +695,7 @@ namespace ExactValuesSimilarKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=10";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=1";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
