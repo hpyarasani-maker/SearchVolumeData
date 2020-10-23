@@ -273,7 +273,7 @@ namespace ExactValues
                         }
                         catch
                         { }
-                        IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[5]/a")));
+                        IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[3]/a"))); //23-10-2020 changed selector
                         itemelement.Click();
                         
                         IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
