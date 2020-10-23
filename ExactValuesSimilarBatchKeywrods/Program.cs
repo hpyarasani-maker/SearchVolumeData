@@ -282,7 +282,7 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch
                         { }
-                        IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[5]/a")));
+                        IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[3]/a"))); //23-10-2020 selector to select keyword options
                         itemelement.Click();
 
                         IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
@@ -328,13 +328,13 @@ namespace ExactValuesSimilarBatchKeywords
                         location.Click();
                         //end 06-08-2020
 
-                        //28-07-2020
-                       /* try
+                        //23-10-2020
+                        try
                         {
-                            IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon")));
+                            IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)")));
                             removecountry.Click();
                         }
-                        catch { }*/
+                        catch { }
 
 
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)

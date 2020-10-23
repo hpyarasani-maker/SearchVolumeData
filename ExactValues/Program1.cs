@@ -283,7 +283,12 @@ namespace ExactValues
                         
                         IWebElement location = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
                         location.Click();
-                        
+                        try //23-10-2020  added try block for country selection issue
+                        {
+                            IWebElement target = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)")));
+                            target.Click();
+                        }
+                        catch { }
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
                         {
                             
