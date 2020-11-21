@@ -337,16 +337,24 @@ namespace ExactValues
 
                                 IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
                                 highlight.Click();
-                                
-                                IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
+
+                                //IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
+                                IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020 //21-11-2020 changed to above line
                                 //If any country miss match then signout and exit app..
-                                if (element.Text.Contains("All locations") || element.Text.ToLower() != country.ToLower())
+                                //if (element.Text.Contains("All locations") || element.Text.ToLower() != country.ToLower())
+                                if (element.Text.Contains("All locations") || element.Text.Split(':')[1].ToLower() != country.ToLower()) // included split on 21-11-2020
                                 {
                                     Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
-                                    Signout(driver);
-                                    driver.Close();
-                                    driver.Dispose();
-                                    return 0;
+                                    //Signout(driver);
+                                    //driver.Close();
+                                    //driver.Dispose();
+                                    //return 0;
+
+                                    //21-11-2020 included code 
+                                    IWebElement backbtn = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
+                                    backbtn.Click();
+                                    continue;
+                                    //end 04-08-2020 //included code on 21-11-2020
                                 }
                                 else
                                     Console.WriteLine("=====Country Selected Successfully=====");
