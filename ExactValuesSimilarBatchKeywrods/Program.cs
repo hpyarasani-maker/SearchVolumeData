@@ -483,6 +483,23 @@ namespace ExactValuesSimilarBatchKeywords
                         {
                             try
                             {
+                                //24-11-2020
+                                try
+                                {
+                                    WebDriverWait inputwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
+                                    var rangeValue = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(2)"));
+                                    rangeValue.Click();
+                                    var val = rangeValue.Text;
+                                    if (val.Contains("–") || val.Contains("—"))
+                                    {
+                                        Signout(driver);
+                                        driver.Close();
+                                        driver.Dispose();
+                                        return 0;
+                                    }
+                                }
+                                catch { }
+                                //end 24-11-2020
                                 try
                                 {
                                     IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
