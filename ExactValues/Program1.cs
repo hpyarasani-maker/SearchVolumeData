@@ -488,6 +488,7 @@ namespace ExactValues
                         
                         IWebElement backbutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
                         backbutton.Click();
+                        //24-11-2020 updated code return to KP first page
                         try
                         {
                             Console.WriteLine(driver.PageSource);
@@ -496,7 +497,7 @@ namespace ExactValues
 
                         }
                         catch { }
-
+                        //end of 24-11-2020
                     }
                     catch (Exception ex)
                     {
