@@ -548,7 +548,14 @@ namespace ExactValuesSimilarBatchKeywords
 
                         IWebElement backbutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
                         backbutton.Click();
+                        try
+                        {
+                            Console.WriteLine(driver.PageSource);
+                            if (driver.FindElements(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")).Count == 0)
+                                driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home");
 
+                        }
+                        catch { }
 
                     }
                     catch (Exception ex)
