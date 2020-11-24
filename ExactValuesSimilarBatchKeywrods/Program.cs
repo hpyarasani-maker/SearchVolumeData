@@ -1209,7 +1209,8 @@ namespace ExactValuesSimilarBatchKeywords
 
         static async Task<ArrayList> GetBatchSimilarKeywordsApi()//14-09-2020
         {
-            string url = "http://82.136.46.2:8080/api/GetBulkSimilarKeywords";
+            //string url = "http://82.136.46.2:8080/api/GetBulkSimilarKeywords";
+            string url = "https://similarkeywordapis.azurewebsites.net/api/GetBulkSimilarKeywords";
             /*Uri queryUri = new Uri(url);
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(queryUri);
             req.Headers.Clear();
