@@ -411,10 +411,10 @@ namespace ExactValuesSimilarBatchKeywords
                                     Console.WriteLine("=====Country Selected Successfully=====");
 
                             }
-                            catch
+                            catch(Exception ex)
                             {
                                 //If any error occured in country selection then signout and exit..
-                                Console.WriteLine("==Problem In Country Selection==");
+                                Console.WriteLine("==Problem In Country Selection=={0}",ex.Message.ToString());
                                 Signout(driver);
                                 driver.Close();
                                 driver.Dispose();
