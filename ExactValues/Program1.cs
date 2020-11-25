@@ -320,9 +320,12 @@ namespace ExactValues
                             
                             try
                             {
-                                //Console.WriteLine(driver.PageSource);
-                                IWebElement locationsuggestion = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("location-data-suggestion-entry:nth-child(1)")));
+                                //25-11-2020
+                                Console.WriteLine(driver.PageSource);
+                                WebDriverWait countryWait = new WebDriverWait(driver, new TimeSpan(0, 1, 5));
+                                IWebElement locationsuggestion = countryWait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("location-data-suggestion-entry:nth-child(1)")));
                                 locationsuggestion.Click();
+                                //25-11-2020 END
                             }
                             catch
                             {
@@ -399,7 +402,7 @@ namespace ExactValues
                             // if the date is selected other then 48 months then signout and exit
                             if (month.Text.Contains("All available") != true)
                             {
-                                
+                                Console.WriteLine("===========Problem While Selecting Months============"); //25-11-2020
                                 Signout(driver);
                                 driver.Close();
                                 driver.Dispose();
@@ -432,6 +435,7 @@ namespace ExactValues
                                     var val = rangeValue.Text;
                                     if (val.Contains("–") || val.Contains("—"))
                                     {
+                                        Console.WriteLine("===========Ranges Started============");//25-11-2020
                                         Signout(driver);
                                         driver.Close();
                                         driver.Dispose();
