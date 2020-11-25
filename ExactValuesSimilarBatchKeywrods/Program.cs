@@ -414,11 +414,14 @@ namespace ExactValuesSimilarBatchKeywords
                             catch(Exception ex)
                             {
                                 //If any error occured in country selection then signout and exit..
-                                Console.WriteLine("==Problem In Country Selection=={0}",ex.Message.ToString());
-                                Signout(driver);
-                                driver.Close();
-                                driver.Dispose();
-                                return 0;
+                                Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
+                                throw new Exception("Country selection problem");
+                                //25-11-2020 commented below lines
+                                //Signout(driver);
+                                //driver.Close();
+                                //driver.Dispose();
+                                //return 0;
+                                //end 25-11-2020
                             }
 
 
