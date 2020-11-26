@@ -13,6 +13,7 @@ using System.Collections;
 using System.Windows.Forms;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.Text.RegularExpressions;
 
 namespace ExactValues
 {
@@ -436,7 +437,7 @@ namespace ExactValues
                                     var rangeValue = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(2)"));
                                     rangeValue.Click();
                                     var val = rangeValue.Text;
-                                    if (val.Contains("–") || val.Contains("—"))
+                                    if (Regex.IsMatch(val, @"\d+\w?\s\W\s\d+\w?"))
                                     {
                                         Console.WriteLine("===========Ranges Started============");//25-11-2020
                                         Signout(driver);
