@@ -59,7 +59,7 @@ namespace ExactValues
                 
                 element.SendKeys(email);
             }
-            catch
+            catch //27-11-2020
             {
                 try
                 {
@@ -93,14 +93,14 @@ namespace ExactValues
                 }
                 catch (Exception ex)
                 { LogError(ex, "Error While Entering Gmail ID"); }
-            }
+            }//27-11-2020
             try
             {
                 IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='identifierNext']")));
                
                 element.Click();
             }
-            catch
+            catch//27-11-2020
             {
                 try
                 {
@@ -134,15 +134,15 @@ namespace ExactValues
                 }
                 catch (Exception ex)
                 { LogError(ex, "Error While clicking Next Button(Mail LogIn)"); }
-            }
-            
+            }//27-11-2020
+
             try
             {
                 IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@name='password']")));
               
                 element.SendKeys(password);
             }
-            catch
+            catch//27-11-2020
             {
                 try
                 {
@@ -176,14 +176,14 @@ namespace ExactValues
                 }
                 catch (Exception ex)
                 { LogError(ex, "Error While Entering Gmail Password"); }
-            }
+            }//27-11-2020
             try
             {
                 IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='passwordNext']")));
                 
                 element.Click();
             }
-            catch
+            catch//27-11-2020
             {
                 try
                 {
@@ -227,7 +227,7 @@ namespace ExactValues
                     catch (Exception ex)
                     { LogError(ex, "Error While clicking SignIn Button"); }
                 }
-            }
+            }//27-11-2020
             Console.WriteLine(driver.PageSource);
             try
             {
@@ -237,7 +237,7 @@ namespace ExactValues
                 element.Click();
                
             }
-            catch
+            catch//27-11-2020
             {
                 try
                 {
@@ -271,7 +271,7 @@ namespace ExactValues
                 }
                 catch (Exception ex)
                 { LogError(ex, "Error While clicking AccountChooser Window"); }
-            }
+            }//27-11-2020
 
             while (true)
             {
@@ -290,7 +290,7 @@ namespace ExactValues
                         continue;
                     }
                 }
-                catch(Exception ex)
+                catch(Exception ex)//27-11-2020
                 {
                     LogError(ex, "Error While Downloading Keywords From API");
                     //any error repeats again for 10 secs
@@ -308,7 +308,7 @@ namespace ExactValues
                     try
                     {
                         //method deletes previous downloaded csv files
-                        try
+                        try//27-11-2020
                         {
                             DeleteFile();
                         }
@@ -329,7 +329,7 @@ namespace ExactValues
                             LogError(ex, "Error While Deleting CSV File");
                         }
                         WebDriverWait tensecondswait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-                        try
+                        try//27-11-2020
                         {
                             WriteToCsv(kws);
                         }
@@ -374,7 +374,7 @@ namespace ExactValues
                             //}
                             //catch { }
                         }
-                        catch
+                        catch//27-11-2020
                         {
                             try
                             {
@@ -418,7 +418,7 @@ namespace ExactValues
                             accountchooser.Click();
                         }
                         catch { }
-                        try
+                        try//27-11-2020
                         {
 
                             IWebElement forecast = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")));
@@ -484,7 +484,7 @@ namespace ExactValues
                         }
 
                         Console.WriteLine(driver.PageSource);
-                        try
+                        try//27-11-2020
                         {
                             IWebElement save = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
                             save.Click();
@@ -531,7 +531,7 @@ namespace ExactValues
                         //}
                         //catch (Exception ex)
                         //{ LogError(ex, "Error While clicking Save Button"); }
-                        try
+                        try//27-11-2020
                         {
 
                             IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[3]/a"))); //23-10-2020 changed selector
@@ -563,7 +563,7 @@ namespace ExactValues
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Keywords Window"); }
-                        try
+                        try//27-11-2020
                         {
                             IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
                             tab.Click();
@@ -596,7 +596,7 @@ namespace ExactValues
                         { LogError(ex, "Error While Clicking Historical Metrics Window"); }
                         // Location Selection. 
 
-                        try
+                        try//27-11-2020
                         {
                             IWebElement location = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
                             location.Click();
@@ -627,7 +627,7 @@ namespace ExactValues
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Location Button"); }
-                        try //23-10-2020  added try block for country selection issue
+                        try //23-10-2020  added try block for country selection issue //27-11-2020
                         {
                             IWebElement target = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)")));
                             target.Click();
@@ -669,7 +669,7 @@ namespace ExactValues
                                 
                                 labelinput.SendKeys(country);
                             }
-                            catch
+                            catch//27-11-2020
                             {
                                 //Also checks locations which throws exceptions 
                                 try
@@ -711,8 +711,8 @@ namespace ExactValues
                                 }
                             }
 
-                            
-                            try
+
+                            try//27-11-2020
                             {
                                 //25-11-2020
                                 Console.WriteLine(driver.PageSource);
@@ -751,9 +751,9 @@ namespace ExactValues
                                 Console.WriteLine("==Problem In Country Selection(Target Selection)==");
                                 throw new Exception();
                             }
-                            
 
-                            try
+
+                            try//27-11-2020
                             {
 
                                 IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
@@ -830,7 +830,7 @@ namespace ExactValues
 
                         try
                         {
-                            try
+                            try//27-11-2020
                             {
                                 IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown")));
                                 dropdown.Click();
@@ -871,7 +871,7 @@ namespace ExactValues
                             // if the date is selected other then 48 months then signout and exit
                             if (month.Text.Contains("All available") != true)
                             {
-                                LogError(new Exception(), "Error while selecting All available Months");
+                                LogError(new Exception(), "Error while selecting All available Months");//27-11-2020
                                 Console.WriteLine("===========Problem While Selecting Months============"); //25-11-2020
                                 Signout(driver);
                                 driver.Close();
@@ -881,7 +881,7 @@ namespace ExactValues
                         }
                         catch(Exception ex)
                         {
-                            LogError(ex, "Error In Date Selection");
+                            LogError(ex, "Error In Date Selection");//27-11-2020
                             //if any error occurs in date selection then signout and exit
                             Console.WriteLine("Error In Date Selection");
                             
@@ -898,7 +898,7 @@ namespace ExactValues
                             try
                             {
                                 //27-11-2020 removed try block
-                                try
+                                try//27-11-2020
                                 {
                                     IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
                                     download.Click();
@@ -969,7 +969,7 @@ namespace ExactValues
                               LogError(ex, "Error While Processing Results");
                         }
                         //goes to first page for next batch keywords
-                        try
+                        try//27-11-2020
                         {
                             IWebElement backbutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
                             backbutton.Click();
@@ -1001,7 +1001,7 @@ namespace ExactValues
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Back Button"); }
                         //24-11-2020 updated code return to KP first page
-                        try
+                        try//27-11-2020
                         {
                             Console.WriteLine(driver.PageSource);
                             if (driver.FindElements(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")).Count == 0)
@@ -1016,7 +1016,7 @@ namespace ExactValues
                     {
                         try
                         {
-                            LogError(ex, "Something Went Wrong");
+                            LogError(ex, "Something Went Wrong");//27-11-2020
                             //if any error occurs other then above exceptions in entire process this returns to login page
                             Console.WriteLine(ex.Message);
                             driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home?ocid=325109181&euid=331594490&__u=5223172010&uscid=325109181&__c=2039899669&authuser=0&enableAllBrowsers=1");
@@ -1045,7 +1045,7 @@ namespace ExactValues
             return 0;
         }
        
-        static void LogError(Exception ex=null, string custommessage = "")
+        static void LogError(Exception ex=null, string custommessage = "")//27-11-2020
         {
             try
             {
@@ -1079,9 +1079,9 @@ namespace ExactValues
             {
 
             }
-            
-            
-        }
+
+
+        }//27-11-2020
         static void Signout(IWebDriver driver)
         {
             try

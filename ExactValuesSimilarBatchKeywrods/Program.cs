@@ -62,7 +62,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                 element.SendKeys(email);
             }
-            catch
+            catch//27-11-2020
             {
                 try
                 {
@@ -99,7 +99,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                 element.Click();
             }
-            catch
+            catch//27-11-2020
             {
                 try
                 {
@@ -137,7 +137,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                 element.SendKeys(password);
             }
-            catch
+            catch//27-11-2020
             {
                 try
                 {
@@ -182,7 +182,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                     element.Click();
                 }
-                catch
+                catch//27-11-2020
                 {
                     try
                     {
@@ -224,7 +224,7 @@ namespace ExactValuesSimilarBatchKeywords
                 element.Click();
 
             }
-            catch
+            catch//27-11-2020
             {
                 try
                 {
@@ -275,7 +275,7 @@ namespace ExactValuesSimilarBatchKeywords
                         continue;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception ex)//27-11-2020
                 {
                     LogError(ex, "Error While Downloading Keywords From API");
                     //any error repeats again for 10 secs
@@ -293,7 +293,7 @@ namespace ExactValuesSimilarBatchKeywords
                     try
                     {
                         //method deletes previous downloaded csv files
-                        try
+                        try//27-11-2020
                         {
                             DeleteFile();
                         }
@@ -315,7 +315,7 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         WebDriverWait tensecondswait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
 
-                        try
+                        try//27-11-2020
                         {
                             WriteToCsv(kws);
                         }
@@ -361,7 +361,7 @@ namespace ExactValuesSimilarBatchKeywords
                             }
                             catch { }
                         }
-                        catch
+                        catch//27-11-2020
                         {
                             try
                             {
@@ -402,7 +402,7 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch { }
 
-                        try
+                        try//27-11-2020
                         {
 
                             IWebElement forecast = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")));
@@ -468,7 +468,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                         Console.WriteLine(driver.PageSource);
 
-                        try
+                        try//27-11-2020
                         {
                             IWebElement save = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
                             save.Click();
@@ -512,7 +512,7 @@ namespace ExactValuesSimilarBatchKeywords
                         //}
                         //catch
                         //{ }
-                        try
+                        try//27-11-2020
                         {
 
                             IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[3]/a"))); //23-10-2020 changed selector
@@ -541,7 +541,7 @@ namespace ExactValuesSimilarBatchKeywords
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Keywords Window"); }
 
-                        try
+                        try//27-11-2020
                         {
                             IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
                             tab.Click();
@@ -605,7 +605,7 @@ namespace ExactValuesSimilarBatchKeywords
                         catch { }
                         // Location Selection. 
                         WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
-                        try
+                        try//27-11-2020
                         {
                             IWebElement location = hiswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
                             location.Click();
@@ -632,10 +632,10 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Location Button"); }
-                    //end 06-08-2020
+                        //end 06-08-2020
 
-                    //23-10-2020
-                        try
+                        //23-10-2020
+                        try//27-11-2020
                         {
                             IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)")));
                             removecountry.Click();
@@ -667,7 +667,7 @@ namespace ExactValuesSimilarBatchKeywords
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
                         {
 
-                            try
+                            try//27-11-2020
                             {
                                 WebDriverWait inputwait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
                                 IWebElement labelinput = inputwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("label.input-container:nth-child(1)")));
@@ -675,7 +675,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                                 labelinput.SendKeys(country);
                             }
-                            catch
+                            catch//27-11-2020
                             {
                                 //Also checks locations which throws exceptions 
                                 try
@@ -714,7 +714,7 @@ namespace ExactValuesSimilarBatchKeywords
                             }
 
 
-                            try
+                            try//27-11-2020
                             {
                                 //25-11-2020
                                 Console.WriteLine(driver.PageSource);
@@ -762,18 +762,17 @@ namespace ExactValuesSimilarBatchKeywords
                                 //If any country miss match then continue to next keyword.
                                 if (element.Text.Contains("All locations") || element.Text.Split(':')[1].ToLower() != country.ToLower()) //20-08-2020
                                 {
+                                    LogError(null, "In Country Selection(Missmatched Location)" + "Actual Country is " + country + " selected country is " + element.Text);
                                     Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
 
-                                    //04-08-2020
+                                    //27-11-2020
                                     //Signout(driver);
                                     //driver.Close();
                                     //driver.Dispose();
                                     //return 0;
 
-                                    IWebElement backbtn = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
-                                    backbtn.Click();
-                                    continue;
-                                    //end 04-08-2020
+                                    throw new Exception();
+                                    //end 27-11-2020
                                 }
                                 else
                                     Console.WriteLine("=====Country Selected Successfully=====");
@@ -836,7 +835,7 @@ namespace ExactValuesSimilarBatchKeywords
                         //Date Selection
                         try
                         {
-                            try
+                            try//27-11-2020
                             {
                                 IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown")));
                                 dropdown.Click();
@@ -898,26 +897,9 @@ namespace ExactValuesSimilarBatchKeywords
 
                         historical:
                         {
-                            try
+                            try//27-11-2020
                             {
-                                //24-11-2020
-                                try
-                                {
-                                    WebDriverWait inputwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-                                    var rangeValue = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(2)"));
-                                    rangeValue.Click();
-                                    var val = rangeValue.Text;
-                                    if (val.Contains("–") || val.Contains("—"))
-                                    {
-                                        Console.WriteLine("===========Ranges Started============");//25-11-2020
-                                        Signout(driver);
-                                        driver.Close();
-                                        driver.Dispose();
-                                        return 0;
-                                    }
-                                }
-                                catch { }
-                                //end 24-11-2020
+                                //27-11-2020 removed try block
                                 try
                                 {
                                     IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
@@ -985,7 +967,7 @@ namespace ExactValuesSimilarBatchKeywords
                                 LogError(ex, "Error While Processing Results");
                         }
                         //goes to first page for next batch keywords
-                        try
+                        try//27-11-2020
                         {
 
                             IWebElement backbutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
@@ -1013,8 +995,8 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Back Button"); }
-                    //24-11-2020 updated code return to KP first page
-                    try
+                        //24-11-2020 updated code return to KP first page
+                        try//27-11-2020
                         {
                             Console.WriteLine(driver.PageSource);
                             if (driver.FindElements(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")).Count == 0)
@@ -1029,7 +1011,7 @@ namespace ExactValuesSimilarBatchKeywords
                     {
                         try
                         {
-                            LogError(ex, "Something Went Wrong");
+                            LogError(ex, "Something Went Wrong"); //27-11-2020
                             //if any error occurs other then above exceptions in entire process this returns to login page
                             Console.WriteLine(ex.Message);
                             driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home?ocid=325109181&euid=331594490&__u=5223172010&uscid=325109181&__c=2039899669&authuser=0&enableAllBrowsers=1");
@@ -1191,7 +1173,7 @@ namespace ExactValuesSimilarBatchKeywords
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=1";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=10";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -1236,7 +1218,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                 string[] kwds = kw.Split(',');
 
-                if (values?[3] == ("N/A"))
+                if (!string.IsNullOrEmpty(values[3]) && string.IsNullOrEmpty(values[12])) //27-11-2020
                 {
                     Console.WriteLine("========================================================");
                     Console.WriteLine("------------------ Ranges Started ----------------------");
