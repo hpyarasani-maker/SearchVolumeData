@@ -767,16 +767,14 @@ namespace ExactValues
                                 {
                                     LogError(null, "In Country Selection(Missmatched Location)"+ "Actual Country is " + country + " selected country is " + element.Text);
                                     Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
+                                    //27-11-2020
                                     //Signout(driver);
                                     //driver.Close();
                                     //driver.Dispose();
                                     //return 0;
 
-                                    //21-11-2020 included code 
-                                    IWebElement backbtn = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
-                                    backbtn.Click();
-                                    continue;
-                                    //end 04-08-2020 //included code on 21-11-2020
+                                    throw new Exception();
+                                    //end 27-11-2020
                                 }
                                 else
                                     Console.WriteLine("=====Country Selected Successfully=====");
