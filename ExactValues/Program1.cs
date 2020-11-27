@@ -899,25 +899,7 @@ namespace ExactValues
                         {
                             try
                             {
-                                //24-11-2020
-                                try
-                                {
-                                    WebDriverWait inputwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-                                    var rangeValue = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(2)"));
-                                    rangeValue.Click();
-                                    var val = rangeValue.Text;
-                                    if (val.Contains("–") || val.Contains("—"))
-                                    {
-                                        LogError(null, "Ranges Started");
-                                        Console.WriteLine("===========Ranges Started============");//25-11-2020
-                                        Signout(driver);
-                                        driver.Close();
-                                        driver.Dispose();
-                                        return 0;
-                                    }
-                                }
-                                catch { }
-                                //end 24-11-2020
+                                //27-11-2020 removed try block
                                 try
                                 {
                                     IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
