@@ -1195,7 +1195,7 @@ namespace ExactValues
 
                 string[] kwds = kw.Split(',');
 
-                if (values[3] == ("N/A"))
+                if (!string.IsNullOrEmpty(values[3]) && string.IsNullOrEmpty(values[12])) //27-11-2020
                 {
                     Console.WriteLine("========================================================");
                     Console.WriteLine("------------------ Ranges Started ----------------------");
