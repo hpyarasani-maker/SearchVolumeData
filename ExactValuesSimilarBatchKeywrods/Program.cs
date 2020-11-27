@@ -16,7 +16,8 @@ using SeleniumExtras.WaitHelpers;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
-
+using System.Diagnostics;
+using System.Runtime.Serialization;
 namespace ExactValuesSimilarBatchKeywords
 {
     class Program
@@ -63,9 +64,34 @@ namespace ExactValuesSimilarBatchKeywords
             }
             catch
             {
-                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='Email']")));
+                try
+                {
+                    IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='Email']")));
 
-                element.SendKeys(email);
+                    element.SendKeys(email);
+                }
+                catch (ElementNotVisibleException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail ID, Element Is NotVisible");
+                }
+                catch (NoSuchElementException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail ID, NoSuch Element Is Present");
+                }
+                catch (StaleElementReferenceException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail ID, the target element is no longer valid in the document DOM");
+                }
+                catch (TimeoutException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail ID, TimeoutError Occured");
+                }
+                catch (WebDriverException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail ID, Clicking Actions Are Too Late");
+                }
+                catch (Exception ex)
+                { LogError(ex, "Error While Entering Gmail ID"); }
             }
             try
             {
@@ -75,9 +101,34 @@ namespace ExactValuesSimilarBatchKeywords
             }
             catch
             {
-                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='next']")));
+                try
+                {
+                    IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='next']")));
 
-                element.Click();
+                    element.Click();
+                }
+                catch (ElementNotVisibleException ex)
+                {
+                    LogError(ex, "Error While clicking Next Button(Mail LogIn), Element Is NotVisible");
+                }
+                catch (NoSuchElementException ex)
+                {
+                    LogError(ex, "Error While clicking Next Button(Mail LogIn), NoSuch Element Is Present");
+                }
+                catch (StaleElementReferenceException ex)
+                {
+                    LogError(ex, "Error While clicking Next Button(Mail LogIn), the target element is no longer valid in the document DOM");
+                }
+                catch (TimeoutException ex)
+                {
+                    LogError(ex, "Error While clicking Next Button(Mail LogIn), TimeoutError Occured");
+                }
+                catch (WebDriverException ex)
+                {
+                    LogError(ex, "Error While clicking Next Button(Mail LogIn), Clicking Actions Are Too Late");
+                }
+                catch (Exception ex)
+                { LogError(ex, "Error While clicking Next Button(Mail LogIn)"); }
             }
 
             try
@@ -88,9 +139,34 @@ namespace ExactValuesSimilarBatchKeywords
             }
             catch
             {
-                IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@name='Passwd']")));
+                try
+                {
+                    IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@name='Passwd']")));
 
-                element.SendKeys(password);
+                    element.SendKeys(password);
+                }
+                catch (ElementNotVisibleException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail Password, Element Is NotVisible");
+                }
+                catch (NoSuchElementException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail Password, NoSuch Element Is Present");
+                }
+                catch (StaleElementReferenceException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail Password, the target element is no longer valid in the document DOM");
+                }
+                catch (TimeoutException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail Password, TimeoutError Occured");
+                }
+                catch (WebDriverException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail Password, Clicking Actions Are Too Late");
+                }
+                catch (Exception ex)
+                { LogError(ex, "Error While Entering Gmail Password"); }
             }
             try
             {
@@ -108,9 +184,35 @@ namespace ExactValuesSimilarBatchKeywords
                 }
                 catch
                 {
-                    IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("#signIn")));
+                    try
+                    {
 
-                    element.Click();
+                        IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("#signIn")));
+
+                        element.Click();
+                    }
+                    catch (ElementNotVisibleException ex)
+                    {
+                        LogError(ex, "Error While clicking SignIn Button, Element Is Not Visible");
+                    }
+                    catch (NoSuchElementException ex)
+                    {
+                        LogError(ex, "Error While clicking SignIn Button, NoSuch Element Is Present");
+                    }
+                    catch (StaleElementReferenceException ex)
+                    {
+                        LogError(ex, "Error While clicking SignIn Button, the target element is no longer valid in the document DOM");
+                    }
+                    catch (TimeoutException ex)
+                    {
+                        LogError(ex, "Error While clicking SignIn Button, TimeoutError Occured");
+                    }
+                    catch (WebDriverException ex)
+                    {
+                        LogError(ex, "Error While clicking SignIn Button, Clicking Actions Are Too Late");
+                    }
+                    catch (Exception ex)
+                    { LogError(ex, "Error While clicking SignIn Button"); }
                 }
             }
             Console.WriteLine(driver.PageSource);
@@ -130,7 +232,28 @@ namespace ExactValuesSimilarBatchKeywords
                     element.Click();
 
                 }
-                catch { }
+                catch (ElementNotVisibleException ex)
+                {
+                    LogError(ex, "Error While clicking AccountChooser Window, Element Is NotVisible");
+                }
+                catch (NoSuchElementException ex)
+                {
+                    LogError(ex, "Error While clicking AccountChooser Window, NoSuch Element Is Present");
+                }
+                catch (StaleElementReferenceException ex)
+                {
+                    LogError(ex, "Error While clicking AccountChooser Window, the target element is no longer valid in the document DOM");
+                }
+                catch (TimeoutException ex)
+                {
+                    LogError(ex, "Error While clicking AccountChooser Window, TimeoutError Occured");
+                }
+                catch (WebDriverException ex)
+                {
+                    LogError(ex, "Error While clicking AccountChooser Window, Clicking Actions Are Too Late");
+                }
+                catch (Exception ex)
+                { LogError(ex, "Error While clicking AccountChooser Window"); }
             }
 
             while (true)
@@ -152,8 +275,9 @@ namespace ExactValuesSimilarBatchKeywords
                         continue;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    LogError(ex, "Error While Downloading Keywords From API");
                     //any error repeats again for 10 secs
                     Thread.Sleep(10000);
                     continue;
@@ -169,10 +293,44 @@ namespace ExactValuesSimilarBatchKeywords
                     try
                     {
                         //method deletes previous downloaded csv files
-                        DeleteFile();
+                        try
+                        {
+                            DeleteFile();
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            LogError(ex, "Error While Deleting CSV File, File Not Found");
+                        }
+                        catch (PathTooLongException ex)
+                        {
+                            LogError(ex, "Error While Deleting CSV File, File Path Is Too Long");
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                            LogError(ex, "Error While Deleting CSV File, No Permission To Access FIle");
+                        }
+                        catch (Exception ex)
+                        {
+                            LogError(ex, "Error While Deleting CSV File");
+                        }
                         WebDriverWait tensecondswait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
 
-                        WriteToCsv(kws); // for batch keywords 
+                        try
+                        {
+                            WriteToCsv(kws);
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            LogError(ex, "Error Writing Keywords To CSV, File Not Found");
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                            LogError(ex, "Error Writing Keywords To CSV, No Permission To Access FIle");
+                        }
+                        catch (Exception ex)
+                        {
+                            LogError(ex, "Error Writing Keywords To CSV");
+                        } // for batch keywords 
 
                         try
                         {
@@ -214,7 +372,28 @@ namespace ExactValuesSimilarBatchKeywords
                                 IWebElement focus = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".is-focused")));
                                 focus.Click();
                             }
-                            catch { }
+                            catch (ElementNotVisibleException ex)
+                            {
+                                LogError(ex, "Error While Remove plan, Element Is NotVisible");
+                            }
+                            catch (NoSuchElementException ex)
+                            {
+                                LogError(ex, "Error While Remove plan, NoSuch Element Is Present");
+                            }
+                            catch (StaleElementReferenceException ex)
+                            {
+                                LogError(ex, "Error While Remove plan, the target element is no longer valid in the document DOM");
+                            }
+                            catch (TimeoutException ex)
+                            {
+                                LogError(ex, "Error While Remove plan, TimeoutError Occured");
+                            }
+                            catch (WebDriverException ex)
+                            {
+                                LogError(ex, "Error While Remove plan, Clicking Actions Are Too Late");
+                            }
+                            catch (Exception ex)
+                            { LogError(ex, "Error While Removing Plans"); }
                         }
                         try
                         {
@@ -223,14 +402,40 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch { }
 
-                        IWebElement forecast = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")));
-                        forecast.Click();
-                        Console.WriteLine(driver.PageSource);
+                        try
+                        {
 
-                        // 07-08-2020
-                        //for batch keywords 
-                        //downloaded keywords file uploading.
-                        skip:
+                            IWebElement forecast = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")));
+                            forecast.Click();
+                            Console.WriteLine(driver.PageSource);
+                        }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error While Clicking GetForecast Window, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While Clicking GetForecast Window, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While Clicking GetForecast Window, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While Clicking GetForecast Window, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While Clicking GetForecast Window, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Clicking GetForecast Window"); }
+
+                    // 07-08-2020
+                    //for batch keywords 
+                    //downloaded keywords file uploading.
+                    skip:
                         {
 
                             //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
@@ -263,8 +468,33 @@ namespace ExactValuesSimilarBatchKeywords
 
                         Console.WriteLine(driver.PageSource);
 
-                        IWebElement save = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
-                        save.Click();
+                        try
+                        {
+                            IWebElement save = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
+                            save.Click();
+                        }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error While Clicking Save Button, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While Clicking Save Button, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While Clicking Save Button, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While Clicking Save Button, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While Clicking Save Button, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Clicking Save Button"); }
 
                         if (driver.FindElements(By.CssSelector(".save-button.is-disabled")).Count > 0)
                         {
@@ -274,19 +504,70 @@ namespace ExactValuesSimilarBatchKeywords
                             //downloaded keywords file is missing then it will try for one more..
                             goto skip;
                         }
+                        //try
+                        //{
+                        // WebDriverWait buttonwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
+                        // IWebElement savebutton = buttonwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
+                        //savebutton.Click();
+                        //}
+                        //catch
+                        //{ }
                         try
                         {
-                            WebDriverWait buttonwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-                            IWebElement savebutton = buttonwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
-                            savebutton.Click();
-                        }
-                        catch
-                        { }
-                        IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[3]/a"))); //23-10-2020 selector to select keyword options
-                        itemelement.Click();
 
-                        IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
-                        tab.Click();
+                            IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[3]/a"))); //23-10-2020 changed selector
+                            itemelement.Click();
+                        }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error While Clicking Keywords Window, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While Clicking Keywords Window, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While Clicking Keywords Window, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While Clicking Keywords Window, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While Clicking Keywords Window, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Clicking Keywords Window"); }
+
+                        try
+                        {
+                            IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
+                            tab.Click();
+                        }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Clicking Historical Metrics Window"); }
 
                         // end for batch keywords 
                         // end 07-08-2020
@@ -324,17 +605,63 @@ namespace ExactValuesSimilarBatchKeywords
                         catch { }
                         // Location Selection. 
                         WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
-                        IWebElement location = hiswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
-                        location.Click();
-                        //end 06-08-2020
+                        try
+                        {
+                            IWebElement location = hiswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
+                            location.Click();
+                        }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Clicking Location Button"); }
+                    //end 06-08-2020
 
-                        //23-10-2020
+                    //23-10-2020
                         try
                         {
                             IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)")));
                             removecountry.Click();
                         }
-                        catch { }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Removing Previous Country"); }
 
 
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
@@ -358,8 +685,29 @@ namespace ExactValuesSimilarBatchKeywords
                                     labelinput.SendKeys(country);
 
                                 }
-                                catch
+                                catch (ElementNotVisibleException ex)
                                 {
+                                    LogError(ex, "Error While Location Entry, Element Is NotVisible");
+                                }
+                                catch (NoSuchElementException ex)
+                                {
+                                    LogError(ex, "Error While Location Entry, NoSuch Element Is Present");
+                                }
+                                catch (StaleElementReferenceException ex)
+                                {
+                                    LogError(ex, "Error While Location Entry, the target element is no longer valid in the document DOM");
+                                }
+                                catch (TimeoutException ex)
+                                {
+                                    LogError(ex, "Error While Location Entry, TimeoutError Occured");
+                                }
+                                catch (WebDriverException ex)
+                                {
+                                    LogError(ex, "Error While Location Entry, Clicking Actions Are Too Late");
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogError(ex, "Error In Country Selection(Location Entry)");
                                     Console.WriteLine("=========Problem In Country Selection(Location Entry)==========");
                                     throw new Exception();
                                 }
@@ -375,9 +723,29 @@ namespace ExactValuesSimilarBatchKeywords
                                 locationsuggestion.Click();
                                 //25-11-2020 END
                             }
-                            catch
+                            catch (ElementNotVisibleException ex)
                             {
-
+                                LogError(ex, "Error  In Target Selection Issue, Element Is NotVisible");
+                            }
+                            catch (NoSuchElementException ex)
+                            {
+                                LogError(ex, "Error In Target Selection Issue, NoSuch Element Is Present");
+                            }
+                            catch (StaleElementReferenceException ex)
+                            {
+                                LogError(ex, "Error In Target Selection Issue, the target element is no longer valid in the document DOM");
+                            }
+                            catch (TimeoutException ex)
+                            {
+                                LogError(ex, "Error In Target Selection Issue, TimeoutError Occured");
+                            }
+                            catch (WebDriverException ex)
+                            {
+                                LogError(ex, "Error In Target Selection Issue, Clicking Actions Are Too Late");
+                            }
+                            catch (Exception ex)
+                            {
+                                LogError(ex, "Error In Country Selection(Target Selection Issue)==");
                                 Console.WriteLine("==Problem In Country Selection(Target Selection)==");
                                 throw new Exception();
                             }
@@ -411,7 +779,27 @@ namespace ExactValuesSimilarBatchKeywords
                                     Console.WriteLine("=====Country Selected Successfully=====");
 
                             }
-                            catch(Exception ex)
+                            catch (ElementNotVisibleException ex)
+                            {
+                                LogError(ex, "Error  While Saving Location, Element Is NotVisible");
+                            }
+                            catch (NoSuchElementException ex)
+                            {
+                                LogError(ex, "Error While Saving Location, NoSuch Element Is Present");
+                            }
+                            catch (StaleElementReferenceException ex)
+                            {
+                                LogError(ex, "Error While Saving Location, the target element is no longer valid in the document DOM");
+                            }
+                            catch (TimeoutException ex)
+                            {
+                                LogError(ex, "Error While Saving Location, TimeoutError Occured");
+                            }
+                            catch (WebDriverException ex)
+                            {
+                                LogError(ex, "Error While Saving Location, Clicking Actions Are Too Late");
+                            }
+                            catch (Exception ex)
                             {
                                 //If any error occured in country selection then signout and exit..
                                 Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
@@ -453,7 +841,28 @@ namespace ExactValuesSimilarBatchKeywords
                                 IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown")));
                                 dropdown.Click();
                             }
-                            catch { }
+                            catch (ElementNotVisibleException ex)
+                            {
+                                LogError(ex, "Error  While Selecting Date, Element Is NotVisible");
+                            }
+                            catch (NoSuchElementException ex)
+                            {
+                                LogError(ex, "Error While Selecting Date, NoSuch Element Is Present");
+                            }
+                            catch (StaleElementReferenceException ex)
+                            {
+                                LogError(ex, "Error While Selecting Date, the target element is no longer valid in the document DOM");
+                            }
+                            catch (TimeoutException ex)
+                            {
+                                LogError(ex, "Error While Selecting Date, TimeoutError Occured");
+                            }
+                            catch (WebDriverException ex)
+                            {
+                                LogError(ex, "Error While Selecting Date, Clicking Actions Are Too Late");
+                            }
+                            catch (Exception ex)
+                            { LogError(ex, "Error While Selecting Date in DropDownlList"); }
 
                             IWebElement e = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.range-button:nth-child(5)")));
                             if (e.Text.Contains("All available"))
@@ -465,6 +874,7 @@ namespace ExactValuesSimilarBatchKeywords
                             // if the date is selected other then 48 months then signout and exit
                             if (month.Text.Contains("All available") != true)
                             {
+                                LogError(new Exception(), "Error while selecting All available Months");
                                 Console.WriteLine("===========Problem While Selecting Months============"); //25-11-2020
                                 Signout(driver);
                                 driver.Close();
@@ -472,8 +882,9 @@ namespace ExactValuesSimilarBatchKeywords
                                 return 0;
                             }
                         }
-                        catch
+                        catch(Exception ex)
                         {
+                            LogError(ex, "Error In Date Selection");
                             //if any error occurs in date selection then signout and exit
                             Console.WriteLine("Error In Date Selection");
 
@@ -512,7 +923,28 @@ namespace ExactValuesSimilarBatchKeywords
                                     IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
                                     download.Click();
                                 }
-                                catch { }
+                                catch (ElementNotVisibleException ex)
+                                {
+                                    LogError(ex, "Error  While clicking CSV Download Button, Element Is NotVisible");
+                                }
+                                catch (NoSuchElementException ex)
+                                {
+                                    LogError(ex, "Error While While clicking CSV Download Button, NoSuch Element Is Present");
+                                }
+                                catch (StaleElementReferenceException ex)
+                                {
+                                    LogError(ex, "Error While While clicking CSV Download Button, the target element is no longer valid in the document DOM");
+                                }
+                                catch (TimeoutException ex)
+                                {
+                                    LogError(ex, "Error While clicking CSV Download Button, TimeoutError Occured");
+                                }
+                                catch (WebDriverException ex)
+                                {
+                                    LogError(ex, "Error While clicking CSV Download Button, Clicking Actions Are Too Late");
+                                }
+                                catch (Exception ex)
+                                { LogError(ex, "Error While clicking CSV Download Button"); }
 
                                 IWebElement ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group > material-select-item:nth-child(3)")));
                                 if (ele.Text.Contains("Plan historical metrics (.csv)"))
@@ -527,10 +959,8 @@ namespace ExactValuesSimilarBatchKeywords
                                 else
                                     goto historical;
                             }
-                            catch
-                            {
-
-                            }
+                            catch (Exception ex)
+                            { LogError(ex, "Error While Downloading CSV File"); }
                         }
                         //downloading csv file waiting time..
                         Thread.Sleep(25000);
@@ -544,32 +974,62 @@ namespace ExactValuesSimilarBatchKeywords
                             //in case account returns ranges or APP timeout then signout and exit 
                             if (ex.Message.StartsWith("Ranges started") || appTimeOut)
                             {
+                                LogError(ex, "Ranges started");
                                 // Thread.Sleep(10000);
                                 Signout(driver);
                                 driver.Close();
                                 driver.Dispose();
                                 return 0;
                             }
+                            else
+                                LogError(ex, "Error While Processing Results");
                         }
                         //goes to first page for next batch keywords
-
-                        IWebElement backbutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
-                        backbutton.Click();
-                        //24-11-2020 updated code return to KP first page
                         try
+                        {
+
+                            IWebElement backbutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
+                            backbutton.Click();
+                        }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error  While clicking Clicking Back Button, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While While clicking Clicking Back Button, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While While clicking Clicking Back Button, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While clicking Clicking Back Button, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While clicking Clicking Back Button, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Clicking Back Button"); }
+                    //24-11-2020 updated code return to KP first page
+                    try
                         {
                             Console.WriteLine(driver.PageSource);
                             if (driver.FindElements(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")).Count == 0)
                                 driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home");
 
                         }
-                        catch { }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Navigating To Home Page"); }
                         //end 24-11-2020
                     }
                     catch (Exception ex)
                     {
                         try
                         {
+                            LogError(ex, "Something Went Wrong");
                             //if any error occurs other then above exceptions in entire process this returns to login page
                             Console.WriteLine(ex.Message);
                             driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home?ocid=325109181&euid=331594490&__u=5223172010&uscid=325109181&__c=2039899669&authuser=0&enableAllBrowsers=1");
@@ -596,6 +1056,43 @@ namespace ExactValuesSimilarBatchKeywords
             Console.WriteLine(" DONE ");
 
             return 0;
+        }
+        static void LogError(Exception ex = null, string custommessage = "")
+        {
+            try
+            {
+                int line = 0;
+                if (ex != null)
+                {
+                    //StackTrace st = new StackTrace(ex, true);
+                    StackFrame CallStack = new StackFrame(1, true);
+                    line = CallStack.GetFileLineNumber();
+                }
+                string message = string.Format("Time: {0}", DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"));
+                message += Environment.NewLine;
+                message += "------------------START------------------------------";
+                message += Environment.NewLine;
+                message += ex != null ? "Exception Raised At Line No:" + line.ToString() : "Exception : Unspecified Exception";
+                message += Environment.NewLine;
+                message += ex != null ? "Exception:" + ex.Message : "Exception : Unspecified Exception";
+                message += Environment.NewLine;
+                message += string.Format("Custom Message: {0}", custommessage);
+                message += Environment.NewLine;
+                message += "-----------------------END--------------------------------";
+                message += Environment.NewLine;
+                string path = exactpath + @"\errorlog.txt";
+                using (StreamWriter writer = new StreamWriter(path, true))
+                {
+                    writer.WriteLine(message);
+                    writer.Close();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
         }
         static ArrayList GetKeywordsManully()
         {
