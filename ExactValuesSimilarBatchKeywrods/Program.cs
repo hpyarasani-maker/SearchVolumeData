@@ -875,10 +875,14 @@ namespace ExactValuesSimilarBatchKeywords
                             {
                                 LogError(new Exception(), "Error while selecting All available Months");
                                 Console.WriteLine("===========Problem While Selecting Months============"); //25-11-2020
-                                Signout(driver);
-                                driver.Close();
-                                driver.Dispose();
-                                return 0;
+                                throw new Exception("Error while selecting All available Months");//30-11-2020
+
+                                //30-11-2020 commented to if not select "All" then it goes to first page
+                                //Signout(driver);
+                                //driver.Close();
+                                //driver.Dispose();
+                                //return 0;
+                                //end 30-11-2020
                             }
                         }
                         catch(Exception ex)
@@ -886,11 +890,14 @@ namespace ExactValuesSimilarBatchKeywords
                             LogError(ex, "Error In Date Selection");
                             //if any error occurs in date selection then signout and exit
                             Console.WriteLine("Error In Date Selection");
+                            throw new Exception("Error In Date Selection");//30-11-2020
 
-                            Signout(driver);
-                            driver.Close();
-                            driver.Dispose();
-                            return 0;
+                            //28-11-2020 any errors occurs it raising catch and closing
+                            //Signout(driver);
+                            //driver.Close();
+                            //driver.Dispose();
+                            //return 0;
+                            //28-11-2020
                         }
 
                         //Download CSV File
