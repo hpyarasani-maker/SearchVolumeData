@@ -879,6 +879,8 @@ namespace ExactValues
                             LogError(ex, "Error In Date Selection");//27-11-2020
                             //if any error occurs in date selection then signout and exit
                             Console.WriteLine("Error In Date Selection");
+                            throw new Exception("Error In Date Selection");//30-11-2020
+
                             //28-11-2020 any errors occurs it raising catch and closing
                             //Signout(driver);
                             //driver.Close();
@@ -887,9 +889,9 @@ namespace ExactValues
                             //28-11-2020
                         }
 
-                    //Download CSV File
-                    
-                    historical:
+                        //Download CSV File
+
+                        historical:
                         {
                             try
                             {
