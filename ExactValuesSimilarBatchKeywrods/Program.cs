@@ -1262,6 +1262,17 @@ namespace ExactValuesSimilarBatchKeywords
                             //string kwd = WebUtility.HtmlDecode(s);
                             string[] values1 = GetMonthValues(s, monthsList);
 
+                            //01-12-2020
+                            if (!string.IsNullOrEmpty(values1[3]) && string.IsNullOrEmpty(values1[12]))
+                            {
+                                Console.WriteLine("========================================================");
+                                Console.WriteLine("------------------ Ranges Started ----------------------");
+                                Console.WriteLine("========================================================");
+
+                                throw new Exception("Ranges started");
+                            }
+                            //end 01-12-2020
+
                             if (values1 == null && monthsList[0] != null)
                             {
                                 isCloseVariant = true;
@@ -1514,6 +1525,10 @@ namespace ExactValuesSimilarBatchKeywords
                 }
                 catch (Exception ex)
                 {
+                    if (ex.Message.StartsWith("Ranges started")) //01-12-2020
+                    {
+                        throw ex;
+                    }
                     Console.WriteLine("Error: " + ex.Message);
                 }
                 lst = null;
