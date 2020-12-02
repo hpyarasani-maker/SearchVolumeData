@@ -504,14 +504,14 @@ namespace ExactValuesSimilarBatchKeywords
                             //downloaded keywords file is missing then it will try for one more..
                             goto skip;
                         }
-                        //try
-                        //{
-                        // WebDriverWait buttonwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-                        // IWebElement savebutton = buttonwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
-                        //savebutton.Click();
-                        //}
-                        //catch
-                        //{ }
+                        try//02-12-2020 continue if invalid keywords found
+                        {
+                            WebDriverWait buttonwait = new WebDriverWait(driver, new TimeSpan(0, 0, 20));
+                            IWebElement savebutton = buttonwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
+                            savebutton.Click();
+                        }
+                        catch
+                        { }
                         try//27-11-2020
                         {
 
@@ -749,14 +749,38 @@ namespace ExactValuesSimilarBatchKeywords
                                 Console.WriteLine("==Problem In Country Selection(Target Selection)==");
                                 throw new Exception();
                             }
-
-
                             try
                             {
-
-                                IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
-                                highlight.Click();
-
+                                try//02-12-2020
+                                {
+                                    IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
+                                    highlight.Click();
+                                }
+                                catch (ElementNotVisibleException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, Element Is NotVisible");
+                                }
+                                catch (NoSuchElementException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, NoSuch Element Is Present");
+                                }
+                                catch (StaleElementReferenceException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, the target element is no longer valid in the document DOM");
+                                }
+                                catch (TimeoutException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, TimeoutError Occured");
+                                }
+                                catch (WebDriverException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, Clicking Actions Are Too Late");
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button");
+                                    Console.WriteLine("While Clicking Country Save Button");
+                                }
                                 //IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)")); //20-08-2020 commented
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020
                                 //If any country miss match then continue to next keyword.
@@ -1086,7 +1110,7 @@ namespace ExactValuesSimilarBatchKeywords
         static ArrayList GetKeywordsManully()
         {
             //string kwd = "0 finance laptops";
-            string kwd = "apple mac laptop air";
+            string kwd = "rs compononents,rs componts,pokémon let''s go eevee";
             ArrayList alKws = new ArrayList();
             string kwdList = "gb" + ":" + "United Kingdom" + ":" + kwd;
             alKws.Add(kwdList);

@@ -523,14 +523,14 @@ namespace ExactValues
                             //downloaded keywords file is missing then it will try for one more..
                             goto skip;
                         }
-                        //try
-                        //{
-                        //    WebDriverWait buttonwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-                        //    IWebElement savebutton = buttonwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
-                        //    savebutton.Click();
-                        //}
-                        //catch (Exception ex)
-                        //{ LogError(ex, "Error While clicking Save Button"); }
+                        try//02-12-2020 continue if invalid keywords found
+                        {
+                            WebDriverWait buttonwait = new WebDriverWait(driver, new TimeSpan(0, 0, 20));
+                            IWebElement savebutton = buttonwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
+                            savebutton.Click();
+                        }
+                        catch 
+                        { }
                         try//27-11-2020
                         {
 
@@ -595,7 +595,17 @@ namespace ExactValues
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Historical Metrics Window"); }
                         // Location Selection. 
-
+                        try //02-12-2020
+                        {
+                            //IWebElement el = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
+                            //if (el.Text.ToLower() == country.ToLower())
+                            IWebElement el = driver.FindElement(By.CssSelector(".location-button"));
+                            if (el.Text.Split(':')[1].ToLower() == country.ToLower())
+                            {
+                                goto LOCATION;
+                            }
+                        }
+                        catch { }
                         try//27-11-2020
                         {
                             IWebElement location = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
@@ -756,9 +766,36 @@ namespace ExactValues
                             try//27-11-2020
                             {
 
-                                IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
-                                highlight.Click();
-
+                                try//02-12-2020
+                                {
+                                    IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
+                                    highlight.Click();
+                                }
+                                catch (ElementNotVisibleException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, Element Is NotVisible");
+                                }
+                                catch (NoSuchElementException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, NoSuch Element Is Present");
+                                }
+                                catch (StaleElementReferenceException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, the target element is no longer valid in the document DOM");
+                                }
+                                catch (TimeoutException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, TimeoutError Occured");
+                                }
+                                catch (WebDriverException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, Clicking Actions Are Too Late");
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button");
+                                    Console.WriteLine("While Clicking Country Save Button");
+                                }
                                 //IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020 //21-11-2020 changed to above line
                                 //If any country miss match then signout and exit app..
@@ -821,8 +858,8 @@ namespace ExactValues
 
                         }
 
-                        //Date Selection                      
-
+                    //Date Selection                      
+                    LOCATION:
                         try
                         {
                             try//27-11-2020
