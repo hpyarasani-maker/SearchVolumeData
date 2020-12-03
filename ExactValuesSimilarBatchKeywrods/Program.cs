@@ -1249,7 +1249,8 @@ namespace ExactValuesSimilarBatchKeywords
 
                 string[] kwds = kw.Split(',');
 
-                if (!string.IsNullOrEmpty(values[3]) && string.IsNullOrEmpty(values[12])) //27-11-2020
+                //if (!string.IsNullOrEmpty(values[3]) && string.IsNullOrEmpty(values[12])) //27-11-2020
+                if (!string.IsNullOrEmpty(values?[3]) && string.IsNullOrEmpty(values?[12])) //03-12-2020
                 {
                     Console.WriteLine("========================================================");
                     Console.WriteLine("------------------ Ranges Started ----------------------");
