@@ -1214,7 +1214,8 @@ namespace ExactValues
 
                 string[] kwds = kw.Split(',');
 
-                if (!string.IsNullOrEmpty(values[3]) && string.IsNullOrEmpty(values[12])) //27-11-2020
+               //21-12-2020
+                if (!string.IsNullOrEmpty(values?[3]) && string.IsNullOrEmpty(values?[12])) //03-12-2020
                 {
                     Console.WriteLine("========================================================");
                     Console.WriteLine("------------------ Ranges Started ----------------------");
@@ -1222,6 +1223,7 @@ namespace ExactValues
 
                     throw new Exception("Ranges started");
                 }
+                //end 21-12-2020
 
                 string path = @"C:\Inetpub\wwwroot\KPDataOld_48_" + email.Split('@')[0] + ".xml";
 
