@@ -1250,7 +1250,16 @@ namespace ExactValues
                             isCloseVariant = false;
                             string kwd = WebUtility.HtmlDecode(s.Trim());
                             string[] values1 = GetMonthValues(kwd, monthsList);
+                            //21-12-2020
+                            if (!string.IsNullOrEmpty(values1?[3]) && string.IsNullOrEmpty(values1?[12]))
+                            {
+                                Console.WriteLine("========================================================");
+                                Console.WriteLine("------------------ Ranges Started ----------------------");
+                                Console.WriteLine("========================================================");
 
+                                throw new Exception("Ranges started");
+                            }
+                            //21-12-2020
                             if (values1 == null && monthsList[0] != null)
                             {
                                 isCloseVariant = true;
