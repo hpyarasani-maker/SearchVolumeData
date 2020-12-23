@@ -1538,12 +1538,12 @@ namespace ExactValuesSimilarBatchKeywords
                             Console.WriteLine("+++++++++++++++++++  NULL VALUES FOUND  +++++++++++++++++++++");
                             Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
-                            /* 07-08-2020
+                            // 23-12-2020 uncommented
                             qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname]) ";
                             qry += "Values('" + market + "', N'" + s.Replace("'", "''") + "', N'" + country + "');";
 
                             SendResultsToDB_48(qry);
-                            end 07-08-2020 */
+                            //end 23-12-2020
 
                         }
                     }
