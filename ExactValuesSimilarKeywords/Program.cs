@@ -618,6 +618,34 @@ namespace ExactValuesSimilarKeywords
                         Thread.Sleep(10000);
 
                         //24-12-2020 
+                        try//27-11-2020
+                        {
+                            IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
+                            tab.Click();
+                        }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Clicking Historical Metrics Window"); }
+
                         try
                         {
                             //IWebElement el = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
