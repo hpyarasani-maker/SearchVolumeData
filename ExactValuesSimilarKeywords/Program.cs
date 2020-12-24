@@ -617,11 +617,19 @@ namespace ExactValuesSimilarKeywords
                         //06-08-2020
                         Thread.Sleep(10000);
 
-                        IWebElement el = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
-                        if (el.Text.ToLower() == country.ToLower())
+                        //24-12-2020 
+                        try
                         {
-                            goto LOCATION;
+                            //IWebElement el = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
+                            //if (el.Text.ToLower() == country.ToLower())
+                            IWebElement el = driver.FindElement(By.CssSelector(".location-button"));
+                            if (el.Text.Split(':')[1].ToLower() == country.ToLower())
+                            {
+                                goto LOCATION;
+                            }
                         }
+                        catch { }
+                        //end 24-12-2020 
 
                         // Location Selection. 
                         WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
