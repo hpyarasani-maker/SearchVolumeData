@@ -380,7 +380,7 @@ namespace ExactValuesSimilarKeywords
                             element.Click();
 
                         }
-                        catch { }
+                        catch (Exception ex) { ex.Message.ToString(); }
                         try
                         {
 
@@ -625,17 +625,63 @@ namespace ExactValuesSimilarKeywords
 
                         // Location Selection. 
                         WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
-                        IWebElement location = hiswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
-                        location.Click();
+                        try
+                        {
+                            IWebElement location = hiswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
+                            location.Click();
+                        }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Clicking Location Button"); }
                         //end 06-08-2020
 
                         //28-07-2020
-                        try
+                        try//27-11-2020
                         {
-                            IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon")));
+                            IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)")));
                             removecountry.Click();
                         }
-                        catch { }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Removing Previous Country"); }
 
 
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
@@ -659,8 +705,29 @@ namespace ExactValuesSimilarKeywords
                                     labelinput.SendKeys(country);
 
                                 }
-                                catch
+                                catch (ElementNotVisibleException ex)
                                 {
+                                    LogError(ex, "Error While Location Entry, Element Is NotVisible");
+                                }
+                                catch (NoSuchElementException ex)
+                                {
+                                    LogError(ex, "Error While Location Entry, NoSuch Element Is Present");
+                                }
+                                catch (StaleElementReferenceException ex)
+                                {
+                                    LogError(ex, "Error While Location Entry, the target element is no longer valid in the document DOM");
+                                }
+                                catch (TimeoutException ex)
+                                {
+                                    LogError(ex, "Error While Location Entry, TimeoutError Occured");
+                                }
+                                catch (WebDriverException ex)
+                                {
+                                    LogError(ex, "Error While Location Entry, Clicking Actions Are Too Late");
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogError(ex, "Error In Country Selection(Location Entry)");
                                     Console.WriteLine("=========Problem In Country Selection(Location Entry)==========");
                                     throw new Exception();
                                 }
@@ -669,13 +736,34 @@ namespace ExactValuesSimilarKeywords
 
                             try
                             {
-                                //Console.WriteLine(driver.PageSource);
-                                IWebElement locationsuggestion = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("location-data-suggestion-entry:nth-child(1)")));
+                                Console.WriteLine(driver.PageSource);
+                                WebDriverWait countryWait = new WebDriverWait(driver, new TimeSpan(0, 1, 5));
+                                IWebElement locationsuggestion = countryWait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("location-data-suggestion-entry:nth-child(1)")));
                                 locationsuggestion.Click();
                             }
-                            catch
+                            catch (ElementNotVisibleException ex)
                             {
-
+                                LogError(ex, "Error  In Target Selection Issue, Element Is NotVisible");
+                            }
+                            catch (NoSuchElementException ex)
+                            {
+                                LogError(ex, "Error In Target Selection Issue, NoSuch Element Is Present");
+                            }
+                            catch (StaleElementReferenceException ex)
+                            {
+                                LogError(ex, "Error In Target Selection Issue, the target element is no longer valid in the document DOM");
+                            }
+                            catch (TimeoutException ex)
+                            {
+                                LogError(ex, "Error In Target Selection Issue, TimeoutError Occured");
+                            }
+                            catch (WebDriverException ex)
+                            {
+                                LogError(ex, "Error In Target Selection Issue, Clicking Actions Are Too Late");
+                            }
+                            catch (Exception ex)
+                            {
+                                LogError(ex, "Error In Country Selection(Target Selection Issue)==");
                                 Console.WriteLine("==Problem In Country Selection(Target Selection)==");
                                 throw new Exception();
                             }
@@ -684,38 +772,88 @@ namespace ExactValuesSimilarKeywords
                             try
                             {
 
-                                IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
-                                highlight.Click();
-
-                                IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
-                                //If any country miss match then signout and exit app..
-                                if (element.Text.Contains("All locations") || element.Text.ToLower() != country.ToLower())
+                                try//02-12-2020
                                 {
+                                    IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
+                                    highlight.Click();
+                                }
+                                catch (ElementNotVisibleException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, Element Is NotVisible");
+                                }
+                                catch (NoSuchElementException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, NoSuch Element Is Present");
+                                }
+                                catch (StaleElementReferenceException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, the target element is no longer valid in the document DOM");
+                                }
+                                catch (TimeoutException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, TimeoutError Occured");
+                                }
+                                catch (WebDriverException ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button, Clicking Actions Are Too Late");
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogError(ex, "Error While Clicking Country Save Button");
+                                    Console.WriteLine("While Clicking Country Save Button");
+                                }
+
+                                IWebElement element = driver.FindElement(By.CssSelector(".location-button"));
+                                //If any country miss match then signout and exit app..
+                                if (element.Text.Contains("All locations") || element.Text.Split(':')[1].ToLower() != country.ToLower()) //20-08-2020
+                                {
+                                    LogError(null, "In Country Selection(Missmatched Location)" + "Actual Country is " + country + " selected country is " + element.Text);
                                     Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
 
-                                    //04-08-2020
+                                    //27-11-2020
                                     //Signout(driver);
                                     //driver.Close();
                                     //driver.Dispose();
                                     //return 0;
 
-                                    IWebElement backbtn = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
-                                    backbtn.Click();
-                                    continue;
-                                    //end 04-08-2020
+                                    throw new Exception();
+                                    //end 27-11-2020
                                 }
                                 else
                                     Console.WriteLine("=====Country Selected Successfully=====");
 
                             }
-                            catch
+                            catch (ElementNotVisibleException ex)
+                            {
+                                LogError(ex, "Error  While Saving Location, Element Is NotVisible");
+                            }
+                            catch (NoSuchElementException ex)
+                            {
+                                LogError(ex, "Error While Saving Location, NoSuch Element Is Present");
+                            }
+                            catch (StaleElementReferenceException ex)
+                            {
+                                LogError(ex, "Error While Saving Location, the target element is no longer valid in the document DOM");
+                            }
+                            catch (TimeoutException ex)
+                            {
+                                LogError(ex, "Error While Saving Location, TimeoutError Occured");
+                            }
+                            catch (WebDriverException ex)
+                            {
+                                LogError(ex, "Error While Saving Location, Clicking Actions Are Too Late");
+                            }
+                            catch (Exception ex)
                             {
                                 //If any error occured in country selection then signout and exit..
-                                Console.WriteLine("==Problem In Country Selection==");
-                                Signout(driver);
-                                driver.Close();
-                                driver.Dispose();
-                                return 0;
+                                Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
+                                throw new Exception("Country selection problem");
+                                //25-11-2020 commented below lines
+                                //Signout(driver);
+                                //driver.Close();
+                                //driver.Dispose();
+                                //return 0;
+                                //end 25-11-2020
                             }
 
 
@@ -746,7 +884,28 @@ namespace ExactValuesSimilarKeywords
                                 IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown")));
                                 dropdown.Click();
                             }
-                            catch { }
+                            catch (ElementNotVisibleException ex)
+                            {
+                                LogError(ex, "Error  While Selecting Date, Element Is NotVisible");
+                            }
+                            catch (NoSuchElementException ex)
+                            {
+                                LogError(ex, "Error While Selecting Date, NoSuch Element Is Present");
+                            }
+                            catch (StaleElementReferenceException ex)
+                            {
+                                LogError(ex, "Error While Selecting Date, the target element is no longer valid in the document DOM");
+                            }
+                            catch (TimeoutException ex)
+                            {
+                                LogError(ex, "Error While Selecting Date, TimeoutError Occured");
+                            }
+                            catch (WebDriverException ex)
+                            {
+                                LogError(ex, "Error While Selecting Date, Clicking Actions Are Too Late");
+                            }
+                            catch (Exception ex)
+                            { LogError(ex, "Error While Selecting Date in DropDownlList"); }
 
                             IWebElement e = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.range-button:nth-child(5)")));
                             if (e.Text.Contains("All available"))
@@ -758,22 +917,18 @@ namespace ExactValuesSimilarKeywords
                             // if the date is selected other then 48 months then signout and exit
                             if (month.Text.Contains("All available") != true)
                             {
-
-                                Signout(driver);
-                                driver.Close();
-                                driver.Dispose();
-                                return 0;
+                                LogError(new Exception(), "Error while selecting All available Months");
+                                Console.WriteLine("===========Problem While Selecting Months============"); //25-11-2020
+                                throw new Exception("Error while selecting All available Months");//30-11-2020
                             }
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             //if any error occurs in date selection then signout and exit
+                            LogError(ex, "Error In Date Selection");
+                            //if any error occurs in date selection then signout and exit
                             Console.WriteLine("Error In Date Selection");
-
-                            Signout(driver);
-                            driver.Close();
-                            driver.Dispose();
-                            return 0;
+                            throw new Exception("Error In Date Selection");//30-11-2020
                         }
 
                         //Download CSV File
@@ -787,7 +942,28 @@ namespace ExactValuesSimilarKeywords
                                     IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
                                     download.Click();
                                 }
-                                catch { }
+                                catch (ElementNotVisibleException ex)
+                                {
+                                    LogError(ex, "Error  While clicking CSV Download Button, Element Is NotVisible");
+                                }
+                                catch (NoSuchElementException ex)
+                                {
+                                    LogError(ex, "Error While While clicking CSV Download Button, NoSuch Element Is Present");
+                                }
+                                catch (StaleElementReferenceException ex)
+                                {
+                                    LogError(ex, "Error While While clicking CSV Download Button, the target element is no longer valid in the document DOM");
+                                }
+                                catch (TimeoutException ex)
+                                {
+                                    LogError(ex, "Error While clicking CSV Download Button, TimeoutError Occured");
+                                }
+                                catch (WebDriverException ex)
+                                {
+                                    LogError(ex, "Error While clicking CSV Download Button, Clicking Actions Are Too Late");
+                                }
+                                catch (Exception ex)
+                                { LogError(ex, "Error While clicking CSV Download Button"); }
 
                                 IWebElement ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group > material-select-item:nth-child(3)")));
                                 if (ele.Text.Contains("Plan historical metrics (.csv)"))
@@ -802,10 +978,8 @@ namespace ExactValuesSimilarKeywords
                                 else
                                     goto historical;
                             }
-                            catch
-                            {
-
-                            }
+                            catch (Exception ex)
+                            { LogError(ex, "Error While Downloading CSV File"); }
                         }
                         //downloading csv file waiting time..
                         Thread.Sleep(25000);
@@ -819,24 +993,63 @@ namespace ExactValuesSimilarKeywords
                             //in case account returns ranges or APP timeout then signout and exit 
                             if (ex.Message.StartsWith("Ranges started") || appTimeOut)
                             {
+                                LogError(ex, "Ranges started");
                                 // Thread.Sleep(10000);
                                 Signout(driver);
                                 driver.Close();
                                 driver.Dispose();
                                 return 0;
                             }
+                            else
+                                LogError(ex, "Error While Processing Results");
                         }
                         //goes to first page for next batch keywords
 
-                        IWebElement backbutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
-                        backbutton.Click();
+                        try//27-11-2020
+                        {
 
+                            IWebElement backbutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
+                            backbutton.Click();
+                        }
+                        catch (ElementNotVisibleException ex)
+                        {
+                            LogError(ex, "Error  While clicking Clicking Back Button, Element Is NotVisible");
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            LogError(ex, "Error While While clicking Clicking Back Button, NoSuch Element Is Present");
+                        }
+                        catch (StaleElementReferenceException ex)
+                        {
+                            LogError(ex, "Error While While clicking Clicking Back Button, the target element is no longer valid in the document DOM");
+                        }
+                        catch (TimeoutException ex)
+                        {
+                            LogError(ex, "Error While clicking Clicking Back Button, TimeoutError Occured");
+                        }
+                        catch (WebDriverException ex)
+                        {
+                            LogError(ex, "Error While clicking Clicking Back Button, Clicking Actions Are Too Late");
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Clicking Back Button"); }
+                        try//27-11-2020
+                        {
+                            Console.WriteLine(driver.PageSource);
+                            if (driver.FindElements(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")).Count == 0)
+                                driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home");
+
+                        }
+                        catch (Exception ex)
+                        { LogError(ex, "Error While Navigating To Home Page"); }
+                        //end 24-11-2020
 
                     }
                     catch (Exception ex)
                     {
                         try
                         {
+                            LogError(ex, "Something Went Wrong"); //27-11-2020
                             //if any error occurs other then above exceptions in entire process this returns to login page
                             Console.WriteLine(ex.Message);
                             driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home?ocid=325109181&euid=331594490&__u=5223172010&uscid=325109181&__c=2039899669&authuser=0&enableAllBrowsers=1");
@@ -867,9 +1080,9 @@ namespace ExactValuesSimilarKeywords
         static ArrayList GetKeywordsManully()
         {
             //string kwd = "0 finance laptops";
-            string kwd = "apple mac laptop air";
+            string kwd = "total";
             ArrayList alKws = new ArrayList();
-            string kwdList = "gb" + ":" + "United Kingdom" + ":" + kwd;
+            string kwdList = "de" + ":" + "Germany" + ":" + kwd;
             alKws.Add(kwdList);
             return alKws;
         }
@@ -877,8 +1090,8 @@ namespace ExactValuesSimilarKeywords
         {
             //string url = "http://82.136.46.2:8080/api/GetAllSingleSimilarKeywordsProc1";
             //string url = "http://82.136.46.2:8080/api/GetAllSingleSimilarKeywordsProc2";
-            //string url = "https://similarkeywordapis.azurewebsites.net/api/GetAllSingleSimilarKeywordsProc1";
-            string url = "https://similarkeywordapis.azurewebsites.net/api/GetAllSingleSimilarKeywordsProc2";
+            string url = "https://similarkeywordapis.azurewebsites.net/api/GetAllSingleSimilarKeywordsProc1";
+            //string url = "https://similarkeywordapis.azurewebsites.net/api/GetAllSingleSimilarKeywordsProc2";
             ArrayList alKws = new ArrayList();
             string response = string.Empty;
             Uri ul = new Uri(url);
@@ -1028,8 +1241,14 @@ namespace ExactValuesSimilarKeywords
             if (Files2.Count() > 0)
                 fName = Files2[0].FullName;
             else
+            {
+                string qry = "";
+                qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword=N'" + kw.Replace("'", "''") + "';  ";
+                qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname]) ";
+                qry += "Values('" + market + "', N'" + kw.Replace("'", "''") + "', N'" + country + "');";
+                SendResultsToDB_48(qry);
                 throw new Exception("File not downloaded.");
-
+            }
             try
             {
                 try
@@ -1048,7 +1267,7 @@ namespace ExactValuesSimilarKeywords
 
                 string[] kwds = kw.Split(',');
 
-                if (values?[3] == ("N/A"))
+                if (!string.IsNullOrEmpty(values?[3]) && string.IsNullOrEmpty(values?[12])) //03-12-2020
                 {
                     Console.WriteLine("========================================================");
                     Console.WriteLine("------------------ Ranges Started ----------------------");
@@ -1083,7 +1302,15 @@ namespace ExactValuesSimilarKeywords
                             isCloseVariant = false;
                             string kwd = WebUtility.HtmlDecode(s.Trim());
                             string[] values1 = GetMonthValues(kwd, monthsList);
+                            //03-12-2020
+                            if (!string.IsNullOrEmpty(values1?[3]) && string.IsNullOrEmpty(values1?[12]))
+                            {
+                                Console.WriteLine("========================================================");
+                                Console.WriteLine("------------------ Ranges Started ----------------------");
+                                Console.WriteLine("========================================================");
 
+                                throw new Exception("Ranges started");
+                            }
                             if (values1 == null && monthsList[0] != null)
                             {
                                 isCloseVariant = true;
