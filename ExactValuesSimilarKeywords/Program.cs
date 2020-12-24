@@ -872,14 +872,15 @@ namespace ExactValuesSimilarKeywords
                         // for single keyword.
                         //06-08-2020
                         LOCATION:
-                        try
-                        {
-                            WebDriverWait tabwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-                            IWebElement tab = tabwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
-                            tab.Click();
-                            //end 06-08-2020
-                        }
-                        catch { }
+                        //24-12-2020 commented below lines.
+                        //try
+                        //{
+                        //    WebDriverWait tabwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
+                        //    IWebElement tab = tabwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
+                        //    tab.Click();
+                        //    //end 06-08-2020
+                        //}
+                        //catch { }
                         // end for single keyword.
                         ////////////////////
 
