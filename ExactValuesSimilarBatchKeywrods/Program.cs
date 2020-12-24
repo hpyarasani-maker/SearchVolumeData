@@ -1287,6 +1287,23 @@ namespace ExactValuesSimilarBatchKeywords
                             //string kwd = WebUtility.HtmlDecode(s);
                             string[] values1 = GetMonthValues(s, monthsList);
 
+                            /*
+                            //24-12-2020
+                            if (!string.IsNullOrEmpty(values1?[3]) && string.IsNullOrEmpty(values1?[12]))
+                            {
+                                Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                                Console.WriteLine("+++++++++++++++++++  EMPTY VALUE FOUND  +++++++++++++++++++++");
+                                Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+                                qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname]) ";
+                                qry += "Values('" + market + "', N'" + s.Replace("'", "''") + "', N'" + country + "');";
+
+                                SendResultsToDB_48(qry);
+                                continue;
+                            }
+                            //end 24-12-2020
+                            */
+
                             //03-12-2020
                             if (!string.IsNullOrEmpty(values1?[3]) && string.IsNullOrEmpty(values1?[12]))
                             {
