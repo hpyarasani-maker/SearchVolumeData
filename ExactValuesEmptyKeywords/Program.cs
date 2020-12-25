@@ -14,6 +14,9 @@ using System.Windows.Forms;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.Diagnostics;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace ExactValuesEmptyKeywords
 {
@@ -282,7 +285,7 @@ namespace ExactValuesEmptyKeywords
                 try
                 {
                     //method downloads keywords from Pi API
-                    //alKeywords = GetKeywordsFromAPI();
+                    //alKeywords = GetBatchSimilarKeywordsApi();
                     alKeywords = GetKeywordsFromDB();
                     if (alKeywords.Count <= 0)
                     {
@@ -1668,69 +1671,43 @@ namespace ExactValuesEmptyKeywords
 
             return alKws;
         }
-        static ArrayList GetKeywordsFromAPI()
+        static async Task<ArrayList> GetBatchSimilarKeywordsApi()//14-09-2020
         {
-            string kp_old_url = ReadAPI("batch");
-            string authInfo = "pisoftware" + ":" + "r00t123456";
+            //string url = "http://82.136.46.2:8080/api/GetBulkSimilarKeywords";
+            string url = "https://similarkeywordapis.azurewebsites.net/api/GetBulkSimilarKeywords";
+            
             ArrayList alKws = new ArrayList();
-            StringBuilder stringBuilder = new StringBuilder();
-            string value = string.Empty;
-            Uri uri = new Uri(kp_old_url);
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpWebRequest.Timeout = 1000000;
-            httpWebRequest.KeepAlive = true;
-            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
-            httpWebRequest.Headers["Authorization"] = "Basic " + authInfo;
-            XmlDocument doc = new XmlDocument();
-            XmlReaderSettings settings = new XmlReaderSettings { CheckCharacters = false };
-
-            using (HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse())
-            using (XmlReader reader = XmlReader.Create(response.GetResponseStream(), settings))
+            string response = string.Empty;
+            Uri ul = new Uri(url);
+            using (var client = new HttpClient())
             {
+
                 try
                 {
-                    reader.MoveToContent();
-                    doc.Load(reader);
-                    reader.Close();
-                    XmlNodeList msg = doc.GetElementsByTagName("message");
-                    if (msg.Count > 0)
+
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    response = client.GetStringAsync(ul).Result;
+                    if (response != "null")
                     {
-                        throw new Exception(msg[0].InnerText);
+                        JArray jo = JArray.Parse(response);
+                        foreach (var item in jo)
+                        {
+                            string kwdList = item["market"] + ":" + item["countryname"] + ":" + item["keyword"];
+                            alKws.Add(kwdList);
+                        }
                     }
-                    XmlNodeList country = doc.GetElementsByTagName("country");
-                    XmlNodeList kwd = doc.GetElementsByTagName("keyword");
-                    XmlNodeList source = doc.GetElementsByTagName("source");
-                    XmlNodeList priority = doc.GetElementsByTagName("priority");
-
-                    string market = "";
-                    string kd = "";
-                    string src = "";
-                    string pr = "";
-                    string countryName = "";
-
-                    for (int i = 0; i < kwd.Count; i++)
-                    {
-                        //market = country[i].InnerText;
-                        kd += kwd[i].InnerText + ",";
-                        //src = source[i].InnerText;
-                        //pr = priority[i].InnerText;                    
-                    }
-                    kd = kd.Remove(kd.Trim().Length - 1);
-                    market = country[0].InnerText;
-                    src = source[0].InnerText;
-                    pr = priority[0].InnerText;
-                    countryName = GetCountryName(market);
-
-                    string keywordItem = market + ":" + countryName + ":" + kd;
-                    alKws.Add(keywordItem);
 
                 }
+
                 catch (Exception ex)
                 {
                     throw ex;
                 }
+
             }
-            return alKws;
+            return await Task.FromResult(alKws);
+
         }
 
         static string GetCountryName(string market)
