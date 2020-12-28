@@ -1457,7 +1457,8 @@ namespace ExactValuesEmptyKeywords
                             {
                                 Console.WriteLine(kwd);
                                 if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
-                                    PostXML(path, kwd);
+                                    if (!string.IsNullOrEmpty(values1?[3])) 
+                                        PostXML(path, kwd);
 
                                 SendResultsToDB_48(qry);
 
