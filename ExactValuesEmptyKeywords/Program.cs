@@ -1456,9 +1456,16 @@ namespace ExactValuesEmptyKeywords
                             try
                             {
                                 Console.WriteLine(kwd);
-                                if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
-                                    if (!string.IsNullOrEmpty(values1?[3])) 
-                                        PostXML(path, kwd);
+                                try
+                                {
+                                    if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
+                                        if (!string.IsNullOrEmpty(values1?[3]))
+                                            PostXML(path, kwd);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine("Sending Xml Error: " + ex.Message);
+                                }
 
                                 SendResultsToDB_48(qry);
 
@@ -1469,7 +1476,7 @@ namespace ExactValuesEmptyKeywords
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine("Sending Xml Error: " + ex.Message);
+                                Console.WriteLine("Error: " + ex.Message);
                             }
                         }
                     }
