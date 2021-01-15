@@ -1270,7 +1270,7 @@ namespace ExactValuesEmptyKeywords
                                 try
                                 {
 
-                                    qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
+                                    qry += "insert into [48MonthsKeywordsData_Old_New_1] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
                                     qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
                                     SendResultsToDB_48(qry);
 
@@ -1322,7 +1322,7 @@ namespace ExactValuesEmptyKeywords
                             if (values1[0].ToLower() == kwd.ToLower() && values1[12] == "")
                             {
                                 //inserting empty months
-                                qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate]) values('";
+                                qry += "insert into [48MonthsKeywordsData_Old_New_1] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate]) values('";
                                 qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
 
                                 writer.WriteStartElement("", "currency", "");
@@ -1350,7 +1350,7 @@ namespace ExactValuesEmptyKeywords
                             //storing exact values
                             else if (values1[0].ToLower() == kwd.ToLower())
                             {
-                                qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
+                                qry += "insert into [48MonthsKeywordsData_Old_New_1] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
                                 qry += ",[month47],[month47value],[month46],[month46value],[month45],[month45value],[month44],[month44value],[month43],[month43value],[month42],[month42value]";
                                 qry += ",[month41],[month41value],[month40],[month40value],[month39],[month39value],[month38],[month38value],[month37],[month37value],[month36]";
                                 qry += ",[month36value],[month35],[month35value],[month34],[month34value],[month33],[month33value],[month32],[month32value],[month31],[month31value]";
@@ -1451,8 +1451,16 @@ namespace ExactValuesEmptyKeywords
                             try
                             {
                                 Console.WriteLine(kwd);
-                                if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
-                                    PostXML(path, kwd);
+                                try
+                                {
+                                    if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
+                                        if (!string.IsNullOrEmpty(values1?[3]))
+                                            PostXML(path, kwd);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine("Sending Xml Error: " + ex.Message);
+                                }
 
                                 SendResultsToDB_48(qry);
 
@@ -1463,7 +1471,7 @@ namespace ExactValuesEmptyKeywords
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine("Sending Xml Error: " + ex.Message);
+                                Console.WriteLine("Error: " + ex.Message);
                             }
                         }
                     }
@@ -1610,7 +1618,7 @@ namespace ExactValuesEmptyKeywords
                     con.Open();
 
                     comm.CommandType = System.Data.CommandType.StoredProcedure;
-                    comm.CommandText = "InsertCloseVariantKeywords";
+                    comm.CommandText = "InsertCloseVariantKeywords_1";
                     comm.CommandTimeout = 0;
 
                     comm.Parameters.Add(new SqlParameter("@Market", System.Data.SqlDbType.NVarChar, 100)).Value = market;
@@ -1647,7 +1655,9 @@ namespace ExactValuesEmptyKeywords
             try
             {
                 DataTable dt = new DataTable();
-                string strQry = "[dbo].[GetBulkEmptyKeywords]";//100 batch keyword all keywords
+                string strQry = "[dbo].[GetBulkEmptyKeywords_1]";
+                //string strQry = "[dbo].[GetBulkEmptyKeywords_2]";
+                //string strQry = "[dbo].[GetBulkEmptyKeywords_3]";
              
                 using (SqlDataAdapter da = new SqlDataAdapter(strQry, ReadConnection()))
                 {
