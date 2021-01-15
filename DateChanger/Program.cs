@@ -148,7 +148,7 @@ namespace DateChanger
                         catch { }
                         try
                         {
-                            IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown")));
+                            IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown-icon"))); //15-01-2021
                             dropdown.Click();
                         }
                         catch
