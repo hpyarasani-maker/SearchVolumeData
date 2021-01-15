@@ -347,10 +347,8 @@ namespace ExactValues
                         }
                         try
                         {
-
                             IWebElement element = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.WBW9sf")));
                             element.Click();
-
                         }
                         catch { }
                         try
@@ -600,10 +598,15 @@ namespace ExactValues
                             //IWebElement el = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
                             //if (el.Text.ToLower() == country.ToLower())
                             IWebElement el = driver.FindElement(By.CssSelector(".location-button"));
-                            if (el.Text.Split(':')[1].ToLower() == country.ToLower())
+                            //if (el.Text.Split(':')[1].ToLower() == country.ToLower())//15-01-2021 commented
+                            //{
+                            //    goto LOCATION;
+                            //}//end commented
+                            string[] countrytext = el.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); //15-01-2021 getting location text in new line
+                            if (countrytext[1].ToString().ToLower() == country.ToLower())
                             {
                                 goto LOCATION;
-                            }
+                            }// end 15-01-2021
                         }
                         catch { }
                         try//27-11-2020
@@ -796,22 +799,22 @@ namespace ExactValues
                                     LogError(ex, "Error While Clicking Country Save Button");
                                     Console.WriteLine("While Clicking Country Save Button");
                                 }
-                                //IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020 //21-11-2020 changed to above line
-                                //If any country miss match then signout and exit app..
-                                //if (element.Text.Contains("All locations") || element.Text.ToLower() != country.ToLower())
-                                if (element.Text.Contains("All locations") || element.Text.Split(':')[1].ToLower() != country.ToLower()) // included split on 21-11-2020
-                                {
-                                    LogError(null, "In Country Selection(Missmatched Location)"+ "Actual Country is " + country + " selected country is " + element.Text);
-                                    Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
-                                    //27-11-2020
-                                    //Signout(driver);
-                                    //driver.Close();
-                                    //driver.Dispose();
-                                    //return 0;
+                                //15-01-2021 commented
+                                //if (element.Text.Contains("All locations") || element.Text.Split(':')[1].ToLower() != country.ToLower()) // included split on 21-11-2020
+                                //{
+                                //    LogError(null, "In Country Selection(Missmatched Location)"+ "Actual Country is " + country + " selected country is " + element.Text);
+                                //    Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
+                                //    throw new Exception();
 
+                                //}
+                                //end comments
+                                string[] countrytext = element.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);//15-01-2021 getting location text in new line
+                                if (element.Text.Contains("All locations") || countrytext[1].ToString().ToLower() != country.ToLower()) // included split on 21-11-2020 //15-01-2021 used countrytext variable
+                                {
+                                    LogError(null, "In Country Selection(Missmatched Location)" + "Actual Country is " + country + " selected country is " + countrytext[1].ToString()); //15-01-2021 used countrytext variable
+                                    Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
                                     throw new Exception();
-                                    //end 27-11-2020
                                 }
                                 else
                                     Console.WriteLine("=====Country Selected Successfully=====");
@@ -864,7 +867,8 @@ namespace ExactValues
                         {
                             try//27-11-2020
                             {
-                                IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown")));
+                                //IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown")));//15-01-2021 commented
+                                IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown-icon"))); //15-01-2021 selector changed
                                 dropdown.Click();
                             }
                             catch (ElementNotVisibleException ex)
