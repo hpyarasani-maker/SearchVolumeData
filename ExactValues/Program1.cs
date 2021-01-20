@@ -1213,11 +1213,23 @@ namespace ExactValues
                 }
                 ArrayList lst = GetCsvValues_48(fName);
                 ArrayList monthsList = getValuesList(lst);
-                string[] hdr = monthsList[0] as string[];   
-                string[] values = monthsList[1] as string[];
 
+                //20-01-2021
                 string[] kwds = kw.Split(',');
 
+                if (monthsList?.Count == 1)
+                {
+                    string qry = string.Empty;
+                    foreach (var kwd in kwds)
+                        qry += $"Insert into [48MonthsKeywordsData_Old_NoData] (market, keyword, countryname) values('{market}', N'{kwd}', '{country}'); ";
+                    SendResultsToDB_48(qry);
+                    return;
+                } 
+                //end 20-01-2021
+
+                string[] hdr = monthsList[0] as string[];   
+                string[] values = monthsList[1] as string[];
+                                
                //21-12-2020
                 if (!string.IsNullOrEmpty(values?[3]) && string.IsNullOrEmpty(values?[12])) //03-12-2020
                 {
