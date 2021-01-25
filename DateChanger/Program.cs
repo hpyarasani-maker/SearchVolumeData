@@ -345,6 +345,7 @@ namespace DateChanger
                             try
                             {
                                 SetAPIMonth(smonth);
+                                SetAPIMonthToDB(smonth); //25-01-2021
                                 break;
                             }
                             catch (Exception ex)
@@ -532,6 +533,35 @@ namespace DateChanger
                 xml.Save(fileName);
             }
         }
+
+        //25-01-2021
+        private static void SetAPIMonthToDB(string smonth)
+        {
+            string qry = "Update EmptyValuesMonth set date='" + smonth + "-01'";
+            using (SqlConnection con = new SqlConnection(ReadConnection()))
+            {
+                using (SqlCommand comm = new SqlCommand())
+                {
+                    comm.Connection = con;
+                    con.Open();
+                    comm.CommandTimeout = 0;
+                    comm.CommandType = CommandType.Text;
+                    comm.CommandText = qry;
+
+                    try
+                    {
+                        comm.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("========================== Database Error =======================");
+
+                        throw new Exception(ex.Message);
+                    }
+                }
+            }
+        }
+        
 
         private static void DisplayTimeEvent(Object o)
         {
