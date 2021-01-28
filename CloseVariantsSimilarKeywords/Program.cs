@@ -108,16 +108,15 @@ namespace CloseVariantsSimilarKeywords
                     driver.FindElement(By.CssSelector("#choose-account-0")).Click(); 
                 }
                 catch { }
-
-
             }
             try
             {
+                Console.WriteLine(driver.PageSource);
                 driver.FindElement(By.CssSelector("material-list-item.user-customer-list-item:nth-child(1)")).Click();//28-01-2021 updated selector for cancelled account click event
             }
             catch { }
             ////////////////////
-
+            
             while (true)
             {
                 if (appTimeOut)
@@ -865,7 +864,7 @@ namespace CloseVariantsSimilarKeywords
 
         private static void DisplayTimeEvent(Object o)
         {
-            appTimeOut = true;
+           appTimeOut = true;
         }
     }
 }
