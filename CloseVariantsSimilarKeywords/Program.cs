@@ -104,11 +104,17 @@ namespace CloseVariantsSimilarKeywords
             {
                 try
                 {
-                    driver.FindElement(By.CssSelector("#choose-account-0")).Click();
+                    driver.FindElement(By.CssSelector("#choose-account-0")).Click(); 
                 }
                 catch { }
-            }
 
+
+            }
+            try
+            {
+                driver.FindElement(By.CssSelector("material-list-item.user-customer-list-item:nth-child(1)")).Click();//28-01-2021 updated selector for cancelled account click event
+            }
+            catch { }
             ////////////////////
 
             while (true)
