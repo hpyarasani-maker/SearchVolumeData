@@ -34,8 +34,9 @@ namespace CloseVariantsSimilarKeywords
             string title = "Thread - " + id + " - " + email;
             string exactpath = @"C:\inetpub\wwwroot\closevariants\" + email.Split('@')[0];  //closevariants folder must in wwwroot
             DeleteFile(exactpath); //28-01-2021
-            Console.Title = title + " - With Timer 28 minutes";
-            Timer t = new Timer(DisplayTimeEvent, null, (28 * 60000), 1000);
+            //Console.Title = title + " - With Timer 28 minutes";
+            Console.Title = title + " - Without Timer";
+            //Timer t = new Timer(DisplayTimeEvent, null, (28 * 60000), 1000);
             Console.Title = title;
             System.Drawing.Size size = new System.Drawing.Size(1280, 1024);
             // ChromeOptions chromeOptions = new ChromeOptions();
@@ -492,7 +493,7 @@ namespace CloseVariantsSimilarKeywords
         static void GetEmailID()
         {
             DataTable dt = new DataTable();
-            string qry = "Select id, mailid, password from closeVariantMailIds Where id=1";
+            string qry = "Select id, mailid, password from closeVariantMailIds Where id=4";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -519,7 +520,9 @@ namespace CloseVariantsSimilarKeywords
         static DataTable GetKeywords()
         {
             DataTable dt = new DataTable();
-            string strQry = "GetCloseVariant_" + id;
+            string strQry = "GetCloseVariant_New_" + id;
+            //string strQry = "GetCloseVariant_New";
+            //string strQry = "select market,keyword,countryname from CloseVariant_Old_2 where status=0";
 
             using (SqlDataAdapter da = new SqlDataAdapter(strQry, ReadConnection()))
             {
@@ -568,7 +571,7 @@ namespace CloseVariantsSimilarKeywords
 
                 if (kw == vWord)
                 {
-                    strUpd = "update [closevariant_old] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
+                    strUpd = "update [closevariant_old_2] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
                     SendResultsToDB_48(strUpd);
                     SendSimilarKeywordToDb(market, kw, country);
                     Console.WriteLine();
@@ -635,7 +638,7 @@ namespace CloseVariantsSimilarKeywords
                     writer.Flush();
                     writer.Close();
 
-                    strUpd = "update [closevariant_old] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
+                    strUpd = "update [closevariant_old_2] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
 
                     strUpd += "Insert into nullvalues (market, keyword, source_new, status, insertdate, currency, month) values('" + market + "', N'";
                     strUpd += kw.Replace("'", "''") + "', 'kp_old', 1, Convert(varchar(10),'" + DateTime.Today.ToString("yyyy-MM-dd") + "',20), 'GBP', Convert(varchar(10),'" + DateTime.Today.AddMonths(-1).ToString("yyyy-MM") + "',20) );";
@@ -670,12 +673,12 @@ namespace CloseVariantsSimilarKeywords
                     writer.Flush();
                     writer.Close();
 
-                    strUpd = "update [closevariant_old] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
+                    strUpd = "update [closevariant_old_2] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
 
-                    strUpd += "Insert into closevariantdata_old (market, keyword, closevariant, status_close, insertdate) values('" + market + "', N'";
+                    strUpd += "Insert into [closevariantdata_old_2] (market, keyword, closevariant, status_close, insertdate) values('" + market + "', N'";
                     strUpd += kw.Replace("'", "''") + "', N'" + WebUtility.HtmlDecode(vWord).Replace("'", "''") + "', 1, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
-                    //SendResultsToDB_48(strUpd); //29-01-2021 commented not to submit close variant to api
-                    //return;
+                    SendResultsToDB_48(strUpd); //29-01-2021 commented not to submit close variant to api
+                    return;
                 }
 
                 try
@@ -867,7 +870,7 @@ namespace CloseVariantsSimilarKeywords
 
         private static void DisplayTimeEvent(Object o)
         {
-           appTimeOut = true;
+           //appTimeOut = true;
         }
     }
 }
