@@ -819,7 +819,7 @@ namespace CloseVariantsSimilarKeywords
                     if (error != null && message != null)//changes
                     {
 
-                        string qry = "update [closevariant_old_2] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
+                        string qry = "update [closevariant_old] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
 
                         SendResultsToDB_48(qry);
                     }
