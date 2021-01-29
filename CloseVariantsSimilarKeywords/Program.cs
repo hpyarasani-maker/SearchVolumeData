@@ -674,10 +674,13 @@ namespace CloseVariantsSimilarKeywords
 
                     strUpd += "Insert into closevariantdata_old (market, keyword, closevariant, status_close, insertdate) values('" + market + "', N'";
                     strUpd += kw.Replace("'", "''") + "', N'" + WebUtility.HtmlDecode(vWord).Replace("'", "''") + "', 1, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
+                    //SendResultsToDB_48(strUpd); //29-01-2021 commented not to submit close variant to api
+                    //return;
                 }
 
                 try
                 {
+                    
                     PostXML(path, market, kw);
 
                     Console.WriteLine("Xml Completed.");
