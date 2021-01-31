@@ -114,11 +114,7 @@ namespace CloseVariantsSimilarKeywords
                 Console.WriteLine(driver.PageSource);
                 driver.FindElement(By.CssSelector("material-list-item.user-customer-list-item:nth-child(1)")).Click();//28-01-2021 updated selector for cancelled account click event
             }
-            catch(Exception ex) {
-                Console.WriteLine(driver.PageSource);
-                driver.FindElement(By.CssSelector("material-list-item.user-customer-list-item:nth-child(1)")).Click();//28-01-2021 updated selector for cancelled account click event
-
-            }
+            catch { }
             ////////////////////
             
             while (true)
