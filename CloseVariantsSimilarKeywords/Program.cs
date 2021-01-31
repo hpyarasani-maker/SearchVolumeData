@@ -293,7 +293,7 @@ namespace CloseVariantsSimilarKeywords
 
                                 }
                             }
-                            Thread.Sleep(20000); //29-01-2021
+                            Thread.Sleep(10000); //29-01-2021
 
 
 
