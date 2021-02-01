@@ -683,7 +683,7 @@ namespace CloseVariantsSimilarKeywords
                     strUpd = "update [closevariant_old] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
 
                     strUpd += "Insert into closevariantdata_old (market, keyword, closevariant, status_close, insertdate,appid) values('" + market + "', N'"; //01-02-2021
-                    strUpd += kw.Replace("'", "''") + "', N'" + WebUtility.HtmlDecode(vWord).Replace("'", "''") + "', 1, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20),'"+ id +"');";
+                    strUpd += kw.Replace("'", "''") + "', N'" + WebUtility.HtmlDecode(vWord).Replace("'", "''") + "', 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20),'"+ id +"');"; //01-02-2021 status_close change to 0 actually 1 and included appid column
                     SendResultsToDB_48(strUpd); //29-01-2021 commented not to submit close variant to api
                     return;
                 }
