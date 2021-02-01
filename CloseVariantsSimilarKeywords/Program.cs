@@ -121,8 +121,9 @@ namespace CloseVariantsSimilarKeywords
             {
                 if (appTimeOut)
                     break;
-                //string[] arr = new string[] { "videos", "gifts" };
-                DataTable dt = GetKeywords();
+                //string[] arr = new string[] { "uk:brother lc3217 b/c/m/y ink cartridges:United Kingdom"};
+                DataTable dt =GetKeywords();
+                
                 if (dt == null || dt.Rows.Count <= 0)
                     break;
                 foreach (DataRow row in dt.Rows)
@@ -391,6 +392,15 @@ namespace CloseVariantsSimilarKeywords
 
             return 0;
         }
+        static ArrayList GetKeywordsManully()
+        {
+            //string kwd = "0 finance laptops";
+            string kwd = "brother lc3217 b/c/m/y ink cartridges";
+            ArrayList alKws = new ArrayList();
+            string kwdList = "gb" + ":" + ":" +kwd+ "United Kingdom";
+            alKws.Add(kwdList);
+            return alKws;
+        }
         static void DeleteFile(string exactpath)
         {
 
@@ -492,7 +502,7 @@ namespace CloseVariantsSimilarKeywords
         static void GetEmailID()
         {
             DataTable dt = new DataTable();
-            string qry = "Select id, mailid, password from closeVariantMailIds Where id=10";
+            string qry = "Select id, mailid, password from closeVariantMailIds Where id=9";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -515,7 +525,7 @@ namespace CloseVariantsSimilarKeywords
                 tMonth = Convert.ToDateTime(dt.Rows[0][0]);
             }
         }
-
+        
         static DataTable GetKeywords()
         {
             DataTable dt = new DataTable();
@@ -672,10 +682,10 @@ namespace CloseVariantsSimilarKeywords
 
                     strUpd = "update [closevariant_old] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
 
-                    strUpd += "Insert into closevariantdata_old (market, keyword, closevariant, status_close, insertdate) values('" + market + "', N'";
-                    strUpd += kw.Replace("'", "''") + "', N'" + WebUtility.HtmlDecode(vWord).Replace("'", "''") + "', 1, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
-                    //SendResultsToDB_48(strUpd); //29-01-2021 commented not to submit close variant to api
-                    //return;
+                    strUpd += "Insert into closevariantdata_old (market, keyword, closevariant, status_close, insertdate,appid) values('" + market + "', N'"; //01-02-2021
+                    strUpd += kw.Replace("'", "''") + "', N'" + WebUtility.HtmlDecode(vWord).Replace("'", "''") + "', 1, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20),'"+ id +"');";
+                    SendResultsToDB_48(strUpd); //29-01-2021 commented not to submit close variant to api
+                    return;
                 }
 
                 try
