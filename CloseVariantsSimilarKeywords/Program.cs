@@ -263,7 +263,7 @@ namespace CloseVariantsSimilarKeywords
                             //vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
                             //Console.WriteLine(vWord);
                             //02 - 07 - 2020 UnComment below code for download csv file
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20); //01-02-2021 increase extra 10 seconds
                             historical:
                             {
                                 try
@@ -492,7 +492,7 @@ namespace CloseVariantsSimilarKeywords
         static void GetEmailID()
         {
             DataTable dt = new DataTable();
-            string qry = "Select id, mailid, password from closeVariantMailIds Where id=1";
+            string qry = "Select id, mailid, password from closeVariantMailIds Where id=10";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -867,7 +867,7 @@ namespace CloseVariantsSimilarKeywords
 
         private static void DisplayTimeEvent(Object o)
         {
-           appTimeOut = true;
+           //appTimeOut = true;
         }
     }
 }
