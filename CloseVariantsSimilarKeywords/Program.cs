@@ -34,7 +34,7 @@ namespace CloseVariantsSimilarKeywords
             string title = "Thread - " + id + " - " + email;
             string exactpath = @"C:\inetpub\wwwroot\closevariants\" + email.Split('@')[0];  //closevariants folder must in wwwroot
             DeleteFile(exactpath); //28-01-2021
-            Console.Title = title + " - With Timer 28 minutes";
+            Console.Title = title + " - With Timer 26 minutes";
             Timer t = new Timer(DisplayTimeEvent, null, (28 * 60000), 1000);
             Console.Title = title;
             System.Drawing.Size size = new System.Drawing.Size(1280, 1024);
