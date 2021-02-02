@@ -409,7 +409,7 @@ namespace CloseVariantsSimilarKeywords
             string fName = exactpath + @"\downloads";
             DirectoryInfo dinfo2 = new DirectoryInfo(fName);
             // FileInfo[] Files2 = dinfo2.GetFiles("*.csv");//02-02-2021 commented
-            FileInfo[] Files2 = dinfo2.GetFiles(".*");//02-02-2021
+            FileInfo[] Files2 = dinfo2.GetFiles();//02-02-2021 delete all files
             if (Files2.Length > 0)
             {
                 foreach (var file in Files2)
