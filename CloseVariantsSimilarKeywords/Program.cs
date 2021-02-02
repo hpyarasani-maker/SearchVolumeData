@@ -264,7 +264,7 @@ namespace CloseVariantsSimilarKeywords
                             //vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
                             //Console.WriteLine(vWord);
                             //02 - 07 - 2020 UnComment below code for download csv file
-                            Thread.Sleep(10000); //02-01-2021
+                            Thread.Sleep(10000); //02-02-2021
                             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //01-02-2021 increase extra 10 seconds //02-01-2021
                             historical:
                             {
