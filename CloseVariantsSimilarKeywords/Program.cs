@@ -264,7 +264,8 @@ namespace CloseVariantsSimilarKeywords
                             //vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
                             //Console.WriteLine(vWord);
                             //02 - 07 - 2020 UnComment below code for download csv file
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20); //01-02-2021 increase extra 10 seconds
+                            Thread.Sleep(10000); //02-01-2021
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //01-02-2021 increase extra 10 seconds //02-01-2021
                             historical:
                             {
                                 try
@@ -407,7 +408,8 @@ namespace CloseVariantsSimilarKeywords
             // delete from downloads folder
             string fName = exactpath + @"\downloads";
             DirectoryInfo dinfo2 = new DirectoryInfo(fName);
-            FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
+            // FileInfo[] Files2 = dinfo2.GetFiles("*.csv");//02-02-2021 commented
+            FileInfo[] Files2 = dinfo2.GetFiles(".*");//02-02-2021
             if (Files2.Length > 0)
             {
                 foreach (var file in Files2)
@@ -502,7 +504,7 @@ namespace CloseVariantsSimilarKeywords
         static void GetEmailID()
         {
             DataTable dt = new DataTable();
-            string qry = "Select id, mailid, password from closeVariantMailIds Where id=9";
+            string qry = "Select id, mailid, password from closeVariantMailIds Where id=10";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
