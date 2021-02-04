@@ -105,7 +105,7 @@ namespace CloseVariantsSimilarKeywords
             {
                 try
                 {
-                    driver.FindElement(By.CssSelector("#choose-account-0")).Click(); 
+                    driver.FindElement(By.CssSelector("#choose-account-0")).Click();
                 }
                 catch { }
             }
@@ -116,14 +116,14 @@ namespace CloseVariantsSimilarKeywords
             }
             catch { }
             ////////////////////
-            
+
             while (true)
             {
                 if (appTimeOut)
                     break;
                 //string[] arr = new string[] { "uk:brother lc3217 b/c/m/y ink cartridges:United Kingdom"};
-                DataTable dt =GetKeywords();
-                
+                DataTable dt = GetKeywords();
+
                 if (dt == null || dt.Rows.Count <= 0)
                     break;
                 foreach (DataRow row in dt.Rows)
@@ -264,23 +264,15 @@ namespace CloseVariantsSimilarKeywords
                             //vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
                             //Console.WriteLine(vWord);
 
-                            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(55); //04-02-2021 increase extra 10 seconds //02-02-2021 //03-01-2021
-                          
+                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60); //01-02-2021 increase extra 10 seconds //02-02-2021 //03-01-2021
+
                             historical:
                             {
                                 try
                                 {
-                                    //04-02-2021 
-                                    DeleteFile(exactpath);
-
-                                    DefaultWait<IWebDriver> fwait = new DefaultWait<IWebDriver>(driver);
-                                    fwait.Timeout = TimeSpan.FromSeconds(90);
-                                    fwait.PollingInterval = TimeSpan.FromMilliseconds(500);
-                                    //end 04-02-2021 
                                     try
-                                    {                                        
-                                        IWebElement download = fwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download"))); //04-02-2021 
-                                        //IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
+                                    {
+                                        IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
                                         download.Click();
                                     }
                                     catch { }
@@ -310,7 +302,7 @@ namespace CloseVariantsSimilarKeywords
                             string fName = exactpath + @"\downloads";
                             DirectoryInfo dinfo2 = new DirectoryInfo(fName);
                             FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
-                            if (Files2.Length == 1) //04-02-2021 
+                            if (Files2.Length > 0)
                                 fName = Files2[0].FullName;
                             else
                                 throw new Exception("File not downloaded.");
@@ -356,15 +348,11 @@ namespace CloseVariantsSimilarKeywords
 
 
                         }
-                        //04-02-2021 
-                        catch (Exception ex) 
+                        catch
                         {
-                            if (ex.Message != "File not downloaded.")
-                            {
-                                vWord = "NoData";
-                                ProcessResultsKPOLD_48(market, kws, country);
-                            }
-                            //end 04-02-2021 
+
+                            vWord = "NoData";
+                            ProcessResultsKPOLD_48(market, kws, country);
                             DeleteFile(exactpath);
                             if (appTimeOut)
                             {
@@ -410,7 +398,7 @@ namespace CloseVariantsSimilarKeywords
             //string kwd = "0 finance laptops";
             string kwd = "brother lc3217 b/c/m/y ink cartridges";
             ArrayList alKws = new ArrayList();
-            string kwdList = "gb" + ":" + ":" +kwd+ "United Kingdom";
+            string kwdList = "gb" + ":" + ":" + kwd + "United Kingdom";
             alKws.Add(kwdList);
             return alKws;
         }
@@ -539,7 +527,7 @@ namespace CloseVariantsSimilarKeywords
                 tMonth = Convert.ToDateTime(dt.Rows[0][0]);
             }
         }
-        
+
         static DataTable GetKeywords()
         {
             DataTable dt = new DataTable();
@@ -697,14 +685,14 @@ namespace CloseVariantsSimilarKeywords
                     strUpd = "update [closevariant_old] set status=1 Where Market='" + market + "' And Keyword=N'" + kw.Replace("'", "''") + "' ;  ";
 
                     strUpd += "Insert into closevariantdata_old (market, keyword, closevariant, status_close, insertdate,appid) values('" + market + "', N'"; //01-02-2021
-                    strUpd += kw.Replace("'", "''") + "', N'" + WebUtility.HtmlDecode(vWord).Replace("'", "''") + "', 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20),'"+ id +"');"; //01-02-2021 status_close change to 0 actually 1 and included appid column
+                    strUpd += kw.Replace("'", "''") + "', N'" + WebUtility.HtmlDecode(vWord).Replace("'", "''") + "', 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20),'" + id + "');"; //01-02-2021 status_close change to 0 actually 1 and included appid column
                     SendResultsToDB_48(strUpd); //29-01-2021 commented not to submit close variant to api
                     return;
                 }
 
                 try
                 {
-                    
+
                     PostXML(path, market, kw);
 
                     Console.WriteLine("Xml Completed.");
@@ -891,7 +879,7 @@ namespace CloseVariantsSimilarKeywords
 
         private static void DisplayTimeEvent(Object o)
         {
-           //appTimeOut = true;
+            //appTimeOut = true;
         }
     }
 }
