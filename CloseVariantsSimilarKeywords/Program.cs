@@ -270,7 +270,7 @@ namespace CloseVariantsSimilarKeywords
                             {
                                 try
                                 {
-                                    //04-02-2021 
+                                    //04-02-2021 watch
                                     DeleteFile(exactpath);
 
                                     DefaultWait<IWebDriver> fwait = new DefaultWait<IWebDriver>(driver);
