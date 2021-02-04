@@ -264,15 +264,23 @@ namespace CloseVariantsSimilarKeywords
                             //vWord = driver.FindElement(By.CssSelector("div.particle-table-row.particle-table-last-row > ess-cell:nth-child(1)")).Text;
                             //Console.WriteLine(vWord);
 
-                            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60); //01-02-2021 increase extra 10 seconds //02-02-2021 //03-01-2021
+                            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(55); //04-02-2021 increase extra 10 seconds //02-02-2021 //03-01-2021
                           
                             historical:
                             {
                                 try
                                 {
+                                    //04-02-2021 
+                                    DeleteFile(exactpath);
+
+                                    DefaultWait<IWebDriver> fwait = new DefaultWait<IWebDriver>(driver);
+                                    fwait.Timeout = TimeSpan.FromSeconds(90);
+                                    fwait.PollingInterval = TimeSpan.FromMilliseconds(500);
+                                    //end 04-02-2021 
                                     try
-                                    {
-                                        IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
+                                    {                                        
+                                        IWebElement download = fwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download"))); //04-02-2021 
+                                        //IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
                                         download.Click();
                                     }
                                     catch { }
@@ -302,7 +310,7 @@ namespace CloseVariantsSimilarKeywords
                             string fName = exactpath + @"\downloads";
                             DirectoryInfo dinfo2 = new DirectoryInfo(fName);
                             FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
-                            if (Files2.Length > 0)
+                            if (Files2.Length == 1) //04-02-2021 
                                 fName = Files2[0].FullName;
                             else
                                 throw new Exception("File not downloaded.");
@@ -348,11 +356,15 @@ namespace CloseVariantsSimilarKeywords
 
 
                         }
-                        catch
+                        //04-02-2021 
+                        catch (Exception ex) 
                         {
-
-                            vWord = "NoData";
-                            ProcessResultsKPOLD_48(market, kws, country);
+                            if (ex.Message != "File not downloaded.")
+                            {
+                                vWord = "NoData";
+                                ProcessResultsKPOLD_48(market, kws, country);
+                            }
+                            //end 04-02-2021 
                             DeleteFile(exactpath);
                             if (appTimeOut)
                             {
