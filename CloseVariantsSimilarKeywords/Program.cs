@@ -134,7 +134,7 @@ namespace CloseVariantsSimilarKeywords
                     string country = row[2].ToString();
                     try
                     {
-                        DeleteFile(exactpath);
+                        //DeleteFile(exactpath);//05-02-2021 commented
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
                         driver.FindElement(By.CssSelector("div.forecasts-content")).Click();
                         Console.WriteLine(driver.PageSource);
