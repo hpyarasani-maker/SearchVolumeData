@@ -21,7 +21,7 @@ namespace CloseVariantsSimilarKeywords
         static DateTime tMonth;
         static int id = 0;
         static bool appTimeOut = false;
-
+        static IWebDriver driver; //08-02-2021 assigned globally
         static int Main(string[] args)
         {
             //string path = @"C:\inetpub\wwwroot\citibank_au.xml";
@@ -44,7 +44,8 @@ namespace CloseVariantsSimilarKeywords
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
             chromeOptions.AddArgument("--disable-spelling-auto-correct");
             chromeOptions.AddArgument("--disable-cache");
-            IWebDriver driver = new ChromeDriver(@".\ChromeDriver", chromeOptions);
+            
+            driver = new ChromeDriver(@".\ChromeDriver", chromeOptions); //08-02-2021 changed
             OpenQA.Selenium.Support.UI.WebDriverWait Wait = new WebDriverWait(driver, new TimeSpan(0, 0, 50));
             driver.Manage().Window.Size = size;
 
@@ -891,7 +892,10 @@ namespace CloseVariantsSimilarKeywords
 
         private static void DisplayTimeEvent(Object o)
         {
-           //appTimeOut = true;
+            appTimeOut = true;
+            driver.Close(); //08-02-2021
+            driver.Dispose(); //08-02-2021
+            Environment.Exit(Environment.ExitCode); //08-02-2021
         }
     }
 }
