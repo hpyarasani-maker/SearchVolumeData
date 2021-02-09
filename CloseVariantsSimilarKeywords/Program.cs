@@ -129,7 +129,7 @@ namespace CloseVariantsSimilarKeywords
                     break;
                 foreach (DataRow row in dt.Rows)
                 {
-                    vWord = "";
+                    //vWord = ""; //09-02-2021 commented moved to 310 line
                     string market = row[0].ToString();
                     string kws = row[1].ToString();
                     string country = row[2].ToString();
@@ -307,7 +307,7 @@ namespace CloseVariantsSimilarKeywords
                             Thread.Sleep(10000); //29-01-2021
 
 
-
+                            vWord = ""; //09-02-2021 moved from 132 line
                             string fName = exactpath + @"\downloads";
                             DirectoryInfo dinfo2 = new DirectoryInfo(fName);
                             FileInfo[] Files2 = dinfo2.GetFiles("*.csv");
