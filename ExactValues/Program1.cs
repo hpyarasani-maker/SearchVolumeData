@@ -282,6 +282,7 @@ namespace ExactValues
                 try
                 {
                     //method downloads keywords from Pi API
+                    //alKeywords = GetKeywordsManully();
                     alKeywords = GetKeywordsFromAPI();
                     if (alKeywords.Count <= 0)
                     {
@@ -1657,6 +1658,15 @@ namespace ExactValues
             string ret = reader.ReadToEnd();
             reader.Close();
             return ret;
+        }
+        static ArrayList GetKeywordsManully()
+        {
+            //string kwd = "0 finance laptops";
+            string kwd = "s p medical abbreviation";
+            ArrayList alKws = new ArrayList();
+            string kwdList = "us" + ":" + "United States" + ":" + kwd;
+            alKws.Add(kwdList);
+            return alKws;
         }
 
         static ArrayList GetKeywordsFromAPI()
