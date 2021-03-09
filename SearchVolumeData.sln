@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactValuesEmptyKeywords", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactValuesV1", "ExactValuesV1\ExactValuesV1.csproj", "{7194E857-14EF-461F-84D4-15E3BCEB9150}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloseVariantSimilarKeywordsV1", "CloseVariantSimilarKeywordsV1\CloseVariantSimilarKeywordsV1.csproj", "{1A247388-1D58-47E8-BA51-99D69CC97DB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{7194E857-14EF-461F-84D4-15E3BCEB9150}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7194E857-14EF-461F-84D4-15E3BCEB9150}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7194E857-14EF-461F-84D4-15E3BCEB9150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A247388-1D58-47E8-BA51-99D69CC97DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A247388-1D58-47E8-BA51-99D69CC97DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A247388-1D58-47E8-BA51-99D69CC97DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A247388-1D58-47E8-BA51-99D69CC97DB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
