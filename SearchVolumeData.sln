@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactValuesSimilarBatchKeyw
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactValuesEmptyKeywords", "ExactValuesEmptyKeywords\ExactValuesEmptyKeywords.csproj", "{45C744B9-0215-48A6-A596-4CFCD1A1639D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactValuesV1", "ExactValuesV1\ExactValuesV1.csproj", "{7194E857-14EF-461F-84D4-15E3BCEB9150}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{45C744B9-0215-48A6-A596-4CFCD1A1639D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45C744B9-0215-48A6-A596-4CFCD1A1639D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45C744B9-0215-48A6-A596-4CFCD1A1639D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7194E857-14EF-461F-84D4-15E3BCEB9150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7194E857-14EF-461F-84D4-15E3BCEB9150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7194E857-14EF-461F-84D4-15E3BCEB9150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7194E857-14EF-461F-84D4-15E3BCEB9150}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
