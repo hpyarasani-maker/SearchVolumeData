@@ -154,19 +154,19 @@ namespace CloseVariantSimilarKeywordsV1
                         {
                             try
                             {
-                                IWebElement tab = driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)"));
-                                if (tab.Text == "HISTORICAL METRICS")
-                                {
-                                    tab.Click();
+                                //IWebElement tab = driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)"));
+                                //if (tab.Text == "HISTORICAL METRICS")
+                                //{
+                                IWebElement tab = driver.FindElement(By.CssSelector("div.crop-container > div > skinny-nav-item > a.skinny-nav-item")); //10-03-2021
+                                tab.Click();
 
-                                }
-                                else
-                                    goto Historical;
+                                //}
+                                //else
+                                //    goto Historical;
                             }
                             catch (Exception e)
-                            {
-                                goto Historical;
-
+                            {                                
+                                goto Historical;                              
                             }
 
                         }
@@ -176,7 +176,7 @@ namespace CloseVariantSimilarKeywordsV1
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                         driver.FindElement(By.CssSelector(".location-button")).Click();
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                        if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
+                        //if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0) //10-03-2021
                         {
                             try
                             {
@@ -240,7 +240,9 @@ namespace CloseVariantSimilarKeywordsV1
                             {
                                 try
                                 {
-                                    driver.FindElement(By.CssSelector(".dropdown-icon")).Click(); //15-01-2021
+                                    //driver.FindElement(By.CssSelector(".dropdown-icon")).Click(); //15-01-2021
+                                    IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.date-popup-button"))); //10-03-2021
+                                    dropdown.Click();
                                 }
                                 catch { }
                                 Thread.Sleep(1500);
@@ -517,7 +519,7 @@ namespace CloseVariantSimilarKeywordsV1
         static void GetEmailID()
         {
             DataTable dt = new DataTable();
-            string qry = "Select id, mailid, password from closeVariantMailIds Where id=10";
+            string qry = "Select id, mailid, password from closeVariantMailIds Where id=4";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
