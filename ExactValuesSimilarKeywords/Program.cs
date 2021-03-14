@@ -944,7 +944,6 @@ namespace ExactValuesSimilarKeywords
                                 e.Click();
 
                             }
-                            Thread.Sleep(50); //10-03-2021
                             IWebElement month = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".date-popup-button")));
                             // if the date is selected other then 48 months then signout and exit
                             if (month.Text.Contains("All available") != true)

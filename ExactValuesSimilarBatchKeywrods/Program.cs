@@ -512,7 +512,6 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch
                         { }
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //10-03-2021
                         try//27-11-2020
                         {
 
@@ -886,7 +885,6 @@ namespace ExactValuesSimilarBatchKeywords
                                 e.Click();
 
                             }
-                            Thread.Sleep(50); //10-03-2021
                             IWebElement month = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".date-popup-button")));
                             // if the date is selected other then 48 months then signout and exit
                             if (month.Text.Contains("All available") != true)
