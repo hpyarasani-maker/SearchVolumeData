@@ -265,9 +265,9 @@ namespace ExactValuesSimilarBatchKeywords
                 try
                 {
                     //method downloads keywords from Pi API
-                    //alKeywords = GetKeywordsFromDB();
+                    alKeywords = GetKeywordsFromDB();
                     //alKeywords = GetKeywordsManully();//06-07-2020
-                    alKeywords = GetBatchSimilarKeywordsApi().Result; //14-09-2020
+                    //alKeywords = GetBatchSimilarKeywordsApi().Result; //14-09-2020
                     if (alKeywords.Count <= 0)
                     {
                         //it will try again keywords are not downloaded and wait for 10 seconds to download again
@@ -512,6 +512,7 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch
                         { }
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //10-03-2021
                         try//27-11-2020
                         {
 
@@ -878,13 +879,14 @@ namespace ExactValuesSimilarBatchKeywords
                             }
                             catch (Exception ex)
                             { LogError(ex, "Error While Selecting Date in DropDownlList"); }
-
+                            Thread.Sleep(50); //10-03-2021
                             IWebElement e = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.range-button:nth-child(5)")));
                             if (e.Text.Contains("All available"))
                             {
                                 e.Click();
 
                             }
+                            Thread.Sleep(50); //10-03-2021
                             IWebElement month = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".date-popup-button")));
                             // if the date is selected other then 48 months then signout and exit
                             if (month.Text.Contains("All available") != true)
@@ -1115,8 +1117,9 @@ namespace ExactValuesSimilarBatchKeywords
             {
                 DataTable dt = new DataTable();
                 //string strQry = "select Market,countryname,Keyword from [48MonthsKeywordsData_Old_SimilarKeywords] where status_old=0";
-                string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
+                //string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
                 //string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
+                string strQry = "[dbo].[GetBulkSimilarKeywordsProc]"; //All keywords
                 //string strQry = "[dbo].[GetSimilarKeywords_1]";
                 //string strQry = "[dbo].[GetSimilarKeywords_2]";
                 //string strQry = "[dbo].[GetSimilarKeywords_3]";
