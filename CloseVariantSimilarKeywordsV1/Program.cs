@@ -252,7 +252,9 @@ namespace CloseVariantSimilarKeywordsV1
                                     e.Click();
                                 }
                                 IWebElement month = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".date-popup-button")));
-                                if (month.Text.Contains("All available") != true)
+                                string monthtext = month.GetAttribute("aria-label");//16-03-2021 //old and new apps
+                                //if (month.Text.Contains("All available") != true) //for old apps 16-03-2021
+                                if (monthtext.Contains("All available") != true) //for new apps 16-03-2021
                                 {
                                     Console.WriteLine("Error In Date Selection");
                                 }

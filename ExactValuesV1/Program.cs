@@ -914,7 +914,7 @@ namespace ExactValuesV1
                             string monthtext = month.GetAttribute("aria-label");//16-03-2021 //old and new apps
                             // if the date is selected other then 48 months then signout and exit
                             //if (month.Text.Contains("All available") != true) //for old apps
-                            if (monthtext.Contains("All available") != true) //for new apps
+                            if (monthtext.Contains("All available") != true) //for new apps 16-03-2021
                             {
                                 LogError(new Exception(), "Error while selecting All available Months");//27-11-2020
                                 Console.WriteLine("===========Problem While Selecting Months============"); //25-11-2020
