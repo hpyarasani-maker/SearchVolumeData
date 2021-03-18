@@ -872,7 +872,7 @@ namespace CloseVariantSimilarKeywordsV1
         static string ReadConnection()
         {
             XmlDocument xml = new XmlDocument();
-            string fileName = @"C:\Inetpub\wwwroot\KPServerIP.xml";
+            string fileName = @"C:\Inetpub\wwwroot\PiVNet\KPServerIP.xml";
             xml.Load(fileName);
 
             XmlNode node = xml.SelectSingleNode("ConnectionString/con");
@@ -884,7 +884,7 @@ namespace CloseVariantSimilarKeywordsV1
         static string ReadAPI()
         {
             XmlDocument xml = new XmlDocument();
-            string fileName = @"C:\Inetpub\wwwroot\KPServerIP.xml";
+            string fileName = @"C:\Inetpub\wwwroot\PiVNet\KPServerIP.xml";
             xml.Load(fileName);
 
             XmlNode node = null;
