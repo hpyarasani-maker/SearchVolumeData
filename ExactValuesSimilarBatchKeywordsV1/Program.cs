@@ -404,7 +404,8 @@ namespace ExactValuesSimilarBatchKeywordsV1
                         try//27-11-2020
                         {
 
-                            IWebElement forecast = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")));
+                            //IWebElement forecast = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".forecasts-content > div:nth-child(1) > div:nth-child(3) > material-icon:nth-child(1) > i:nth-child(1)")));
+                            IWebElement forecast = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".forecasts-content > div"))); //05-03-2021
                             forecast.Click();
                             Console.WriteLine(driver.PageSource);
                         }
@@ -608,7 +609,8 @@ namespace ExactValuesSimilarBatchKeywordsV1
                         WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
                         try//27-11-2020
                         {
-                            IWebElement location = hiswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
+                            //IWebElement location = hiswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
+                            IWebElement location = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button > material-icon:nth-child(1)")));//05-03-2021
                             location.Click();
                         }
                         catch (ElementNotVisibleException ex)
@@ -638,7 +640,8 @@ namespace ExactValuesSimilarBatchKeywordsV1
                         //23-10-2020
                         try//27-11-2020
                         {
-                            IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)")));
+                            //IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)")));
+                            IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)"))); //05-03-2021
                             removecountry.Click();
                         }
                         catch (ElementNotVisibleException ex)
@@ -665,13 +668,14 @@ namespace ExactValuesSimilarBatchKeywordsV1
                         { LogError(ex, "Error While Removing Previous Country"); }
 
 
-                        if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
+                        //if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)//05-03-2021
                         {
 
                             try//27-11-2020
                             {
                                 WebDriverWait inputwait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
                                 IWebElement labelinput = inputwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("label.input-container:nth-child(1)")));
+                                //IWebElement labelinput = inputwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("label.input-container"))); //05-03-2021
                                 labelinput.Click();
 
                                 labelinput.SendKeys(country);
@@ -853,7 +857,8 @@ namespace ExactValuesSimilarBatchKeywordsV1
                         {
                             try//27-11-2020
                             {
-                                IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown-icon"))); //15-01-2021 selector changed
+                                //IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".dropdown-icon"))); //15-01-2021 selector changed
+                                IWebElement dropdown = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.date-popup-button"))); //05-03-2021
                                 dropdown.Click();
                             }
                             catch (ElementNotVisibleException ex)
@@ -887,8 +892,10 @@ namespace ExactValuesSimilarBatchKeywordsV1
                             }
                             Thread.Sleep(50); //10-03-2021
                             IWebElement month = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".date-popup-button")));
+                            string monthtext = month.GetAttribute("aria-label");//16-03-2021 //old and new apps
                             // if the date is selected other then 48 months then signout and exit
-                            if (month.Text.Contains("All available") != true)
+                            //if (month.Text.Contains("All available") != true) //for old apps
+                            if (monthtext.Contains("All available") != true) //for new apps 16-03-2021
                             {
                                 LogError(new Exception(), "Error while selecting All available Months");
                                 Console.WriteLine("===========Problem While Selecting Months============"); //25-11-2020
@@ -1198,7 +1205,7 @@ namespace ExactValuesSimilarBatchKeywordsV1
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=1";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=7";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
