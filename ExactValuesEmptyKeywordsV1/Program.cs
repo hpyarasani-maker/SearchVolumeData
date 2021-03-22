@@ -13,16 +13,15 @@ using System.Collections;
 using System.Windows.Forms;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using System.Net.Http;
 using System.Diagnostics;
-using System.Runtime.Serialization;
-namespace ExactValuesSimilarBatchKeywords
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
+
+namespace ExactValuesEmptyKeywordsV1
 {
     class Program
     {
-
         static string email = "";
         static string password = "";
         static int id = 0;
@@ -50,7 +49,7 @@ namespace ExactValuesSimilarBatchKeywords
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
 
             IWebDriver driver = new ChromeDriver(@".\ChromeDriver", chromeOptions);
-            OpenQA.Selenium.Support.UI.WebDriverWait Wait = new WebDriverWait(driver, new TimeSpan(0, 0, 50));
+            WebDriverWait Wait = new WebDriverWait(driver, new TimeSpan(0, 0, 50));
             driver.Manage().Window.Size = size;
 
             //Goes to login page
@@ -62,7 +61,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                 element.SendKeys(email);
             }
-            catch//27-11-2020
+            catch //27-11-2020
             {
                 try
                 {
@@ -73,6 +72,10 @@ namespace ExactValuesSimilarBatchKeywords
                 catch (ElementNotVisibleException ex)
                 {
                     LogError(ex, "Error While Entering Gmail ID, Element Is NotVisible");
+                }
+                catch (ElementNotSelectableException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail ID, Element Is Not Selectable");
                 }
                 catch (NoSuchElementException ex)
                 {
@@ -92,7 +95,7 @@ namespace ExactValuesSimilarBatchKeywords
                 }
                 catch (Exception ex)
                 { LogError(ex, "Error While Entering Gmail ID"); }
-            }
+            }//27-11-2020
             try
             {
                 IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='identifierNext']")));
@@ -110,6 +113,10 @@ namespace ExactValuesSimilarBatchKeywords
                 catch (ElementNotVisibleException ex)
                 {
                     LogError(ex, "Error While clicking Next Button(Mail LogIn), Element Is NotVisible");
+                }
+                catch (ElementNotSelectableException ex)
+                {
+                    LogError(ex, "Error While clicking Next Button(Mail LogIn), Element Is Not Selectable");
                 }
                 catch (NoSuchElementException ex)
                 {
@@ -129,7 +136,7 @@ namespace ExactValuesSimilarBatchKeywords
                 }
                 catch (Exception ex)
                 { LogError(ex, "Error While clicking Next Button(Mail LogIn)"); }
-            }
+            }//27-11-2020
 
             try
             {
@@ -149,6 +156,10 @@ namespace ExactValuesSimilarBatchKeywords
                 {
                     LogError(ex, "Error While Entering Gmail Password, Element Is NotVisible");
                 }
+                catch (ElementNotSelectableException ex)
+                {
+                    LogError(ex, "Error While Entering Gmail Password, Element Is Not Selectable");
+                }
                 catch (NoSuchElementException ex)
                 {
                     LogError(ex, "Error While Entering Gmail Password, NoSuch Element Is Present");
@@ -167,14 +178,14 @@ namespace ExactValuesSimilarBatchKeywords
                 }
                 catch (Exception ex)
                 { LogError(ex, "Error While Entering Gmail Password"); }
-            }
+            }//27-11-2020
             try
             {
                 IWebElement element = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id='passwordNext']")));
 
                 element.Click();
             }
-            catch
+            catch//27-11-2020
             {
                 try
                 {
@@ -182,7 +193,7 @@ namespace ExactValuesSimilarBatchKeywords
 
                     element.Click();
                 }
-                catch//27-11-2020
+                catch
                 {
                     try
                     {
@@ -194,6 +205,10 @@ namespace ExactValuesSimilarBatchKeywords
                     catch (ElementNotVisibleException ex)
                     {
                         LogError(ex, "Error While clicking SignIn Button, Element Is Not Visible");
+                    }
+                    catch (ElementNotSelectableException ex)
+                    {
+                        LogError(ex, "Error While clicking SignIn Button, Element Is Not Selectable");
                     }
                     catch (NoSuchElementException ex)
                     {
@@ -214,7 +229,7 @@ namespace ExactValuesSimilarBatchKeywords
                     catch (Exception ex)
                     { LogError(ex, "Error While clicking SignIn Button"); }
                 }
-            }
+            }//27-11-2020
             Console.WriteLine(driver.PageSource);
             try
             {
@@ -236,6 +251,10 @@ namespace ExactValuesSimilarBatchKeywords
                 {
                     LogError(ex, "Error While clicking AccountChooser Window, Element Is NotVisible");
                 }
+                catch (ElementNotSelectableException ex)
+                {
+                    LogError(ex, "Error While clicking AccountChooser Window, Element Is Not Selectable");
+                }
                 catch (NoSuchElementException ex)
                 {
                     LogError(ex, "Error While clicking AccountChooser Window, NoSuch Element Is Present");
@@ -254,7 +273,7 @@ namespace ExactValuesSimilarBatchKeywords
                 }
                 catch (Exception ex)
                 { LogError(ex, "Error While clicking AccountChooser Window"); }
-            }
+            }//27-11-2020
 
             while (true)
             {
@@ -265,9 +284,8 @@ namespace ExactValuesSimilarBatchKeywords
                 try
                 {
                     //method downloads keywords from Pi API
+                    //alKeywords = GetBatchSimilarKeywordsApi();
                     alKeywords = GetKeywordsFromDB();
-                    //alKeywords = GetKeywordsManully();//06-07-2020
-                    //alKeywords = GetBatchSimilarKeywordsApi().Result; //14-09-2020
                     if (alKeywords.Count <= 0)
                     {
                         //it will try again keywords are not downloaded and wait for 10 seconds to download again
@@ -288,8 +306,8 @@ namespace ExactValuesSimilarBatchKeywords
                     string[] item = kwItem.Split(':');
                     string market = item[0];
                     string country = item[1];
-                    string kws = "Keyword, " + item[2]; //20-08-2020 
-                    string keyword = item[2];
+                    string kws = "Keyword, " + item[2];
+
                     try
                     {
                         //method deletes previous downloaded csv files
@@ -314,7 +332,6 @@ namespace ExactValuesSimilarBatchKeywords
                             LogError(ex, "Error While Deleting CSV File");
                         }
                         WebDriverWait tensecondswait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-
                         try//27-11-2020
                         {
                             WriteToCsv(kws);
@@ -330,8 +347,7 @@ namespace ExactValuesSimilarBatchKeywords
                         catch (Exception ex)
                         {
                             LogError(ex, "Error Writing Keywords To CSV");
-                        } // for batch keywords 
-
+                        }
                         try
                         {
 
@@ -339,7 +355,7 @@ namespace ExactValuesSimilarBatchKeywords
                             element.Click();
 
                         }
-                        catch(Exception ex) { ex.Message.ToString(); }
+                        catch { }
                         try
                         {
 
@@ -354,12 +370,12 @@ namespace ExactValuesSimilarBatchKeywords
                             IWebElement focus = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".is-focused")));
                             focus.Click();
 
-                            try
-                            {
-                                IWebElement accountchooser = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.WBW9sf")));
-                                accountchooser.Click();
-                            }
-                            catch { }
+                            //try
+                            //{
+                            //    IWebElement accountchooser = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.WBW9sf")));
+                            //    accountchooser.Click();
+                            //}
+                            //catch { }
                         }
                         catch//27-11-2020
                         {
@@ -375,6 +391,10 @@ namespace ExactValuesSimilarBatchKeywords
                             catch (ElementNotVisibleException ex)
                             {
                                 LogError(ex, "Error While Remove plan, Element Is NotVisible");
+                            }
+                            catch (ElementNotSelectableException ex)
+                            {
+                                LogError(ex, "Error While Remove plan, Element Is Not Selectable");
                             }
                             catch (NoSuchElementException ex)
                             {
@@ -401,7 +421,6 @@ namespace ExactValuesSimilarBatchKeywords
                             accountchooser.Click();
                         }
                         catch { }
-
                         try//27-11-2020
                         {
 
@@ -412,6 +431,10 @@ namespace ExactValuesSimilarBatchKeywords
                         catch (ElementNotVisibleException ex)
                         {
                             LogError(ex, "Error While Clicking GetForecast Window, Element Is NotVisible");
+                        }
+                        catch (ElementNotSelectableException ex)
+                        {
+                            LogError(ex, "Error While Clicking GetForecast Window, Element Is Not Selectable");
                         }
                         catch (NoSuchElementException ex)
                         {
@@ -431,11 +454,8 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking GetForecast Window"); }
-
-                    // 07-08-2020
-                    //for batch keywords 
-                    //downloaded keywords file uploading.
-                    skip:
+                        //downloaded keywords file uploading.
+                        skip:
                         {
 
                             //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
@@ -467,7 +487,6 @@ namespace ExactValuesSimilarBatchKeywords
                         }
 
                         Console.WriteLine(driver.PageSource);
-
                         try//27-11-2020
                         {
                             IWebElement save = tensecondswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
@@ -476,6 +495,10 @@ namespace ExactValuesSimilarBatchKeywords
                         catch (ElementNotVisibleException ex)
                         {
                             LogError(ex, "Error While Clicking Save Button, Element Is NotVisible");
+                        }
+                        catch (ElementNotSelectableException ex)
+                        {
+                            LogError(ex, "Error While Clicking Save Button, Element Is Not Selectable");
                         }
                         catch (NoSuchElementException ex)
                         {
@@ -495,7 +518,6 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Save Button"); }
-
                         if (driver.FindElements(By.CssSelector(".save-button.is-disabled")).Count > 0)
                         {
                             IWebElement cancel = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".cancel-button")));
@@ -512,7 +534,6 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch
                         { }
-                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //10-03-2021
                         try//27-11-2020
                         {
 
@@ -522,6 +543,10 @@ namespace ExactValuesSimilarBatchKeywords
                         catch (ElementNotVisibleException ex)
                         {
                             LogError(ex, "Error While Clicking Keywords Window, Element Is NotVisible");
+                        }
+                        catch (ElementNotSelectableException ex)
+                        {
+                            LogError(ex, "Error While Clicking Keywords Window, Element Is Not Selectable");
                         }
                         catch (NoSuchElementException ex)
                         {
@@ -541,7 +566,6 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Keywords Window"); }
-
                         try//27-11-2020
                         {
                             IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
@@ -550,6 +574,10 @@ namespace ExactValuesSimilarBatchKeywords
                         catch (ElementNotVisibleException ex)
                         {
                             LogError(ex, "Error While Clicking Historical Metrics Window, Element Is NotVisible");
+                        }
+                        catch (ElementNotSelectableException ex)
+                        {
+                            LogError(ex, "Error While Clicking Historical Metrics Window, Element Is Not Selectable");
                         }
                         catch (NoSuchElementException ex)
                         {
@@ -569,31 +597,8 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Historical Metrics Window"); }
-
-                        // end for batch keywords 
-                        // end 07-08-2020
-
-                        /* 07-08-2020
-                        ////////////////////
-                        // for single keyword.
-
-                        IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-input.text-input-component")));
-                        itemelement.SendKeys(WebUtility.HtmlDecode(keyword));
-
-                        WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-
-                        IWebElement resbtn = minwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.get-results-button")));
-                        resbtn.Click();
-
-                        // end for single keyword.
-                        ////////////////////
-                        end 07-08-2020 */
-
-                        //06-08-2020
-                        Thread.Sleep(10000);
-
-                        //20-08-2020 // added try block.
-                        try
+                        // Location Selection. 
+                        try //02-12-2020
                         {
                             //IWebElement el = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
                             //if (el.Text.ToLower() == country.ToLower())
@@ -605,16 +610,18 @@ namespace ExactValuesSimilarBatchKeywords
                             }// end 15-01-2021
                         }
                         catch { }
-                        // Location Selection. 
-                        WebDriverWait hiswait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
                         try//27-11-2020
                         {
-                            IWebElement location = hiswait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
+                            IWebElement location = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".location-button")));
                             location.Click();
                         }
                         catch (ElementNotVisibleException ex)
                         {
                             LogError(ex, "Error While Clicking Location Button, Element Is NotVisible");
+                        }
+                        catch (ElementNotSelectableException ex)
+                        {
+                            LogError(ex, "Error While Clicking Location Button, Element Is Not Selectable");
                         }
                         catch (NoSuchElementException ex)
                         {
@@ -634,17 +641,18 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Location Button"); }
-                        //end 06-08-2020
-
-                        //23-10-2020
-                        try//27-11-2020
+                        try //23-10-2020  added try block for country selection issue //27-11-2020
                         {
-                            IWebElement removecountry = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)")));
-                            removecountry.Click();
+                            IWebElement target = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("th.remove > material-icon:nth-child(1)")));
+                            target.Click();
                         }
                         catch (ElementNotVisibleException ex)
                         {
                             LogError(ex, "Error While Removing Previous Country, Element Is NotVisible");
+                        }
+                        catch (ElementNotSelectableException ex)
+                        {
+                            LogError(ex, "Error While Removing Previous Country, Element Is Not Selectable");
                         }
                         catch (NoSuchElementException ex)
                         {
@@ -664,12 +672,10 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Removing Previous Country"); }
-
-
                         if (driver.FindElements(By.CssSelector(".menu-lookalike")).Count > 0)
                         {
 
-                            try//27-11-2020
+                            try
                             {
                                 WebDriverWait inputwait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
                                 IWebElement labelinput = inputwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("label.input-container:nth-child(1)")));
@@ -690,6 +696,10 @@ namespace ExactValuesSimilarBatchKeywords
                                 catch (ElementNotVisibleException ex)
                                 {
                                     LogError(ex, "Error While Location Entry, Element Is NotVisible");
+                                }
+                                catch (ElementNotSelectableException ex)
+                                {
+                                    LogError(ex, "Error While Location Entry, Element Is Not Selectable");
                                 }
                                 catch (NoSuchElementException ex)
                                 {
@@ -729,6 +739,10 @@ namespace ExactValuesSimilarBatchKeywords
                             {
                                 LogError(ex, "Error  In Target Selection Issue, Element Is NotVisible");
                             }
+                            catch (ElementNotSelectableException ex)
+                            {
+                                LogError(ex, "Error In Target Selection Issue, Element Is Not Selectable");
+                            }
                             catch (NoSuchElementException ex)
                             {
                                 LogError(ex, "Error In Target Selection Issue, NoSuch Element Is Present");
@@ -751,8 +765,11 @@ namespace ExactValuesSimilarBatchKeywords
                                 Console.WriteLine("==Problem In Country Selection(Target Selection)==");
                                 throw new Exception();
                             }
-                            try
+
+
+                            try//27-11-2020
                             {
+
                                 try//02-12-2020
                                 {
                                     IWebElement highlight = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".highlighted")));
@@ -783,7 +800,8 @@ namespace ExactValuesSimilarBatchKeywords
                                     LogError(ex, "Error While Clicking Country Save Button");
                                     Console.WriteLine("While Clicking Country Save Button");
                                 }
-                                IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020
+                                //IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
+                                IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020 //21-11-2020 changed to above line
                                 string[] countrytext = element.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);//15-01-2021 getting location text in new line
                                 if (element.Text.Contains("All locations") || countrytext[1].ToString().ToLower() != country.ToLower()) // included split on 21-11-2020 //15-01-2021 used countrytext variable
                                 {
@@ -798,6 +816,10 @@ namespace ExactValuesSimilarBatchKeywords
                             catch (ElementNotVisibleException ex)
                             {
                                 LogError(ex, "Error  While Saving Location, Element Is NotVisible");
+                            }
+                            catch (ElementNotSelectableException ex)
+                            {
+                                LogError(ex, "Error While Saving Location, Element Is Not Selectable");
                             }
                             catch (NoSuchElementException ex)
                             {
@@ -817,6 +839,7 @@ namespace ExactValuesSimilarBatchKeywords
                             }
                             catch (Exception ex)
                             {
+                                LogError(ex, "Country selection problem");
                                 //If any error occured in country selection then signout and exit..
                                 Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
                                 throw new Exception("Country selection problem");
@@ -831,25 +854,8 @@ namespace ExactValuesSimilarBatchKeywords
 
                         }
 
-
+                        //Date Selection                      
                         LOCATION:
-                        /* 07-08-2020
-                        ////////////////////
-                        // for single keyword.
-                        //06-08-2020
-                        try
-                        {
-                            WebDriverWait tabwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
-                            IWebElement tab = tabwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
-                            tab.Click();
-                            //end 06-08-2020
-                        }
-                        catch { }
-                        // end for single keyword.
-                        ////////////////////
-                        end 07-08-2020 */
-
-                        //Date Selection
                         try
                         {
                             try//27-11-2020
@@ -860,6 +866,10 @@ namespace ExactValuesSimilarBatchKeywords
                             catch (ElementNotVisibleException ex)
                             {
                                 LogError(ex, "Error  While Selecting Date, Element Is NotVisible");
+                            }
+                            catch (ElementNotSelectableException ex)
+                            {
+                                LogError(ex, "Error While Selecting Date, Element Is Not Selectable");
                             }
                             catch (NoSuchElementException ex)
                             {
@@ -879,19 +889,17 @@ namespace ExactValuesSimilarBatchKeywords
                             }
                             catch (Exception ex)
                             { LogError(ex, "Error While Selecting Date in DropDownlList"); }
-                            Thread.Sleep(50); //10-03-2021
                             IWebElement e = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.range-button:nth-child(5)")));
                             if (e.Text.Contains("All available"))
                             {
                                 e.Click();
 
                             }
-                            Thread.Sleep(50); //10-03-2021
                             IWebElement month = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".date-popup-button")));
                             // if the date is selected other then 48 months then signout and exit
                             if (month.Text.Contains("All available") != true)
                             {
-                                LogError(new Exception(), "Error while selecting All available Months");
+                                LogError(new Exception(), "Error while selecting All available Months");//27-11-2020
                                 Console.WriteLine("===========Problem While Selecting Months============"); //25-11-2020
                                 throw new Exception("Error while selecting All available Months");//30-11-2020
 
@@ -903,9 +911,9 @@ namespace ExactValuesSimilarBatchKeywords
                                 //end 30-11-2020
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
-                            LogError(ex, "Error In Date Selection");
+                            LogError(ex, "Error In Date Selection");//27-11-2020
                             //if any error occurs in date selection then signout and exit
                             Console.WriteLine("Error In Date Selection");
                             throw new Exception("Error In Date Selection");//30-11-2020
@@ -922,10 +930,10 @@ namespace ExactValuesSimilarBatchKeywords
 
                         historical:
                         {
-                            try//27-11-2020
+                            try
                             {
                                 //27-11-2020 removed try block
-                                try
+                                try//27-11-2020
                                 {
                                     IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
                                     download.Click();
@@ -933,6 +941,10 @@ namespace ExactValuesSimilarBatchKeywords
                                 catch (ElementNotVisibleException ex)
                                 {
                                     LogError(ex, "Error  While clicking CSV Download Button, Element Is NotVisible");
+                                }
+                                catch (ElementNotSelectableException ex)
+                                {
+                                    LogError(ex, "Error While While clicking CSV Download Button, Element Is Not Selectable");
                                 }
                                 catch (NoSuchElementException ex)
                                 {
@@ -974,7 +986,7 @@ namespace ExactValuesSimilarBatchKeywords
                         try
                         {
                             // 48 months
-                            ProcessResultsKPOLD_48(market, keyword, country);
+                            ProcessResultsKPOLD_48(market, kws, country);
                         }
                         catch (Exception ex)
                         {
@@ -994,13 +1006,16 @@ namespace ExactValuesSimilarBatchKeywords
                         //goes to first page for next batch keywords
                         try//27-11-2020
                         {
-
                             IWebElement backbutton = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.back-button")));
                             backbutton.Click();
                         }
                         catch (ElementNotVisibleException ex)
                         {
                             LogError(ex, "Error  While clicking Clicking Back Button, Element Is NotVisible");
+                        }
+                        catch (ElementNotSelectableException ex)
+                        {
+                            LogError(ex, "Error While While clicking Clicking Back Button, Element Is Not Selectable");
                         }
                         catch (NoSuchElementException ex)
                         {
@@ -1030,13 +1045,13 @@ namespace ExactValuesSimilarBatchKeywords
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Navigating To Home Page"); }
-                        //end 24-11-2020
+                        //end of 24-11-2020
                     }
                     catch (Exception ex)
                     {
                         try
                         {
-                            LogError(ex, "Something Went Wrong"); //27-11-2020
+                            LogError(ex, "Something Went Wrong");//27-11-2020
                             //if any error occurs other then above exceptions in entire process this returns to login page
                             Console.WriteLine(ex.Message);
                             driver.Navigate().GoToUrl("https://ads.google.com/aw/keywordplanner/home?ocid=325109181&euid=331594490&__u=5223172010&uscid=325109181&__c=2039899669&authuser=0&enableAllBrowsers=1");
@@ -1064,7 +1079,8 @@ namespace ExactValuesSimilarBatchKeywords
 
             return 0;
         }
-        static void LogError(Exception ex = null, string custommessage = "")
+
+        static void LogError(Exception ex = null, string custommessage = "")//27-11-2020
         {
             try
             {
@@ -1100,54 +1116,7 @@ namespace ExactValuesSimilarBatchKeywords
             }
 
 
-        }
-        static ArrayList GetKeywordsManully()
-        {
-            //string kwd = "0 finance laptops";
-            string kwd = "rs compononents,rs componts,pokémon let''s go eevee";
-            ArrayList alKws = new ArrayList();
-            string kwdList = "gb" + ":" + "United Kingdom" + ":" + kwd;
-            alKws.Add(kwdList);
-            return alKws;
-        }
-        static ArrayList GetKeywordsFromDB()
-        {
-            ArrayList alKws = new ArrayList();
-            try
-            {
-                DataTable dt = new DataTable();
-                //string strQry = "select Market,countryname,Keyword from [48MonthsKeywordsData_Old_SimilarKeywords] where status_old=0";
-                //string strQry = "[dbo].[GetBulkSimilarKeywords_1]";//100 batch keyword all keywords
-                //string strQry = "[dbo].[GetSimilarKeywords]"; //All keywords
-                string strQry = "[dbo].[GetBulkSimilarKeywordsProc]"; //All keywords
-                //string strQry = "[dbo].[GetSimilarKeywords_1]";
-                //string strQry = "[dbo].[GetSimilarKeywords_2]";
-                //string strQry = "[dbo].[GetSimilarKeywords_3]";
-                //string strQry = "[dbo].[GetSimilarKeywords_4]";
-                //string strQry = "[dbo].[GetSimilarKeywords_5]";
-                //string strQry = "[dbo].[GetSimilarKeywords_6]";
-                //string strQry = "[dbo].[GetSimilarKeywords_7]";
-                //string strQry = "[dbo].[GetSimilarKeywords_8]";
-                //string strQry = "[dbo].[GetSimilarKeywords_8]";
-                using (SqlDataAdapter da = new SqlDataAdapter(strQry, ReadConnection()))
-                {
-                    da.Fill(dt);
-                }
-                foreach (DataRow dr in dt.Rows)
-                {
-                    string keywordItem = dr[0].ToString() + ":" + dr[1].ToString() + ":" + dr[2].ToString();
-                    alKws.Add(keywordItem);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return alKws;
-        }
-
-
+        }//27-11-2020
         static void Signout(IWebDriver driver)
         {
             try
@@ -1173,7 +1142,6 @@ namespace ExactValuesSimilarBatchKeywords
                 File.Delete(fName);
             }
 
-            // for batch keywords 
             // delete from keywords folder
             fName = exactpath + @"\keywords";
             dinfo2 = new DirectoryInfo(fName);
@@ -1183,15 +1151,13 @@ namespace ExactValuesSimilarBatchKeywords
                 fName = Files2[0].FullName;
                 File.Delete(fName);
             }
-            // end for batch keywords 
-
         }
 
         private static void WriteToCsv(string kws)
         {
             string file = exactpath + @"\keywords\keywords.csv";
             StreamWriter sw = new StreamWriter(file, false);
-            sw.Write(kws.Replace(",",Environment.NewLine));
+            sw.Write(kws.Replace(",", Environment.NewLine));
             sw.Close();
         }
 
@@ -1240,11 +1206,11 @@ namespace ExactValuesSimilarBatchKeywords
                 ArrayList lst = GetCsvValues_48(fName);
                 ArrayList monthsList = getValuesList(lst);
                 string[] hdr = monthsList[0] as string[];
-                string[] values = monthsList.Count > 1 ? monthsList[1] as string[] : null;
+                string[] values = monthsList[1] as string[];
 
                 string[] kwds = kw.Split(',');
 
-                //if (!string.IsNullOrEmpty(values[3]) && string.IsNullOrEmpty(values[12])) //27-11-2020
+                //21-12-2020
                 if (!string.IsNullOrEmpty(values?[3]) && string.IsNullOrEmpty(values?[12])) //03-12-2020
                 {
                     Console.WriteLine("========================================================");
@@ -1253,53 +1219,34 @@ namespace ExactValuesSimilarBatchKeywords
 
                     throw new Exception("Ranges started");
                 }
+                //end 21-12-2020
 
                 string path = @"C:\Inetpub\wwwroot\KPDataOld_48_" + email.Split('@')[0] + ".xml";
 
                 try
                 {
+                    string qry = "";
                     long yearValue;
                     int n = 0;
                     bool isCloseVariant;
 
-                    foreach (string kwd in kwds) //20-08-2020
+                    if (!string.IsNullOrEmpty(values[0]))
                     {
-                        string s = kwd.Trim();
-                        if (s == "Keyword") continue;
-
-                        if (appTimeOut)
+                        foreach (string s in kwds)
                         {
-                            throw new Exception("TimeOut");
-                        }
+                            if (s == "Keyword") continue;
 
-                        string qry = "";//27-07-2020
-                        qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1 where Market='" + market + "' and Keyword=N'" + s.Replace("'", "''") + "';  "; //14-08-2020 //single keyword is updating //27-07-2020
+                            if (appTimeOut)
+                            {
+                                throw new Exception("TimeOut");
+                            }
 
-                        if (!string.IsNullOrEmpty(values?[0]))
-                        {
+                            qry = "";
                             yearValue = 0;
                             isCloseVariant = false;
-                            //string kwd = WebUtility.HtmlDecode(s);
-                            string[] values1 = GetMonthValues(s, monthsList);
-
-                            /*
-                            //24-12-2020
-                            if (!string.IsNullOrEmpty(values1?[3]) && string.IsNullOrEmpty(values1?[12]))
-                            {
-                                Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                                Console.WriteLine("+++++++++++++++++++  EMPTY VALUE FOUND  +++++++++++++++++++++");
-                                Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-                                qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname]) ";
-                                qry += "Values('" + market + "', N'" + s.Replace("'", "''") + "', N'" + country + "');";
-
-                                SendResultsToDB_48(qry);
-                                continue;
-                            }
-                            //end 24-12-2020
-                            */
-
-                            //03-12-2020
+                            string kwd = WebUtility.HtmlDecode(s.Trim());
+                            string[] values1 = GetMonthValues(kwd, monthsList);
+                            //21-12-2020
                             if (!string.IsNullOrEmpty(values1?[3]) && string.IsNullOrEmpty(values1?[12]))
                             {
                                 Console.WriteLine("========================================================");
@@ -1308,50 +1255,24 @@ namespace ExactValuesSimilarBatchKeywords
 
                                 throw new Exception("Ranges started");
                             }
-                            //end 01-12-2020
-
+                            //21-12-2020
                             if (values1 == null && monthsList[0] != null)
                             {
                                 isCloseVariant = true;
 
                                 Console.WriteLine("========================================================");
-                                Console.WriteLine("--- Unmatched keyword found ---");
+                                Console.WriteLine("--- Unmatched keyword found / Having a close variant ---");
                                 Console.WriteLine("========================================================");
 
-                                /* 07-08-2020
                                 try
                                 {
-                                    //qry = ""; // 29-07-2020  -- no need to update the status for similarkeywords table.
-                                    qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
-                                    qry += market + "', N'" + s.Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );  ";
 
-                                    //27-07-2020
-                                    qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
-                                    qry += ",[month47],[month47value],[month46],[month46value],[month45],[month45value],[month44],[month44value],[month43],[month43value],[month42],[month42value]";
-                                    qry += ",[month41],[month41value],[month40],[month40value],[month39],[month39value],[month38],[month38value],[month37],[month37value],[month36]";
-                                    qry += ",[month36value],[month35],[month35value],[month34],[month34value],[month33],[month33value],[month32],[month32value],[month31],[month31value]";
-                                    qry += ",[month30],[month30value],[month29],[month29value],[month28],[month28value],[month27],[month27value],[month26],[month26value],[month25]";
-                                    qry += ",[month25value],[month24],[month24value],[month23],[month23value],[month22],[month22value],[month21],[month21value],[month20],[month20value]";
-                                    qry += ",[month19],[month19value],[month18],[month18value],[month17],[month17value],[month16],[month16value],[month15],[month15value],[month14]";
-                                    qry += ",[month14value],[month13],[month13value],[month12],[month12value],[month11],[month11value],[month10],[month10value],[month9],[month9value]";
-                                    qry += ",[month8],[month8value],[month7],[month7value],[month6],[month6value],[month5],[month5value],[month4],[month4value],[month3]";
-                                    qry += ",[month3value],[month2],[month2value],[month1],[month1value],[annualvalue],[cpc],[cpclow],[cpchigh],[competition],[impressions],[closeVariant],[Errorcode],[ErrorMessage] ) values('";
-                                    qry += market + "', N'" + s.Replace("'", "''") + "', N'" + country + "','" + "INR" + "', 'kp_old', 1, 0, Convert(varchar(10),'";
-                                    qry += DateTime.Now.ToString("yyyy-MM-dd") + "',20), ";
-
-                                    for (int i = 48; i >= 1; i--)
-                                    {
-                                        string month = Convert.ToDateTime(hdr[i + 11]).ToString("yyyy-MM");
-                                        qry += "'" + month + "', " + "null" + ", ";
-
-                                    }
-                                    qry += yearValue + ", 0, " + "null" + ", " + "null" + ", " + 0 + ", 0 , " + "null" + ", " + "null" + ", " + "null" + ");";
-                                    //end of 27-07-2020
-
+                                    qry += "insert into [48MonthsKeywordsData_Old_New_1] ([Market],[Keyword],[countryname],[source_old],[status_old],[status_close],[insertdate]) values('";
+                                    qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
                                     SendResultsToDB_48(qry);
 
                                     //stores root keyword in closeVariant table
-                                    SendMissedKeywordResult(market, s, country);
+                                    SendMissedKeywordResult(market, s.Trim(), country);
                                 }
                                 catch (SqlException e)
                                 {
@@ -1362,7 +1283,6 @@ namespace ExactValuesSimilarBatchKeywords
                                 {
                                     Console.WriteLine("Error updating cv data: " + ex.Message);
                                 }
-                                end 07-08-2020 */
                                 continue;
                             }
                             else if (values1 == null && monthsList[0] == null)
@@ -1382,7 +1302,7 @@ namespace ExactValuesSimilarBatchKeywords
                             writer.WriteStartElement("", "volume-data", "");
 
                             writer.WriteStartElement("", "keyword", "");
-                            writer.WriteString(s);
+                            writer.WriteString(s.Trim());
                             writer.WriteEndElement();
 
                             writer.WriteStartElement("", "source", "");
@@ -1396,11 +1316,11 @@ namespace ExactValuesSimilarBatchKeywords
                             string smonth = Convert.ToDateTime(hdr[59]).ToString("yyyy-MM");
 
                             //Sending Empty months
-                            if (values1[0].ToLower() == s.ToLower() && values1[12] == "")
+                            if (values1[0].ToLower() == kwd.ToLower() && values1[12] == "")
                             {
                                 //inserting empty months
-                                qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate]) values('";
-                                qry += market + "', N'" + s.Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
+                                qry += "insert into [48MonthsKeywordsData_Old_New_1] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate]) values('";
+                                qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20) );";
 
                                 writer.WriteStartElement("", "currency", "");
                                 writer.WriteString(values1[1]);
@@ -1425,9 +1345,9 @@ namespace ExactValuesSimilarBatchKeywords
                                 writer.WriteEndElement();
                             }
                             //storing exact values
-                            else if (values1[0].ToLower() == s.ToLower())
+                            else if (values1[0].ToLower() == kwd.ToLower())
                             {
-                                qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
+                                qry += "insert into [48MonthsKeywordsData_Old_New_1] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate],[month48],[month48value]";
                                 qry += ",[month47],[month47value],[month46],[month46value],[month45],[month45value],[month44],[month44value],[month43],[month43value],[month42],[month42value]";
                                 qry += ",[month41],[month41value],[month40],[month40value],[month39],[month39value],[month38],[month38value],[month37],[month37value],[month36]";
                                 qry += ",[month36value],[month35],[month35value],[month34],[month34value],[month33],[month33value],[month32],[month32value],[month31],[month31value]";
@@ -1437,7 +1357,7 @@ namespace ExactValuesSimilarBatchKeywords
                                 qry += ",[month14value],[month13],[month13value],[month12],[month12value],[month11],[month11value],[month10],[month10value],[month9],[month9value]";
                                 qry += ",[month8],[month8value],[month7],[month7value],[month6],[month6value],[month5],[month5value],[month4],[month4value],[month3]";
                                 qry += ",[month3value],[month2],[month2value],[month1],[month1value],[annualvalue],[cpc],[cpclow],[cpchigh],[competition],[impressions] ) values('";
-                                qry += market + "', N'" + s.Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'";
+                                qry += market + "', N'" + s.Trim().Replace("'", "''") + "', N'" + country + "', '" + values1[1] + "', 'kp_old', 1, 0, Convert(varchar(10),'";
                                 qry += DateTime.Now.ToString("yyyy-MM-dd") + "',20), ";
 
                                 writer.WriteStartElement("", "currency", "");
@@ -1527,9 +1447,17 @@ namespace ExactValuesSimilarBatchKeywords
                             //Results submitting to Pi APi
                             try
                             {
-                                Console.WriteLine(s);
-                                if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
-                                    PostXML(path, s, market);//06-07-2020 //included market parameter
+                                Console.WriteLine(kwd);
+                                try
+                                {
+                                    if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
+                                        if (!string.IsNullOrEmpty(values1?[3]))
+                                            PostXML(path, kwd);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine("Sending Xml Error: " + ex.Message);
+                                }
 
                                 SendResultsToDB_48(qry);
 
@@ -1540,32 +1468,20 @@ namespace ExactValuesSimilarBatchKeywords
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine("Sending Xml Error: " + ex.Message);
+                                Console.WriteLine("Error: " + ex.Message);
                             }
                         }
-                        else
-                        {
-                            //if csv file contains total empty returns message
-                            Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                            Console.WriteLine("+++++++++++++++++++  NULL VALUES FOUND  +++++++++++++++++++++");
-                            Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-                            // 23-12-2020 uncommented
-                            qry += "insert into [48MonthsKeywordsData_Old_EmptyValues] ([Market],[Keyword],[countryname]) ";
-                            qry += "Values('" + market + "', N'" + s.Replace("'", "''") + "', N'" + country + "');";
-
-                            SendResultsToDB_48(qry);
-                            //end 23-12-2020
-
-                        }
+                    }
+                    else
+                    {
+                        //if csv file contains total empty returns message
+                        Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                        Console.WriteLine("+++++++++++++++++++  NULL VALUES FOUND  +++++++++++++++++++++");
+                        Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                     }
                 }
                 catch (Exception ex)
                 {
-                    if (ex.Message.StartsWith("Ranges started")) //01-12-2020
-                    {
-                        throw ex;
-                    }
                     Console.WriteLine("Error: " + ex.Message);
                 }
                 lst = null;
@@ -1578,7 +1494,7 @@ namespace ExactValuesSimilarBatchKeywords
 
         }
 
-        static void PostXML(string fileName, string kn, string market)//06-07-2020 included market parameter
+        static void PostXML(string fileName, string kn)
         {
             string submitURL = ReadAPI("submit");
 
@@ -1640,25 +1556,7 @@ namespace ExactValuesSimilarBatchKeywords
                     {
                         message = reader.ReadToEnd();
                     }
-                    //06-07-2020
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.LoadXml(message);
-                    XmlNodeList nodeList = xmlDoc.DocumentElement.SelectNodes("/search-volume-data");
-                    foreach (XmlNode node in nodeList)
-                    {
-                        XmlNode nd = node.SelectSingleNode(".//code");
-                        if (nd != null)
-                            error = nd.InnerText;
-                        XmlNode nd1 = node.SelectSingleNode(".//message");
-                        if (nd1 != null)
-                            message = nd1.InnerText;
-                        if (error != null && message != null)//changes
-                        {
-                            string qry = "update [48MonthsKeywordsData_Old_SimilarKeywords] set status_old=1, errorcode=" + error + ",ErrorMessage='" + message + "' where Market='" + market + "' and Keyword=N'" + kn.Replace("'", "''") + "'";
-                            SendResultsToDB_48(qry);
-                        }
-                    }
-                    //06-07-2020
+
                 }
 
                 throw new Exception(error + "\n" + message);
@@ -1716,16 +1614,13 @@ namespace ExactValuesSimilarBatchKeywords
                     comm.Connection = con;
                     con.Open();
 
-                    comm.CommandType = System.Data.CommandType.Text;
-                    //comm.CommandText = "InsertCloseVariantKeywords";
-                    // 13-07-2020 -- no need to insert the kwd again in this table.
-                    comm.CommandText = "Update closevariant_old set status=0 where market='@Market' and keyword=N'@Keyword'";
-
+                    comm.CommandType = System.Data.CommandType.StoredProcedure;
+                    comm.CommandText = "InsertCloseVariantKeywords_1";
                     comm.CommandTimeout = 0;
 
                     comm.Parameters.Add(new SqlParameter("@Market", System.Data.SqlDbType.NVarChar, 100)).Value = market;
                     comm.Parameters.Add(new SqlParameter("@Keyword", System.Data.SqlDbType.NVarChar, 255)).Value = kw.Replace("'", "''");
-                    //comm.Parameters.Add(new SqlParameter("@Country", System.Data.SqlDbType.NVarChar, 100)).Value = country;   // 13-07-2020
+                    comm.Parameters.Add(new SqlParameter("@Country", System.Data.SqlDbType.NVarChar, 100)).Value = country;
                     try
                     {
                         comm.ExecuteNonQuery();
@@ -1751,41 +1646,38 @@ namespace ExactValuesSimilarBatchKeywords
             reader.Close();
             return ret;
         }
-
-        static async Task<ArrayList> GetBatchSimilarKeywordsApi()//14-09-2020
+        static ArrayList GetKeywordsFromDB()
         {
-            //string url = "http://82.136.46.2:8080/api/GetBulkSimilarKeywords";
-            string url = "https://similarkeywordapis.azurewebsites.net/api/GetBulkSimilarKeywords";
-            /*Uri queryUri = new Uri(url);
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(queryUri);
-            req.Headers.Clear();
-            req.Method = "Get";
-            req.ContentType = "application/json";
-            req.Headers.Clear();
             ArrayList alKws = new ArrayList();
-            string response;
             try
             {
-                HttpWebResponse res = (HttpWebResponse)await req.GetResponseAsync();
-                using (StreamReader reader = new StreamReader(res.GetResponseStream(), Encoding.UTF8))
+                DataTable dt = new DataTable();
+                string strQry = "[dbo].[GetBulkEmptyKeywords_1]";
+                //string strQry = "[dbo].[GetBulkEmptyKeywords_2]";
+                //string strQry = "[dbo].[GetBulkEmptyKeywords_3]";
+
+                using (SqlDataAdapter da = new SqlDataAdapter(strQry, ReadConnection()))
                 {
-                    response = reader.ReadToEnd();
+                    da.Fill(dt);
                 }
-                res.Close();
-                if (response != "null")
+                foreach (DataRow dr in dt.Rows)
                 {
-                    JArray jo = JArray.Parse(response);
-                    foreach (var item in jo)
-                    {
-                        string kwdList = item["market"] + ":" + item["countryname"] + ":" + item["keyword"];
-                        alKws.Add(kwdList);
-                    }
+                    string keywordItem = dr[0].ToString() + ":" + dr[1].ToString() + ":" + dr[2].ToString();
+                    alKws.Add(keywordItem);
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
-            }*/
+            }
+
+            return alKws;
+        }
+        static async Task<ArrayList> GetBatchSimilarKeywordsApi()//14-09-2020
+        {
+            //string url = "http://82.136.46.2:8080/api/GetBulkSimilarKeywords";
+            string url = "https://similarkeywordapis.azurewebsites.net/api/GetBulkSimilarKeywords";
+
             ArrayList alKws = new ArrayList();
             string response = string.Empty;
             Uri ul = new Uri(url);
@@ -1818,71 +1710,6 @@ namespace ExactValuesSimilarBatchKeywords
             }
             return await Task.FromResult(alKws);
 
-        }
-
-        static ArrayList GetKeywordsFromAPI()
-        {
-            string kp_old_url = ReadAPI("batch");
-            string authInfo = "pisoftware" + ":" + "r00t123456";
-            ArrayList alKws = new ArrayList();
-            StringBuilder stringBuilder = new StringBuilder();
-            string value = string.Empty;
-            Uri uri = new Uri(kp_old_url);
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpWebRequest.Timeout = 1000000;
-            httpWebRequest.KeepAlive = true;
-            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
-            httpWebRequest.Headers["Authorization"] = "Basic " + authInfo;
-            XmlDocument doc = new XmlDocument();
-            XmlReaderSettings settings = new XmlReaderSettings { CheckCharacters = false };
-
-            using (HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse())
-            using (XmlReader reader = XmlReader.Create(response.GetResponseStream(), settings))
-            {
-                try
-                {
-                    reader.MoveToContent();
-                    doc.Load(reader);
-                    reader.Close();
-                    XmlNodeList msg = doc.GetElementsByTagName("message");
-                    if (msg.Count > 0)
-                    {
-                        throw new Exception(msg[0].InnerText);
-                    }
-                    XmlNodeList country = doc.GetElementsByTagName("country");
-                    XmlNodeList kwd = doc.GetElementsByTagName("keyword");
-                    XmlNodeList source = doc.GetElementsByTagName("source");
-                    XmlNodeList priority = doc.GetElementsByTagName("priority");
-
-                    string market = "";
-                    string kd = "";
-                    string src = "";
-                    string pr = "";
-                    string countryName = "";
-
-                    for (int i = 0; i < kwd.Count; i++)
-                    {
-                        //market = country[i].InnerText;
-                        kd += kwd[i].InnerText + ",";
-                        //src = source[i].InnerText;
-                        //pr = priority[i].InnerText;                    
-                    }
-                    kd = kd.Remove(kd.Length - 1);
-                    market = country[0].InnerText;
-                    src = source[0].InnerText;
-                    pr = priority[0].InnerText;
-                    countryName = GetCountryName(market);
-
-                    string keywordItem = market + ":" + countryName + ":" + kd;
-                    alKws.Add(keywordItem);
-
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
-            return alKws;
         }
 
         static string GetCountryName(string market)
@@ -1954,15 +1781,15 @@ namespace ExactValuesSimilarBatchKeywords
                     string[] values = new string[60];
                     for (int i = 0; i < 60; i++)
                     {
-                        values[i] = val[i].Contains("Searches:") ? val[i].Split(':')[1].Trim() :
-                            i > 2 ? val[i].Replace("&#x13;", "-").Replace("  ", "-").Replace("K", "000").Replace("M", "000000").Trim() :
-                            val[i].Trim();
+                        values[i] = val[i].Contains("Searches:") ? (val[i].Split(':')[1].Trim()) :
+                            i > 2 ? (val[i].Replace("&#x13;", "-").Replace("  ", "-").Replace("K", "000").Replace("M", "000000")) :
+                            val[i];
                     }
                     lst.Add(values);
                     r++;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
 
@@ -2048,6 +1875,5 @@ namespace ExactValuesSimilarBatchKeywords
             //Time to quit app..
             //appTimeOut = true;            
         }
-
     }
 }

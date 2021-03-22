@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{45C744B9-0215-48A6-A596-4CFCD1A1639D}</ProjectGuid>
+    <ProjectGuid>{D9E17F63-EB14-4E2D-BA7C-9955F101BEE2}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ExactValuesEmptyKeywords</RootNamespace>
-    <AssemblyName>ExactValuesEmptyKeywords</AssemblyName>
+    <RootNamespace>ExactValuesEmptyKeywordsV1</RootNamespace>
+    <AssemblyName>ExactValuesEmptyKeywordsV1</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -60,9 +61,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
