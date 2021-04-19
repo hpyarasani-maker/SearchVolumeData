@@ -513,7 +513,8 @@ namespace ExactValuesSimilarBatchKeywordsV1
                         catch
                         { }
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //10-03-2021
-                        try//27-11-2020
+                        //19-04-2021 commented below lines because selectors related to old pages for country selection
+                        /*try//27-11-2020
                         {
 
                             IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[3]/a"))); //23-10-2020 changed selector
@@ -569,7 +570,8 @@ namespace ExactValuesSimilarBatchKeywordsV1
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Historical Metrics Window"); }
-
+                        */
+                        //19-04-2021 end comments
                         // end for batch keywords 
                         // end 07-08-2020
 

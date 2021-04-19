@@ -532,70 +532,72 @@ namespace ExactValuesV1
                         }
                         catch
                         { }
-                        try//27-11-2020
-                        {
+                        //19-04-2021 commented below lines because selectors related to old pages for country selection
+                        //try//27-11-2020 
+                        //{
 
-                            IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[3]/a"))); //23-10-2020 changed selector
-                            itemelement.Click();
-                        }
-                        catch (ElementNotVisibleException ex)
-                        {
-                            LogError(ex, "Error While Clicking Keywords Window, Element Is NotVisible");
-                        }
-                        catch (ElementNotSelectableException ex)
-                        {
-                            LogError(ex, "Error While Clicking Keywords Window, Element Is Not Selectable");
-                        }
-                        catch (NoSuchElementException ex)
-                        {
-                            LogError(ex, "Error While Clicking Keywords Window, NoSuch Element Is Present");
-                        }
-                        catch (StaleElementReferenceException ex)
-                        {
-                            LogError(ex, "Error While Clicking Keywords Window, the target element is no longer valid in the document DOM");
-                        }
-                        catch (TimeoutException ex)
-                        {
-                            LogError(ex, "Error While Clicking Keywords Window, TimeoutError Occured");
-                        }
-                        catch (WebDriverException ex)
-                        {
-                            LogError(ex, "Error While Clicking Keywords Window, Clicking Actions Are Too Late");
-                        }
-                        catch (Exception ex)
-                        { LogError(ex, "Error While Clicking Keywords Window"); }
-                        try//27-11-2020
-                        {
-                            IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
-                            tab.Click();
-                        }
-                        catch (ElementNotVisibleException ex)
-                        {
-                            LogError(ex, "Error While Clicking Historical Metrics Window, Element Is NotVisible");
-                        }
-                        catch (ElementNotSelectableException ex)
-                        {
-                            LogError(ex, "Error While Clicking Historical Metrics Window, Element Is Not Selectable");
-                        }
-                        catch (NoSuchElementException ex)
-                        {
-                            LogError(ex, "Error While Clicking Historical Metrics Window, NoSuch Element Is Present");
-                        }
-                        catch (StaleElementReferenceException ex)
-                        {
-                            LogError(ex, "Error While Clicking Historical Metrics Window, the target element is no longer valid in the document DOM");
-                        }
-                        catch (TimeoutException ex)
-                        {
-                            LogError(ex, "Error While Clicking Historical Metrics Window, TimeoutError Occured");
-                        }
-                        catch (WebDriverException ex)
-                        {
-                            LogError(ex, "Error While Clicking Historical Metrics Window, Clicking Actions Are Too Late");
-                        }
-                        catch (Exception ex)
-                        { LogError(ex, "Error While Clicking Historical Metrics Window"); }
-                        // Location Selection. 
+                        //    IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[3]/a"))); //23-10-2020 changed selector
+                        //    itemelement.Click();
+                        //}
+                        //catch (ElementNotVisibleException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Keywords Window, Element Is NotVisible");
+                        //}
+                        //catch (ElementNotSelectableException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Keywords Window, Element Is Not Selectable");
+                        //}
+                        //catch (NoSuchElementException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Keywords Window, NoSuch Element Is Present");
+                        //}
+                        //catch (StaleElementReferenceException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Keywords Window, the target element is no longer valid in the document DOM");
+                        //}
+                        //catch (TimeoutException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Keywords Window, TimeoutError Occured");
+                        //}
+                        //catch (WebDriverException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Keywords Window, Clicking Actions Are Too Late");
+                        //}
+                        //catch (Exception ex)
+                        //{ LogError(ex, "Error While Clicking Keywords Window"); }
+                        //try//27-11-2020
+                        //{
+                        //    IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
+                        //    tab.Click();
+                        //}
+                        //catch (ElementNotVisibleException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Historical Metrics Window, Element Is NotVisible");
+                        //}
+                        //catch (ElementNotSelectableException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Historical Metrics Window, Element Is Not Selectable");
+                        //}
+                        //catch (NoSuchElementException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Historical Metrics Window, NoSuch Element Is Present");
+                        //}
+                        //catch (StaleElementReferenceException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Historical Metrics Window, the target element is no longer valid in the document DOM");
+                        //}
+                        //catch (TimeoutException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Historical Metrics Window, TimeoutError Occured");
+                        //}
+                        //catch (WebDriverException ex)
+                        //{
+                        //    LogError(ex, "Error While Clicking Historical Metrics Window, Clicking Actions Are Too Late");
+                        //}
+                        //catch (Exception ex)
+                        //{ LogError(ex, "Error While Clicking Historical Metrics Window"); }
+                        // 19-04-2021 end comments
+                        //// Location Selection. 
                         try //02-12-2020
                         {
                             //IWebElement el = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));

@@ -534,7 +534,8 @@ namespace ExactValuesEmptyKeywordsV1
                         }
                         catch
                         { }
-                        try//27-11-2020
+                        //19-04-2021 commented below lines because selectors related to old pages for country selection
+                        /*try//27-11-2020
                         {
 
                             IWebElement itemelement = Wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div/skinny-nav-item[3]/a"))); //23-10-2020 changed selector
@@ -596,7 +597,9 @@ namespace ExactValuesEmptyKeywordsV1
                             LogError(ex, "Error While Clicking Historical Metrics Window, Clicking Actions Are Too Late");
                         }
                         catch (Exception ex)
-                        { LogError(ex, "Error While Clicking Historical Metrics Window"); }
+                        { LogError(ex, "Error While Clicking Historical Metrics Window"); }*/
+                        // 19-04-2021 end of comments
+
                         // Location Selection. 
                         try //02-12-2020
                         {

@@ -616,9 +616,9 @@ namespace ExactValuesSimilarKeywordsV1
 
                         //06-08-2020
                         Thread.Sleep(10000);
-
-                        //24-12-2020 
-                        try//27-11-2020
+                        //19-04-2021 commented below lines because selectors related to old pages for country selection
+                        //24-12-2020  
+                        /*try//27-11-2020
                         {
                             IWebElement tab = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("tab-button.tab-button:nth-child(3)")));
                             tab.Click();
@@ -644,8 +644,8 @@ namespace ExactValuesSimilarKeywordsV1
                             LogError(ex, "Error While Clicking Historical Metrics Window, Clicking Actions Are Too Late");
                         }
                         catch (Exception ex)
-                        { LogError(ex, "Error While Clicking Historical Metrics Window"); }
-
+                        { LogError(ex, "Error While Clicking Historical Metrics Window"); }*/
+                        //19-04-2021 end comments
                         try
                         {
                             //IWebElement el = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
