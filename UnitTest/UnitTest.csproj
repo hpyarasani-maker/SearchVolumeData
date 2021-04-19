@@ -53,12 +53,12 @@
       <HintPath>..\ExactValuesLIbrary\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SeleniumExtras.WaitHelpers">
-      <HintPath>..\ExactValuesLIbrary\bin\Debug\SeleniumExtras.WaitHelpers.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\SearchVolumeData\SearchVolumeData\packages\DotNetSeleniumExtras.WaitHelpers.3.11.0\lib\net45\SeleniumExtras.WaitHelpers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="WebDriver">
-      <HintPath>..\ExactValuesLIbrary\bin\Debug\WebDriver.dll</HintPath>
+      <HintPath>..\ExactValuesSimilarKeywords\bin\Debug\WebDriver.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
