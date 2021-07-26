@@ -725,7 +725,7 @@ namespace ExactValuesSimilarBatchKeywordsV1
                             {
                                 //25-11-2020
                                 Console.WriteLine(driver.PageSource);
-                                WebDriverWait countryWait = new WebDriverWait(driver, new TimeSpan(0, 1, 5));
+                                WebDriverWait countryWait = new WebDriverWait(driver, new TimeSpan(0, 0, 20)); //26-07-2021 previously it is(0,1,5) changed time for country selection
                                 IWebElement locationsuggestion = countryWait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("location-data-suggestion-entry:nth-child(1)")));
                                 locationsuggestion.Click();
                                 //25-11-2020 END
