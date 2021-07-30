@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactValuesLIbrary", "Exact
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{AF1C2DCB-7DBA-4999-A9C2-26BE23FFD13D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactValuesMissingV1", "ExactValuesMissingV1\ExactValuesMissingV1.csproj", "{F8A4EC0D-137C-4ADF-9CD4-589DD54353CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{AF1C2DCB-7DBA-4999-A9C2-26BE23FFD13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF1C2DCB-7DBA-4999-A9C2-26BE23FFD13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF1C2DCB-7DBA-4999-A9C2-26BE23FFD13D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8A4EC0D-137C-4ADF-9CD4-589DD54353CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8A4EC0D-137C-4ADF-9CD4-589DD54353CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8A4EC0D-137C-4ADF-9CD4-589DD54353CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8A4EC0D-137C-4ADF-9CD4-589DD54353CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
