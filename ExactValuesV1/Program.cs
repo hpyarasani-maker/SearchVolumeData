@@ -30,6 +30,7 @@ namespace ExactValuesV1
 
         static int Main(string[] args)
         {
+            ArrayList alKeywords; //06-08-2021
             //Console.WriteLine("Enter Id");
             //int id = int.Parse(Console.ReadLine());
             GetEmailID();
@@ -279,7 +280,8 @@ namespace ExactValuesV1
                 if (appTimeOut)
                     break;
 
-                ArrayList alKeywords = new ArrayList();
+                //ArrayList alKeywords = new ArrayList(); //changes 06-08-2021
+                alKeywords = new ArrayList(); //new assign 06-08-2021
                 try
                 {
                     //method downloads keywords from Pi API
@@ -728,6 +730,7 @@ namespace ExactValuesV1
                                 {
                                     LogError(ex, "Error In Country Selection(Location Entry)");
                                     Console.WriteLine("=========Problem In Country Selection(Location Entry)==========");
+                                    SendkeywordstoTable(alKeywords);   //06-08-2021
                                     throw new Exception();
                                 }
                             }
@@ -770,6 +773,7 @@ namespace ExactValuesV1
                             {
                                 LogError(ex, "Error In Country Selection(Target Selection Issue)==");
                                 Console.WriteLine("==Problem In Country Selection(Target Selection)==");
+                                SendkeywordstoTable(alKeywords);   //06-08-2021
                                 throw new Exception();
                             }
 
