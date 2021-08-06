@@ -1901,6 +1901,47 @@ namespace ExactValuesV1
 
             return name;
         }
+        static void SendkeywordstoTable(ArrayList al)  //06-08-2021
+        {
+
+
+            string qry1 = string.Empty;
+            foreach (string kwItem in al)
+            {
+                string[] item = kwItem.Split(':');
+                string market = item[0];
+                string[] kws = item[2].Split(',');
+                foreach (string kw in kws)
+                {
+                    using (SqlConnection con = new SqlConnection(ReadConnection()))
+                    {
+                        try
+                        {
+                            qry1 = "insert into[MissingKeywords] ([Market],[Keyword],[status],[date]) values('";
+                            qry1 += market + "',N'" + kw + "'," + 0 + ",Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20))";
+                            con.Open();
+                            using (SqlCommand cmd = new SqlCommand(qry1, con))
+                            {
+                                cmd.CommandTimeout = 0;
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        catch (SqlException ex)
+                        {
+                            Console.WriteLine("========================== Database Error (Sql Ex) =======================");
+                            Console.WriteLine(ex.Message);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("========================== Database Error =======================");
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                }
+
+            }
+        }
 
         private static void DisplayTimeEvent(Object o)
         {
