@@ -826,6 +826,7 @@ namespace ExactValuesV1
                                 {
                                     LogError(null, "In Country Selection(Missmatched Location)" + "Actual Country is " + country + " selected country is " + countrytext[1].ToString()); //15-01-2021 used countrytext variable
                                     Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
+                                    SendkeywordstoTable(alKeywords); //06-08-2021
                                     throw new Exception();
                                 }
                                 else
@@ -861,6 +862,7 @@ namespace ExactValuesV1
                                 LogError(ex, "Country selection problem");
                                 //If any error occured in country selection then signout and exit..
                                 Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
+                                SendkeywordstoTable(alKeywords); //06-08-2021
                                 throw new Exception("Country selection problem");
                                 //25-11-2020 commented below lines
                                 //Signout(driver);
@@ -939,6 +941,7 @@ namespace ExactValuesV1
                             LogError(ex, "Error In Date Selection");//27-11-2020
                             //if any error occurs in date selection then signout and exit
                             Console.WriteLine("Error In Date Selection");
+                            SendkeywordstoTable(alKeywords); //06-08-2021
                             throw new Exception("Error In Date Selection");//30-11-2020
 
                             //28-11-2020 any errors occurs it raising catch and closing
