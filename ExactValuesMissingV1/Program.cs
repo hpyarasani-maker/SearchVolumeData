@@ -284,7 +284,8 @@ namespace ExactValuesMissingV1
                 {
                     //method downloads keywords from Pi API
                     //alKeywords = GetKeywordsManully();
-                    alKeywords = GetKeywordsFromAPI();
+                    //alKeywords = GetKeywordsFromAPI();
+                    alKeywords = GetKeywordsFromDB(); //09-08-2021 updated new procedure for missing keywords
                     if (alKeywords.Count <= 0)
                     {
                         //it will try again keywords are not downloaded and wait for 10 seconds to download again
@@ -1099,6 +1100,33 @@ namespace ExactValuesMissingV1
             return 0;
         }
 
+        static ArrayList GetKeywordsFromDB() //09-08-2021 updated new procedure for missing keywords
+        {
+            ArrayList alKws = new ArrayList();
+            try
+            {
+                DataTable dt = new DataTable();
+                
+              
+                string strQry = "[dbo].[GetBulkMissingKeywords]"; //All keywords
+              
+                using (SqlDataAdapter da = new SqlDataAdapter(strQry, ReadConnection()))
+                {
+                    da.Fill(dt);
+                }
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string keywordItem = dr[0].ToString() + ":" + dr[1].ToString() + ":" + dr[2].ToString();
+                    alKws.Add(keywordItem);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return alKws;
+        }
         static void LogError(Exception ex = null, string custommessage = "")//27-11-2020
         {
             try
@@ -1184,7 +1212,7 @@ namespace ExactValuesMissingV1
         {
             DataTable dt = new DataTable();
             //string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
-            string qry = "Select id, mailid, password from ExactValueMailIds Where id=3";
+            string qry = "Select id, mailid, password from ExactValueMailIds Where id=4";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
@@ -1273,6 +1301,7 @@ namespace ExactValuesMissingV1
                             }
 
                             qry = "";
+                            qry = "update [MissingKeywords] set status=1 where Market='" + market + "' and Keyword=N'" + s.Replace("'", "''") + "'"; //09-08-2021  
                             yearValue = 0;
                             isCloseVariant = false;
                             string kwd = WebUtility.HtmlDecode(s.Trim());
@@ -1480,7 +1509,7 @@ namespace ExactValuesMissingV1
                             {
                                 Console.WriteLine(kwd);
                                 if (!string.IsNullOrEmpty(values[0]) && !isCloseVariant)
-                                    PostXML(path, kwd);
+                                    PostXML(path, kwd,market);
 
                                 SendResultsToDB_48(qry);
 
@@ -1517,7 +1546,7 @@ namespace ExactValuesMissingV1
 
         }
 
-        static void PostXML(string fileName, string kn)
+        static void PostXML(string fileName, string kn, string market)
         {
             string submitURL = ReadAPI("submit");
 
@@ -1579,7 +1608,25 @@ namespace ExactValuesMissingV1
                     {
                         message = reader.ReadToEnd();
                     }
-
+                    //09-08-2021
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.LoadXml(message);
+                    XmlNodeList nodeList = xmlDoc.DocumentElement.SelectNodes("/search-volume-data");
+                    foreach (XmlNode node in nodeList)
+                    {
+                        XmlNode nd = node.SelectSingleNode(".//code");
+                        if (nd != null)
+                            error = nd.InnerText;
+                        XmlNode nd1 = node.SelectSingleNode(".//message");
+                        if (nd1 != null)
+                            message = nd1.InnerText;
+                        if (error != null && message != null)//changes
+                        {
+                            string qry = "update [MissingKeywords ] set status=1 where Market='" + market + "' and Keyword=N'" + kn.Replace("'", "''") + "'";
+                            SendResultsToDB_48(qry);
+                        }
+                    }
+                    //09-08-2021
                 }
 
                 throw new Exception(error + "\n" + message);
