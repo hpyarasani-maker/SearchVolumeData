@@ -1300,7 +1300,7 @@ namespace ExactValuesMissingV1
                                 throw new Exception("TimeOut");
                             }
 
-                            qry = "";
+                            //qry = "";
                             qry = "update [MissingKeywords] set status=1 where Market='" + market + "' and Keyword=N'" + s.Replace("'", "''") + "'"; //09-08-2021  
                             yearValue = 0;
                             isCloseVariant = false;
