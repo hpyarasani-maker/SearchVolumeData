@@ -1301,7 +1301,7 @@ namespace ExactValuesMissingV1
                             }
 
                             //qry = "";
-                            qry = "update [MissingKeywords] set status=1 where Market='" + market + "' and Keyword=N'" + s.Replace("'", "''") + "'"; //09-08-2021  
+                            qry = "update [MissingKeywords] set status=1 where Market='" + market + "' and Keyword=N'"+s.Replace("'", "''")+"'"; //09-08-2021  
                             yearValue = 0;
                             isCloseVariant = false;
                             string kwd = WebUtility.HtmlDecode(s.Trim());
@@ -1622,7 +1622,7 @@ namespace ExactValuesMissingV1
                             message = nd1.InnerText;
                         if (error != null && message != null)//changes
                         {
-                            string qry = "update [MissingKeywords ] set status=1 where Market='" + market + "' and Keyword=N'" + kn.Replace("'", "''") + "'";
+                            string qry = "update [MissingKeywords ] set status=1 where Market='" + market + "' and Keyword=N'"+kn.Replace("'", "''")+"'";
                             SendResultsToDB_48(qry);
                         }
                     }
