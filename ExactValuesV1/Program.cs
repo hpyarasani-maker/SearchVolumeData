@@ -1925,7 +1925,7 @@ namespace ExactValuesV1
                         try
                         {
                             qry1 = "insert into[MissingKeywords] ([Market],[Keyword],[status],[date]) values('";
-                            qry1 += market + "',N'" + kw + "'," + 0 + ",Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20))";
+                            qry1 += market + "',N'" + kw.Trim().Replace("'","''") + "'," + 0 + ",Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20))";
                             con.Open();
                             using (SqlCommand cmd = new SqlCommand(qry1, con))
                             {
