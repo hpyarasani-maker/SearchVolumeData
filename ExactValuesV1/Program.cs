@@ -1020,6 +1020,7 @@ namespace ExactValuesV1
                             if (ex.Message.StartsWith("Ranges started") || appTimeOut)
                             {
                                 LogError(ex, "Ranges started");
+                                SendkeywordstoTable(alKeywords); //16-08-2021
                                 // Thread.Sleep(10000);
                                 Signout(driver);
                                 driver.Close();
@@ -1208,6 +1209,7 @@ namespace ExactValuesV1
 
         static void ProcessResultsKPOLD_48(string market, string kw, string country)
         {
+            
             string fName = exactpath + @"\downloads";
 
             DirectoryInfo dinfo2 = new DirectoryInfo(fName);
