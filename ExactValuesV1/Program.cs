@@ -530,6 +530,21 @@ namespace ExactValuesV1
                         {
                             WebDriverWait buttonwait = new WebDriverWait(driver, new TimeSpan(0, 0, 20));
                             IWebElement savebutton = buttonwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".save-button")));
+                            //18-08-2021 for collecting invalid keyowrds
+                            var invalidKwds = driver.FindElements(By.CssSelector(".localized-description.detail"));
+                            if (invalidKwds.Count() > 0)
+                            {
+                                string qry = string.Empty;
+                                foreach (var kwd in invalidKwds)
+                                {
+                                    qry += $"insert into InvalidKpData1(Market, Keyword) values('{market}', N'{kwd.Text}');";
+                                }
+                                try
+                                {
+                                    SendResultsToDB_48(qry);
+                                }
+                                catch { Console.WriteLine("Error to send invalid keywords to db."); }
+                            } //end //18-08-2021
                             savebutton.Click();
                         }
                         catch
