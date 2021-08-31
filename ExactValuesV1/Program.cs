@@ -537,7 +537,7 @@ namespace ExactValuesV1
                                 string qry = string.Empty;
                                 foreach (var kwd in invalidKwds)
                                 {
-                                    qry += $"insert into InvalidKpData1(Market, Keyword) values('{market}', N'{kwd.Text}');";
+                                    qry += $"insert into InvalidKpData1(Market, Keyword) values('{market}', N'{kwd.Text.Replace("'", "''")}');"; //31-08-2021 insert query updated
                                 }
                                 try
                                 {
@@ -1256,7 +1256,7 @@ namespace ExactValuesV1
                 {
                     string qry = string.Empty;
                     foreach (var kwd in kwds)
-                        qry += $"Insert into [48MonthsKeywordsData_Old_NoData] (market, keyword, countryname) values('{market}', N'{kwd}', '{country}'); ";
+                        qry += $"Insert into [48MonthsKeywordsData_Old_NoData] (market, keyword, countryname) values('{market}', N'{kwd.Replace("'", "''")}', '{country}'); "; //31-08-2021 insert query updates
                     SendResultsToDB_48(qry);
                     return;
                 }
