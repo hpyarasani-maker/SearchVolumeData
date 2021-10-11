@@ -1748,9 +1748,11 @@ namespace ExactValuesV1
                     {
                         if(!kwd[i].InnerText.Contains(","))//11-10-2021 test
                             kd += kwd[i].InnerText + ",";
-                        invalidQry = $"insert into InvalidKpData1(Market, Keyword) values('{market}', N'{kwd[i].InnerText.Replace("'", "''")}');"; //11-101-2021 test
                         if (kwd[i].InnerText.Contains(","))//11-10-2021 test
+                        {
+                            invalidQry = $"insert into InvalidKpData1(Market, Keyword) values('{country[i].InnerText}', N'{kwd[i].InnerText.Replace("'", "''")}');"; //11-101-2021 test
                             SendResultsToDB_48(invalidQry); //11-10-2021 test
+                        }
                        //market = country[i].InnerText;
                        //src = source[i].InnerText;
                        //pr = priority[i].InnerText;                    
