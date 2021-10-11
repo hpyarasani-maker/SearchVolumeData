@@ -1705,7 +1705,8 @@ namespace ExactValuesV1
 
         static ArrayList GetKeywordsFromAPI()
         {
-            string kp_old_url = ReadAPI("batch");
+            //string kp_old_url = ReadAPI("batch"); //uncomment for live 
+            string kp_old_url = @"C:\inetpub\wwwroot\comma\comma.xml"; //11-10-2021 test
             string authInfo = "pisoftware" + ":" + "r00t123456";
             ArrayList alKws = new ArrayList();
             StringBuilder stringBuilder = new StringBuilder();
@@ -1742,13 +1743,17 @@ namespace ExactValuesV1
                     string src = "";
                     string pr = "";
                     string countryName = "";
-
+                    string invalidQry = string.Empty;
                     for (int i = 0; i < kwd.Count; i++)
                     {
-                        //market = country[i].InnerText;
-                        kd += kwd[i].InnerText + ",";
-                        //src = source[i].InnerText;
-                        //pr = priority[i].InnerText;                    
+                        if(!kwd[i].InnerText.Contains(","))//11-10-2021 test
+                            kd += kwd[i].InnerText + ",";
+                        invalidQry = $"insert into InvalidKpData1(Market, Keyword) values('{market}', N'{kwd[i].InnerText.Replace("'", "''")}');"; //11-101-2021 test
+                        if (kwd[i].InnerText.Contains(","))//11-10-2021 test
+                            SendResultsToDB_48(invalidQry); //11-10-2021 test
+                       //market = country[i].InnerText;
+                       //src = source[i].InnerText;
+                       //pr = priority[i].InnerText;                    
                     }
                     kd = kd.Remove(kd.Trim().Length - 1);
                     market = country[0].InnerText;
