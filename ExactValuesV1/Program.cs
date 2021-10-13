@@ -978,6 +978,7 @@ namespace ExactValuesV1
                                 {
                                     IWebElement download = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".download")));
                                     download.Click();
+                                    WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, 10)); //13-10-2021 after download click wait for 10 seconds downloading csv file
                                 }
                                 catch (ElementNotVisibleException ex)
                                 {
@@ -1705,8 +1706,8 @@ namespace ExactValuesV1
 
         static ArrayList GetKeywordsFromAPI()
         {
-            //string kp_old_url = ReadAPI("batch"); //uncomment for live 
-            string kp_old_url = @"C:\inetpub\wwwroot\comma\comma.xml"; //11-10-2021 test
+            string kp_old_url = ReadAPI("batch"); //uncomment for live 
+            //string kp_old_url = @"C:\inetpub\wwwroot\comma\comma.xml"; //11-10-2021 test
             string authInfo = "pisoftware" + ":" + "r00t123456";
             ArrayList alKws = new ArrayList();
             StringBuilder stringBuilder = new StringBuilder();
