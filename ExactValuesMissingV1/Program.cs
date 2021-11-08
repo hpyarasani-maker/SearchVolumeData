@@ -1270,7 +1270,7 @@ namespace ExactValuesMissingV1
                 string[] values = monthsList[1] as string[];
 
                 //21-12-2020
-                if (!string.IsNullOrEmpty(values?[3]) && string.IsNullOrEmpty(values?[12])) //03-12-2020
+                if (!string.IsNullOrEmpty(values?[3]) && string.IsNullOrEmpty(values?[14])) //03-12-2020
                 {
                     Console.WriteLine("========================================================");
                     Console.WriteLine("------------------ Ranges Started ----------------------");
@@ -1307,7 +1307,7 @@ namespace ExactValuesMissingV1
                             string kwd = WebUtility.HtmlDecode(s.Trim());
                             string[] values1 = GetMonthValues(kwd, monthsList);
                             //21-12-2020
-                            if (!string.IsNullOrEmpty(values1?[3]) && string.IsNullOrEmpty(values1?[12]))
+                            if (!string.IsNullOrEmpty(values1?[3]) && string.IsNullOrEmpty(values1?[14]))
                             {
                                 Console.WriteLine("========================================================");
                                 Console.WriteLine("------------------ Ranges Started ----------------------");
@@ -1373,10 +1373,10 @@ namespace ExactValuesMissingV1
                             writer.WriteString(market);
                             writer.WriteEndElement();
 
-                            string smonth = Convert.ToDateTime(hdr[59]).ToString("yyyy-MM");
+                            string smonth = Convert.ToDateTime(hdr[61]).ToString("yyyy-MM");
 
                             //Sending Empty months
-                            if (values1[0].ToLower() == kwd.ToLower() && values1[12] == "")
+                            if (values1[0].ToLower() == kwd.ToLower() && values1[14] == "")
                             {
                                 //inserting empty months
                                 qry += "insert into [48MonthsKeywordsData_Old_Batch] ([Market],[Keyword],[countryname],[Currency],[source_old],[status_old],[status_close],[insertdate]) values('";
@@ -1395,7 +1395,7 @@ namespace ExactValuesMissingV1
 
                                 for (int i = 48; i >= 1; i--)
                                 {
-                                    string month = Convert.ToDateTime(hdr[i + 11]).ToString("yyyy-MM");
+                                    string month = Convert.ToDateTime(hdr[i + 13]).ToString("yyyy-MM");
                                     writer.WriteStartElement("", "volume", "");
                                     writer.WriteStartElement("", "month", "");
                                     writer.WriteString(month);
@@ -1432,7 +1432,7 @@ namespace ExactValuesMissingV1
                                 n = 0;
                                 for (int i = 48; i >= 1; i--)
                                 {
-                                    string month = Convert.ToDateTime(hdr[i + 11]).ToString("yyyy-MM");
+                                    string month = Convert.ToDateTime(hdr[i + 13]).ToString("yyyy-MM");
                                     writer.WriteStartElement("", "volume", "");
 
                                     writer.WriteStartElement("", "month", "");
@@ -1440,44 +1440,44 @@ namespace ExactValuesMissingV1
                                     writer.WriteEndElement();
 
                                     writer.WriteStartElement("", "value", "");
-                                    writer.WriteString(values1[i + 11]);
+                                    writer.WriteString(values1[i + 13]);
                                     writer.WriteEndElement();
 
-                                    qry += "'" + month + "', " + values1[i + 11] + ", ";
+                                    qry += "'" + month + "', " + values1[i + 13] + ", ";
 
                                     writer.WriteEndElement();
 
                                     if (n++ < 12)
                                         try
                                         {
-                                            yearValue += Convert.ToInt64(string.IsNullOrEmpty(values1[i + 11]) ? "0" : values1[i + 11]);
+                                            yearValue += Convert.ToInt64(string.IsNullOrEmpty(values1[i + 13]) ? "0" : values1[i + 13]);
                                         }
                                         catch { }
                                 }
 
                                 writer.WriteEndElement();
 
-                                if (!string.IsNullOrEmpty(values1[6]))
+                                if (!string.IsNullOrEmpty(values1[8]))
                                 {
                                     writer.WriteStartElement("", "cpc-low", "");
                                     //writer.WriteString(string.IsNullOrEmpty(values1[6]) ? "0" : values1[6]);
-                                    writer.WriteString(values1[6]);
+                                    writer.WriteString(values1[8]);
                                     writer.WriteEndElement();
                                 }
 
-                                if (!string.IsNullOrEmpty(values1[7]))
+                                if (!string.IsNullOrEmpty(values1[9]))
                                 {
                                     writer.WriteStartElement("", "cpc-high", "");
                                     //writer.WriteString(string.IsNullOrEmpty(values1[7]) ? "0" : values1[7]);
-                                    writer.WriteString(values1[7]);
+                                    writer.WriteString(values1[9]);
                                     writer.WriteEndElement();
                                 }
 
                                 decimal comp = 0;
-                                if (!string.IsNullOrEmpty(values1[5]))
+                                if (!string.IsNullOrEmpty(values1[7]))
                                 {
                                     //decimal comp = string.IsNullOrEmpty(values1[5].Trim()) ? 0 : (Convert.ToDecimal(values1[5]) / 100);
-                                    comp = Convert.ToDecimal(values1[5]) / 100;
+                                    comp = Convert.ToDecimal(values1[7]) / 100;
 
                                     writer.WriteStartElement("", "competition", "");
                                     writer.WriteString(comp.ToString());
@@ -1494,7 +1494,7 @@ namespace ExactValuesMissingV1
                                 writer.WriteString(yearValue.ToString());
                                 writer.WriteEndElement();
 
-                                qry += yearValue + ", 0, " + (string.IsNullOrEmpty(values1[6]) ? "0" : values1[6]) + ", " + (string.IsNullOrEmpty(values1[7]) ? "0" : values1[7]) + ", " + comp + ", 0 );";
+                                qry += yearValue + ", 0, " + (string.IsNullOrEmpty(values1[8]) ? "0" : values1[8]) + ", " + (string.IsNullOrEmpty(values1[9]) ? "0" : values1[9]) + ", " + comp + ", 0 );";
 
                             }
 
@@ -1855,10 +1855,11 @@ namespace ExactValuesMissingV1
             try
             {
                 int r = 0;
+                const int length = 62;
                 foreach (string[] val in arList)
                 {
-                    string[] values = new string[60];
-                    for (int i = 0; i < 60; i++)
+                    string[] values = new string[length];
+                    for (int i = 0; i < length; i++)
                     {
                         values[i] = val[i].Contains("Searches:") ? (val[i].Split(':')[1].Trim()) :
                             i > 2 ? (val[i].Replace("&#x13;", "-").Replace("  ", "-").Replace("K", "000").Replace("M", "000000")) :
