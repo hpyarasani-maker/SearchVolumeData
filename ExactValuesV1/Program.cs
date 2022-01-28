@@ -656,10 +656,20 @@ namespace ExactValuesV1
                         catch (TimeoutException ex)
                         {
                             LogError(ex, "Error While Clicking Location Button, TimeoutError Occured");
+                            //28-01-2022
+                            Console.WriteLine("=========Problem While Clicking Location Button==========");
+                            SendkeywordstoTable(alKeywords);   
+                            throw new Exception();
+                            //end 28-01-2022
                         }
                         catch (WebDriverException ex)
                         {
                             LogError(ex, "Error While Clicking Location Button, Clicking Actions Are Too Late");
+                            //28-01-2022
+                            Console.WriteLine("=========Problem While Clicking Location Button==========");
+                            SendkeywordstoTable(alKeywords);
+                            throw new Exception();
+                            //end 28-01-2022
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Location Button"); }
@@ -688,10 +698,20 @@ namespace ExactValuesV1
                         catch (TimeoutException ex)
                         {
                             LogError(ex, "Error While Removing Previous Country, TimeoutError Occured");
+                            //28-01-2022
+                            Console.WriteLine("=========Problem While Removing Previous Country==========");
+                            SendkeywordstoTable(alKeywords);
+                            throw new Exception();
+                            //end 28-01-2022
                         }
                         catch (WebDriverException ex)
                         {
                             LogError(ex, "Error While Removing Previous Country, Clicking Actions Are Too Late");
+                            //28-01-2022
+                            Console.WriteLine("=========Problem While Removing Previous Country==========");
+                            SendkeywordstoTable(alKeywords);
+                            throw new Exception();
+                            //end 28-01-2022
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Removing Previous Country"); }
@@ -736,10 +756,20 @@ namespace ExactValuesV1
                                 catch (TimeoutException ex)
                                 {
                                     LogError(ex, "Error While Location Entry, TimeoutError Occured");
+                                    //28-01-2022
+                                    Console.WriteLine("=========Problem In Country Selection(Location Entry)==========");
+                                    SendkeywordstoTable(alKeywords);
+                                    throw new Exception();
+                                    //end 28-01-2022
                                 }
                                 catch (WebDriverException ex)
                                 {
                                     LogError(ex, "Error While Location Entry, Clicking Actions Are Too Late");
+                                    //28-01-2022
+                                    Console.WriteLine("=========Problem In Country Selection(Location Entry)==========");
+                                    SendkeywordstoTable(alKeywords);
+                                    throw new Exception();
+                                    //end 28-01-2022
                                 }
                                 catch (Exception ex)
                                 {
@@ -779,10 +809,20 @@ namespace ExactValuesV1
                             catch (TimeoutException ex)
                             {
                                 LogError(ex, "Error In Target Selection Issue, TimeoutError Occured");
+                                //28-01-2022
+                                Console.WriteLine("==Problem In Country Selection(Target Selection)==");
+                                SendkeywordstoTable(alKeywords);
+                                throw new Exception();
+                                //end 28-01-2022
                             }
                             catch (WebDriverException ex)
                             {
                                 LogError(ex, "Error In Target Selection Issue, Clicking Actions Are Too Late");
+                                //28-01-2022
+                                Console.WriteLine("==Problem In Country Selection(Target Selection)==");
+                                SendkeywordstoTable(alKeywords);
+                                throw new Exception();
+                                //end 28-01-2022
                             }
                             catch (Exception ex)
                             {
@@ -867,10 +907,20 @@ namespace ExactValuesV1
                             catch (TimeoutException ex)
                             {
                                 LogError(ex, "Error While Saving Location, TimeoutError Occured");
+                                //28-01-2022
+                                Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
+                                SendkeywordstoTable(alKeywords);
+                                throw new Exception();
+                                //end 28-01-2022
                             }
                             catch (WebDriverException ex)
                             {
                                 LogError(ex, "Error While Saving Location, Clicking Actions Are Too Late");
+                                //28-01-2022
+                                Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
+                                SendkeywordstoTable(alKeywords);
+                                throw new Exception();
+                                //end 28-01-2022
                             }
                             catch (Exception ex)
                             {
