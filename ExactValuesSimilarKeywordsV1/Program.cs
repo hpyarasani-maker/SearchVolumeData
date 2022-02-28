@@ -683,10 +683,20 @@ namespace ExactValuesSimilarKeywordsV1
                         catch (TimeoutException ex)
                         {
                             LogError(ex, "Error While Clicking Location Button, TimeoutError Occured");
+                            //28-02-2022
+                            Console.WriteLine("=========Problem While Clicking Location Button==========");
+                            SendkeywordstoTable(item);
+                            throw new Exception();
+                            //end 28-02-2022
                         }
                         catch (WebDriverException ex)
                         {
                             LogError(ex, "Error While Clicking Location Button, Clicking Actions Are Too Late");
+                            //28-02-2022
+                            Console.WriteLine("=========Problem While Clicking Location Button==========");
+                            SendkeywordstoTable(item);
+                            throw new Exception();
+                            //end 28-02-2022
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Clicking Location Button"); }
@@ -713,10 +723,20 @@ namespace ExactValuesSimilarKeywordsV1
                         catch (TimeoutException ex)
                         {
                             LogError(ex, "Error While Removing Previous Country, TimeoutError Occured");
+                            //28-02-2022
+                            Console.WriteLine("=========Problem While Removing Previous Country==========");
+                            SendkeywordstoTable(item);
+                            throw new Exception();
+                            //end 28-02-2022
                         }
                         catch (WebDriverException ex)
                         {
                             LogError(ex, "Error While Removing Previous Country, Clicking Actions Are Too Late");
+                            //28-02-2022
+                            Console.WriteLine("=========Problem While Removing Previous Country==========");
+                            SendkeywordstoTable(item);
+                            throw new Exception();
+                            //end 28-02-2022
                         }
                         catch (Exception ex)
                         { LogError(ex, "Error While Removing Previous Country"); }
@@ -758,10 +778,20 @@ namespace ExactValuesSimilarKeywordsV1
                                 catch (TimeoutException ex)
                                 {
                                     LogError(ex, "Error While Location Entry, TimeoutError Occured");
+                                    //28-02-2022
+                                    Console.WriteLine("=========Problem In Country Selection(Location Entry)==========");
+                                    SendkeywordstoTable(item);
+                                    throw new Exception();
+                                    //end 28-02-2022
                                 }
                                 catch (WebDriverException ex)
                                 {
                                     LogError(ex, "Error While Location Entry, Clicking Actions Are Too Late");
+                                    //28-02-2022
+                                    Console.WriteLine("=========Problem In Country Selection(Location Entry)==========");
+                                    SendkeywordstoTable(item);
+                                    throw new Exception();
+                                    //end 28-02-2022
                                 }
                                 catch (Exception ex)
                                 {
@@ -794,10 +824,20 @@ namespace ExactValuesSimilarKeywordsV1
                             catch (TimeoutException ex)
                             {
                                 LogError(ex, "Error In Target Selection Issue, TimeoutError Occured");
+                                //28-02-2022
+                                Console.WriteLine("==Problem In Country Selection(Target Selection)==");
+                                SendkeywordstoTable(item);
+                                throw new Exception();
+                                //end 28-02-2022
                             }
                             catch (WebDriverException ex)
                             {
                                 LogError(ex, "Error In Target Selection Issue, Clicking Actions Are Too Late");
+                                //28-02-2022
+                                Console.WriteLine("==Problem In Country Selection(Target Selection)==");
+                                SendkeywordstoTable(item);
+                                throw new Exception();
+                                //end 28-02-2022
                             }
                             catch (Exception ex)
                             {
@@ -869,15 +909,25 @@ namespace ExactValuesSimilarKeywordsV1
                             catch (TimeoutException ex)
                             {
                                 LogError(ex, "Error While Saving Location, TimeoutError Occured");
+                                //28-02-2022
+                                Console.WriteLine("==Problem In Country Selection=={0}", ex.Message.ToString());
+                                SendkeywordstoTable(item);
+                                throw new Exception();
+                                //end 28-02-2022
                             }
                             catch (WebDriverException ex)
                             {
                                 LogError(ex, "Error While Saving Location, Clicking Actions Are Too Late");
+                                //28-02-2022
+                                Console.WriteLine("==Problem In Country Selection=={0}", ex.Message.ToString());
+                                SendkeywordstoTable(item);
+                                throw new Exception();
+                                //end 28-02-2022
                             }
                             catch (Exception ex)
                             {
                                 //If any error occured in country selection then signout and exit..
-                                Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
+                                Console.WriteLine("==Problem In Country Selection=={0}", ex.Message.ToString());
                                 throw new Exception("Country selection problem");
                                 //25-11-2020 commented below lines
                                 //Signout(driver);
@@ -1781,6 +1831,38 @@ namespace ExactValuesSimilarKeywordsV1
                 }
             }
         }
+
+        static void SendkeywordstoTable(string[] item)  //28-02-2022
+        {
+            string market = item[0];
+            string kw = item[2];
+            using (SqlConnection con = new SqlConnection(ReadConnection()))
+            {
+                try
+                {
+                    string qry1 = "insert into[MissingKeywords] ([Market],[Keyword],[status],[date]) values('";
+                    qry1 += market + "',N'" + kw.Trim().Replace("'", "''") + "'," + 0 + ",Convert(varchar(10),'" + DateTime.Now.ToString("yyyy-MM-dd") + "',20))";
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(qry1, con))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("========================== Database Error (Sql Ex) =======================");
+                    Console.WriteLine(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("========================== Database Error =======================");
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
 
         static string GetTextFromXMLFile(string file)
         {

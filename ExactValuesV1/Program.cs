@@ -908,7 +908,7 @@ namespace ExactValuesV1
                             {
                                 LogError(ex, "Error While Saving Location, TimeoutError Occured");
                                 //28-01-2022
-                                Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
+                                Console.WriteLine("==Problem In Country Selection=={0}", ex.Message.ToString());
                                 SendkeywordstoTable(alKeywords);
                                 throw new Exception();
                                 //end 28-01-2022
@@ -917,7 +917,7 @@ namespace ExactValuesV1
                             {
                                 LogError(ex, "Error While Saving Location, Clicking Actions Are Too Late");
                                 //28-01-2022
-                                Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
+                                Console.WriteLine("==Problem In Country Selection=={0}", ex.Message.ToString());
                                 SendkeywordstoTable(alKeywords);
                                 throw new Exception();
                                 //end 28-01-2022
@@ -926,7 +926,7 @@ namespace ExactValuesV1
                             {
                                 LogError(ex, "Country selection problem");
                                 //If any error occured in country selection then signout and exit..
-                                Console.WriteLine("==Problem In Country Selection=={0]", ex.Message.ToString());
+                                Console.WriteLine("==Problem In Country Selection=={0}", ex.Message.ToString());
                                 SendkeywordstoTable(alKeywords); //06-08-2021
                                 throw new Exception("Country selection problem");
                                 //25-11-2020 commented below lines
