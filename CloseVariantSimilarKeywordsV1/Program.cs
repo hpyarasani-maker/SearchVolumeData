@@ -142,7 +142,7 @@ namespace CloseVariantSimilarKeywordsV1
                         driver.FindElement(By.CssSelector("material-input.text-input-component")).SendKeys(WebUtility.HtmlDecode(kws));
                         Console.WriteLine(driver.PageSource);
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                        driver.FindElement(By.CssSelector("material-button.get-results-button")).Click();
+                        driver.FindElement(By.CssSelector("material-button.submit-button")).Click(); //07-04-2022
                         Console.WriteLine(driver.PageSource);
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(45);
 
@@ -150,26 +150,27 @@ namespace CloseVariantSimilarKeywordsV1
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                         Console.WriteLine(driver.PageSource);
 
-                        Historical:
-                        {
-                            try
-                            {
-                                //IWebElement tab = driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)"));
-                                //if (tab.Text == "HISTORICAL METRICS")
-                                //{
-                                IWebElement tab = driver.FindElement(By.CssSelector("div.crop-container > div > skinny-nav-item > a.skinny-nav-item")); //10-03-2021
-                                tab.Click();
+                        //07-04-2022 commented the Historical block
+                        //Historical:
+                        //{
+                        //    try
+                        //    {
+                        //        //IWebElement tab = driver.FindElement(By.CssSelector("tab-button.tab-button:nth-child(3)"));
+                        //        //if (tab.Text == "HISTORICAL METRICS")
+                        //        //{
+                        //        IWebElement tab = driver.FindElement(By.CssSelector("div.crop-container > div > skinny-nav-item > a.skinny-nav-item")); //10-03-2021
+                        //        tab.Click();
 
-                                //}
-                                //else
-                                //    goto Historical;
-                            }
-                            catch (Exception e)
-                            {                                
-                                goto Historical;                              
-                            }
+                        //        //}
+                        //        //else
+                        //        //    goto Historical;
+                        //    }
+                        //    catch (Exception e)
+                        //    {                                
+                        //        goto Historical;                              
+                        //    }
 
-                        }
+                        //}
 
                         LOCATION: //19-08-2020
                         // Location Selection.
