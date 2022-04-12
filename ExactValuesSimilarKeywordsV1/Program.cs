@@ -73,7 +73,7 @@ namespace ExactValuesSimilarKeywordsV1
             exactpath = @"C:\inetpub\wwwroot\exactvalues\" + email.Split('@')[0];
 
             string title = "Thread - " + id + " - " + email;
-            Console.Title = title + " - Without Timer - ExactValuesSimilarKeywordsV1";
+            Console.Title = title + " - Without Timer - ExactValuesSimilarKeywordsV1"; //12-04-2022
 
             //System.Threading.Timer t = new System.Threading.Timer(DisplayTimeEvent, null, (90 * 60000), 1000);
             //Console.Title = title;
@@ -581,7 +581,7 @@ namespace ExactValuesSimilarKeywordsV1
                         WebDriverWait minwait = new WebDriverWait(driver, new TimeSpan(0, 0, 10));
                         try
                         {
-                            IWebElement resbtn = minwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.submit-button")));
+                            IWebElement resbtn = minwait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("material-button.submit-button"))); //12-04-2022
                             resbtn.Click();
                         }
                         catch (ElementNotVisibleException ex)
