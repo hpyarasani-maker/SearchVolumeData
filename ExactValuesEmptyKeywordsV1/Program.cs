@@ -807,6 +807,7 @@ namespace ExactValuesEmptyKeywordsV1
                                     LogError(ex, "Error While Clicking Country Save Button");
                                     Console.WriteLine("While Clicking Country Save Button");
                                 }
+                                Thread.Sleep(2000); //15-04-2022
                                 //IWebElement element = driver.FindElement(By.CssSelector(".location-button > div:nth-child(1) > div:nth-child(2)"));
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020 //21-11-2020 changed to above line
                                 string[] countrytext = element.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);//15-01-2021 getting location text in new line

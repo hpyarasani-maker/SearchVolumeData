@@ -828,6 +828,7 @@ namespace ExactValuesSimilarBatchKeywordsV1
                                     LogError(ex, "Error While Clicking Country Save Button");
                                     Console.WriteLine("While Clicking Country Save Button");
                                 }
+                                Thread.Sleep(2000); //15-04-2022
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020
                                 string[] countrytext = element.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);//15-01-2021 getting location text in new line
                                 if (element.Text.Contains("All locations") || countrytext[1].ToString().ToLower() != country.ToLower()) // included split on 21-11-2020 //15-01-2021 used countrytext variable

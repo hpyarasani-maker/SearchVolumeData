@@ -223,6 +223,7 @@ namespace CloseVariantSimilarKeywordsV1
 
                         try
                         {
+                            Thread.Sleep(2000); //15-04-2022
                             //19-08-2020
                             IWebElement element = driver.FindElement(By.CssSelector(".location-button"));
                             string[] countrytext = element.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); //15-01-2021 getting location text in new line
