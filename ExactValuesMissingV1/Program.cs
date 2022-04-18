@@ -848,7 +848,7 @@ namespace ExactValuesMissingV1
                                     LogError(ex, "Error While Clicking Country Save Button");
                                     Console.WriteLine("While Clicking Country Save Button");
                                 }
-                                Thread.Sleep(2000); //15-04-2022
+                                Thread.Sleep(5000); //18-04-2022
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020 //21-11-2020 changed to above line
                                 //15-01-2021 commented
                                 //if (element.Text.Contains("All locations") || element.Text.Split(':')[1].ToLower() != country.ToLower()) // included split on 21-11-2020

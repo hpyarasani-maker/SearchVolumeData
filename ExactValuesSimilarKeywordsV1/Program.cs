@@ -880,7 +880,7 @@ namespace ExactValuesSimilarKeywordsV1
                                     LogError(ex, "Error While Clicking Country Save Button");
                                     Console.WriteLine("While Clicking Country Save Button");
                                 }
-                                Thread.Sleep(2000); //15-04-2022
+                                Thread.Sleep(5000); //18-04-2022
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button"));
                                 //If any country miss match then signout and exit app..
                                 string[] countrytext = element.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);//15-01-2021 getting location text in new line
