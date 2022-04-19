@@ -864,6 +864,7 @@ namespace ExactValuesMissingV1
                                 {
                                     LogError(null, "In Country Selection(Missmatched Location)" + "Actual Country is " + country + " selected country is " + countrytext[1].ToString()); //15-01-2021 used countrytext variable
                                     Console.WriteLine("==Problem In Country Selection(Missmatched Location)=" + "Actual Country is " + country + " selected country is " + element.Text);
+                                    SendkeywordstoTable(item); //19-04-2022
                                     throw new Exception();
                                 }
                                 else
