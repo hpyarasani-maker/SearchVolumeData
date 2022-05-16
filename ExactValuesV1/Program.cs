@@ -866,7 +866,7 @@ namespace ExactValuesV1
                                     LogError(ex, "Error While Clicking Country Save Button");
                                     Console.WriteLine("While Clicking Country Save Button");
                                 }
-                                Thread.Sleep(5000); //18-04-2022
+                                //Thread.Sleep(5000); //16-05-2022 commented/rolledback changes for russia country issue. //18-04-2022
                                 IWebElement element = driver.FindElement(By.CssSelector(".location-button")); //20-08-2020 //21-11-2020 changed to above line
                                 //15-01-2021 commented
                                 //if (element.Text.Contains("All locations") || element.Text.Split(':')[1].ToLower() != country.ToLower()) // included split on 21-11-2020
@@ -1800,6 +1800,15 @@ namespace ExactValuesV1
                     XmlNodeList source = doc.GetElementsByTagName("source");
                     XmlNodeList priority = doc.GetElementsByTagName("priority");
 
+                    //16-05-2022
+                    // send keywords with null values to api and throw if country is Russia.
+                    if (country.Count > 0 && country[0].InnerText == "ru")
+                    {
+                        SendKeywordsToAPI(country[0].InnerText, kwd);
+                        throw new Exception("Keywords related to Russia.");
+                    }
+                    //end 16-05-2022
+
                     string market = "";
                     string kd = "";
                     string src = "";
@@ -1836,6 +1845,108 @@ namespace ExactValuesV1
             }
             return alKws;
         }
+
+        //16-05-2022 send keywords with null value to api.
+        private static void SendKeywordsToAPI(string market, XmlNodeList kwds)
+        {
+            DateTime dt = GetDate();
+            string path = @"C:\inetpub\wwwroot\exactvaluesempty.xml";
+
+            for (int i = 0; i < kwds.Count; i++)
+            {
+                try
+                {
+                    string kwd = kwds[i].InnerText;
+                    XmlTextWriter writer = new XmlTextWriter(path, Encoding.UTF8);
+
+                    writer.Formatting = Formatting.Indented;
+                    writer.Indentation = 2;
+
+                    writer.WriteStartDocument();
+
+                    writer.WriteStartElement("", "search-volume-data", "");
+                    //volume-data start
+                    writer.WriteStartElement("", "volume-data", "");
+
+                    writer.WriteStartElement("", "keyword", "");
+                    writer.WriteString(kwd);
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("", "source", "");
+                    writer.WriteString("kp_old");
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("", "country", "");
+                    writer.WriteString(market);
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("", "currency", "");
+                    writer.WriteString("GBP");
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("", "month", "");
+                    writer.WriteString(dt.ToString("yyyy-MM"));
+
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("", "monthly-volume", "");
+
+                    for (int n = 0; n <= 47; n++)
+                    {
+                        string month = dt.AddMonths(-n).ToString("yyyy-MM");
+                        writer.WriteStartElement("", "volume", "");
+                        writer.WriteStartElement("", "month", "");
+                        writer.WriteString(month);
+                        writer.WriteEndElement();
+                        writer.WriteEndElement();
+                    }
+                    writer.WriteEndElement();
+
+                    writer.WriteEndElement();
+
+                    writer.WriteEndElement();
+                    writer.WriteEndDocument();
+                    writer.Flush();
+                    writer.Close();
+
+                    PostXML(path, kwd);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        static DateTime GetDate()
+        {
+            DateTime date = DateTime.Now;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ReadConnection()))
+                {
+                    con.Open();
+                    using (SqlCommand comm = new SqlCommand("select date from EmptyValuesMonth", con))
+                    {
+                        comm.CommandTimeout = 0;
+                        using (SqlDataReader dr = comm.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (dr.Read())
+                            {
+                                date = (DateTime)dr.GetValue(0);
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                throw new Exception("Date not returned from database.");
+            }
+
+            return date;
+        }
+        //end 16-05-2022
 
         static string GetCountryName(string market)
         {
