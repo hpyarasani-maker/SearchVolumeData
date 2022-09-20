@@ -1423,6 +1423,28 @@ namespace ExactValuesSimilarBatchKeywordsV1
                                     Console.WriteLine("Error updating cv data: " + ex.Message);
                                 }
                                 end 07-08-2020 */
+
+                                //insert to db 20-09-2022
+                                qry += "Insert into [dbo].[48MonthsKeywordsData_Old_SimilarUnmatched] (" +
+                                    "Market, Keyword, countryname, source_old, insertdate, Errorcode, ErrorMessage) " +
+                                    "Values ('" + market + "', N'" + s.Replace("'", "''") + "', N'" + country + "', '1', Convert(varchar(10), '" + 
+                                    DateTime.Now.ToString("yyyy-MM-dd") + "', 20), 0, 'Unmatched');";
+
+                                try
+                                {
+                                    SendResultsToDB_48(qry);
+                                }
+                                catch (SqlException e)
+                                {
+                                    Console.WriteLine("Database error updating unmatched data:");
+                                    Console.WriteLine("Error: " + e.Message);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine("Error updating unmatched data: " + ex.Message);
+                                }
+                                //end 20-09-2022
+
                                 continue;
                             }
                             else if (values1 == null && monthsList[0] == null)
