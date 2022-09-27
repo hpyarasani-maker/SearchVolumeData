@@ -310,7 +310,7 @@ namespace CloseVariantSimilarKeywordsV1
 
                                 }
                             }
-                            Thread.Sleep(10000); //29-01-2021
+                            Thread.Sleep(15000); //27-09-2022
 
 
                             vWord = ""; //09-02-2021 moved from 132 line
@@ -366,7 +366,9 @@ namespace CloseVariantSimilarKeywordsV1
                         //04-02-2021 
                         catch (Exception ex)
                         {
-                            if (ex.Message != "File not downloaded.")
+                            if (ex.Message == "File not downloaded.")
+                                appTimeOut = true; //29-09-2022
+                            else
                             {
                                 vWord = "NoData";
                                 ProcessResultsKPOLD_48(market, kws, country);
