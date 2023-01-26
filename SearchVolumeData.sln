@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactValuesMissingV1", "ExactValuesMissingV1\ExactValuesMissingV1.csproj", "{F8A4EC0D-137C-4ADF-9CD4-589DD54353CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleColabProject", "GoogleColabProject\GoogleColabProject.csproj", "{6A3EC4EB-1E4E-49F3-BF53-4F62232D67C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{F8A4EC0D-137C-4ADF-9CD4-589DD54353CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8A4EC0D-137C-4ADF-9CD4-589DD54353CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8A4EC0D-137C-4ADF-9CD4-589DD54353CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A3EC4EB-1E4E-49F3-BF53-4F62232D67C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A3EC4EB-1E4E-49F3-BF53-4F62232D67C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A3EC4EB-1E4E-49F3-BF53-4F62232D67C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A3EC4EB-1E4E-49F3-BF53-4F62232D67C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
