@@ -161,6 +161,7 @@ namespace CloseVariants
 
                             }
 
+                            LOCATION:
                             // Location Selection.
                             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                             driver.FindElement(By.CssSelector(".location-button")).Click();
@@ -195,7 +196,19 @@ namespace CloseVariants
                                 }
                                 catch { }
 
-                                try
+                                try //01-02-2023
+                                {
+                                    Thread.Sleep(5000); 
+                                    IWebElement element = driver.FindElement(By.CssSelector(".location-button"));
+                                    string[] countrytext = element.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+                                    if (countrytext[1].ToString().ToLower() != country.ToLower())
+                                    {
+                                        goto LOCATION;
+                                    }
+                                }
+                                catch { } //end 01-02-2023
+
+                            try
                                 {
                                     driver.FindElement(By.CssSelector("location-data-suggestion-entry:nth-child(1)")).Click();
                                     driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(25);
