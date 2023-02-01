@@ -171,7 +171,15 @@ namespace CloseVariantSimilarKeywordsV1
                         //    }
 
                         //}
-
+                        //01-02-2023
+                        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                        IWebElement element = driver.FindElement(By.CssSelector(".location-button"));
+                        string[] countrytext = element.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); //15-01-2021 getting location text in new line
+                        if (countrytext[1].ToString().ToLower() == country.ToLower())
+                        {
+                            goto OUTLOCATION;
+                        }
+                        //end 01-02-2023
                         LOCATION: //19-08-2020
                         // Location Selection.
                         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
@@ -219,24 +227,23 @@ namespace CloseVariantSimilarKeywordsV1
                                 catch { }
                             }
                             catch { }
-                        }
-
-                        try
-                        {
-                            Thread.Sleep(5000); //18-04-2022
-                            //19-08-2020
-                            IWebElement element = driver.FindElement(By.CssSelector(".location-button"));
-                            string[] countrytext = element.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); //15-01-2021 getting location text in new line
-                            if (countrytext[1].ToString().ToLower() != country.ToLower())
+                            //01-02-2023
+                            try
                             {
-                                goto LOCATION;
-                            }// end 15-01-2021
-                            //if (element.Text.Split(':')[1].ToLower() != country.ToLower())
-                            //{
-                            //    goto LOCATION;
-                            //}
-                            //end 19-08-2020
-
+                                Thread.Sleep(5000); 
+                                element = driver.FindElement(By.CssSelector(".location-button"));
+                                string[] countrytext1 = element.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); //15-01-2021 getting location text in new line
+                                if (countrytext1[1].ToString().ToLower() != country.ToLower())
+                                {
+                                    goto LOCATION;
+                                }
+                            }
+                            catch { } //end 01-02-2023
+                        }
+                        OUTLOCATION:
+                        try
+                        {  
+                            
                             //Date Selection //20-08-2020
                             try
                             {
@@ -525,7 +532,7 @@ namespace CloseVariantSimilarKeywordsV1
         static void GetEmailID()
         {
             DataTable dt = new DataTable();
-            string qry = "Select id, mailid, password from closeVariantMailIds Where id=4";
+            string qry = "Select id, mailid, password from closeVariantMailIds Where id=3";
             using (SqlDataAdapter da = new SqlDataAdapter(qry, ReadConnection()))
             {
                 da.Fill(dt);
