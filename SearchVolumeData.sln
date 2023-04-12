@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactValuesMissingV1", "Exa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleColabProject", "GoogleColabProject\GoogleColabProject.csproj", "{6A3EC4EB-1E4E-49F3-BF53-4F62232D67C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloadKeywords", "DownloadKeywords\DownloadKeywords.csproj", "{1DEE2CCF-F28F-4BFE-875B-94A713D64FB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{6A3EC4EB-1E4E-49F3-BF53-4F62232D67C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A3EC4EB-1E4E-49F3-BF53-4F62232D67C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A3EC4EB-1E4E-49F3-BF53-4F62232D67C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DEE2CCF-F28F-4BFE-875B-94A713D64FB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DEE2CCF-F28F-4BFE-875B-94A713D64FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DEE2CCF-F28F-4BFE-875B-94A713D64FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DEE2CCF-F28F-4BFE-875B-94A713D64FB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
