@@ -143,13 +143,14 @@ namespace DownloadKeywords
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            
-                Thread t = new Thread(new ThreadStart(GetKeywordsFromAPI));
-                t.SetApartmentState(ApartmentState.STA);
-                t.Start();
-           
-
+            try
+            {
+                GetKeywordsFromAPI();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
