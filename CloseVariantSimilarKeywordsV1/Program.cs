@@ -299,8 +299,9 @@ namespace CloseVariantSimilarKeywordsV1
                                     }
                                     catch { }
 
-                                    IWebElement ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group > material-select-item:nth-child(3)")));
-                                    if (ele.Text.Contains("Plan historical metrics (.csv)"))
+                                    //IWebElement ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group > material-select-item:nth-child(3)")));
+                                    IWebElement ele = Wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".group:nth-child(2) > .menu-item-row")));//11-10-2023
+                                    if (ele.Text.Contains("Plan historical metrics (.csv)") || ele.Text.Contains(".csv"))//11-10-2023
                                     {
                                         ele.Click();
                                     }
