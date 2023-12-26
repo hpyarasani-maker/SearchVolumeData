@@ -1425,6 +1425,7 @@ namespace ExactValuesSimilarBatchKeywordsV1
                                 }
                                 end 07-08-2020 */
 
+                                /* 26-12-2023 commented not required to store in the db.
                                 //insert to db 20-09-2022
                                 qry += "Insert into [dbo].[48MonthsKeywordsData_Old_SimilarUnmatched] (" +
                                     "Market, Keyword, countryname, source_old, insertdate, Errorcode, ErrorMessage) " +
@@ -1445,7 +1446,8 @@ namespace ExactValuesSimilarBatchKeywordsV1
                                     Console.WriteLine("Error updating unmatched data: " + ex.Message);
                                 }
                                 //end 20-09-2022
-
+                                */
+                                
                                 continue;
                             }
                             else if (values1 == null && monthsList[0] == null)
