@@ -1,0 +1,13 @@
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\bin\Debug\ExactValuesSimilarBatchKeywrods.exe.config
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\bin\Debug\ExactValuesSimilarBatchKeywrods.exe
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\bin\Debug\ExactValuesSimilarBatchKeywrods.pdb
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\bin\Debug\Newtonsoft.Json.dll
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\bin\Debug\SeleniumExtras.WaitHelpers.dll
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\bin\Debug\WebDriver.dll
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\bin\Debug\Newtonsoft.Json.xml
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\bin\Debug\WebDriver.xml
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\obj\Debug\ExactValuesSimilarBatchKeywrods.csprojAssemblyReference.cache
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\obj\Debug\ExactValuesSimilarBatchKeywrods.csproj.CoreCompileInputs.cache
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\obj\Debug\ExactValuesSimilarBatchKeywrods.csproj.CopyComplete
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\obj\Debug\ExactValuesSimilarBatchKeywrods.exe
+C:\Users\phema\Source\Repos\pi-software-solutions-pvt-ltd\SearchVolumeData\ExactValuesSimilarBatchKeywrods\obj\Debug\ExactValuesSimilarBatchKeywrods.pdb
