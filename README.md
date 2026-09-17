@@ -1,0 +1,1 @@
+Designed and implemented a scalable data collection pipeline to retrieve and process 48 months of historical search volume data for millions of keywords, enabling large-scale keyword trend analysis, reporting, and search intelligence.
